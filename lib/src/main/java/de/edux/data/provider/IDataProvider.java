@@ -11,13 +11,13 @@ public interface IDataProvider<T> {
 
     T getRandom(boolean equalDistribution);
 
-    double[][] getFeatures();
+    double[][] getTrainFeatures();
 
-    double[][] getLabels();
+    double[][] getTrainLabels();
 
-    double[][] getFeaturesTest();
+    double[][] getTestFeatures();
 
-    double[][] getLabelsTest();
+    double[][] getTestLabels();
 
     String getDescription();
 

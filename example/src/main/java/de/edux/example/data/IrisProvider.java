@@ -43,7 +43,7 @@ public class IrisProvider implements IDataProvider<Iris> {
         LOG.info("Total dataset size: " + dataset.size());
         LOG.info("Training dataset size: " + trainingData.size());
         LOG.info("Test data set size: " + testData.size());
-        LOG.info("Classes: " + getLabels()[0].length);
+        LOG.info("Classes: " + getTrainLabels()[0].length);
         LOG.info("===========================================================");
 
     }
@@ -54,19 +54,19 @@ public class IrisProvider implements IDataProvider<Iris> {
     }
 
     @Override
-    public double[][] getFeatures() {
+    public double[][] getTrainFeatures() {
         return featuresOf(trainingData);
     }
 
     @Override
-    public double[][] getLabels() {
+    public double[][] getTrainLabels() {
         return labelsOf(trainingData);
     }
 
 
 
     @Override
-    public double[][] getFeaturesTest() {
+    public double[][] getTestFeatures() {
         return featuresOf(testData);
     }
 
@@ -102,7 +102,7 @@ public class IrisProvider implements IDataProvider<Iris> {
         return labels;
     }
     @Override
-    public double[][] getLabelsTest() {
+    public double[][] getTestLabels() {
         return labelsOf(testData);
     }
 
