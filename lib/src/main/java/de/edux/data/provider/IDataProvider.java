@@ -20,4 +20,5 @@ public interface IDataProvider<T> {
     double[][] getLabelsTest();
 
     String getDescription();
+
 }

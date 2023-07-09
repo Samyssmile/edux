@@ -1,4 +1,4 @@
-package de.edux.nn.config;
+package de.edux.ml.nn.config;
 
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.loss.LossFunction;

@@ -1,4 +1,4 @@
-package de.edux.nn;
+package de.edux.ml.nn;
 
 import de.edux.functions.activation.ActivationFunction;
 

@@ -2,7 +2,8 @@ package de.edux.nn.network;
 
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.loss.LossFunction;
-import de.edux.nn.config.Configuration;
+import de.edux.ml.nn.config.Configuration;
+import de.edux.ml.nn.network.MultilayerPerceptron;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

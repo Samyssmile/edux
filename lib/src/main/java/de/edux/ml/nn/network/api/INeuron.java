@@ -1,4 +1,4 @@
-package de.edux.nn.network.api;
+package de.edux.ml.nn.network.api;
 
 public interface INeuron {
     double calculateOutput(double[] inputs);
