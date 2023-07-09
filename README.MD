@@ -1,6 +1,15 @@
 # EDUX Neural Network Library
 
-EDUX Neural Network Library is a user-friendly library for implementing artificial neural networks in Java. It offers a straightforward and flexible interface to construct, train, and utilize neural networks.
+EDUX Neural Network Library is a user-friendly library for implementing machine learning algorithms and artificial neural networks in Java. It offers a straightforward and flexible interface to construct, train, and utilize neural networks.
+
+1. [Goal](#goal)
+2. [Installation](#installation)
+3. [Usage - Neural Network](#usage---neural-network)
+4. [K Nearest Neighbors](#k-nearest-neighbors)
+5. [Features](#features)
+6. [Contributions](#contributions)
+
+
 
 ## Goal 
 Main goal of this project is a educational purpose.
@@ -38,17 +47,7 @@ You can predict the output with the predict method.
    var prediction = neuralNetwork.predict(yourInputYouWantToPredict);
 ```
 
-## Features
 
-The library currently supports:
-
-- Feed-forward neural networks with any number of layers and neurons per layer.
-- Customizable activation functions per layer, including Sigmoid, ReLU, Leaky ReLU, Tanh, and Softmax.
-- Error functions including Categorical Cross-Entropy, Mean Squared Error, Mean Absolute Error, Hinge Loss, Squared Hinge Loss, and Binary Cross-Entropy.
-- Easy data preparation and management with the Data Provider interface.
-- Support for CSV data with the CSV Data Reader.
-
-![Neural Network](https://hc-linux.eu/github/iris-nn.png)
 
 ## K Nearest Neighbors
 
@@ -75,6 +74,17 @@ To classify a single record use the classify method.
 
     knnClassifier.classify(...);
 
+## Features
+
+The library currently supports:
+
+- Multilayer Perceptron
+- K Nearest Neighbors
+- Descision Tree (progress)
+- Support Vector Machine (progress)
+
+
+![Neural Network](https://hc-linux.eu/github/iris-nn.png)
 ## Contributions
 
 Contributions are warmly welcomed! If you find a bug, please create an issue with a detailed description of the problem. If you wish to suggest an improvement or fix a bug, please make a pull request.

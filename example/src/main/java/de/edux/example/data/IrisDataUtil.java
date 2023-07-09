@@ -14,7 +14,7 @@ public class IrisDataUtil {
     private static final Logger logger = LoggerFactory.getLogger(IrisDataUtil.class);
     public static List<Iris> loadIrisDataSet(boolean normalize, boolean shuffle) {
         DataReader dataReader = new CSVDataReader();
-        File csvFile = new File("example"+ File.separator + "iris" + File.separator + "iris.csv");
+        File csvFile = new File("example"+ File.separator + "datasets"+ File.separator +  "iris" + File.separator + "iris.csv");
         List<String[]> csvLines = dataReader.readFile(csvFile, ',');
         List<Iris> unmodifiableDataset = csvLines.stream().map(IrisDataUtil::mapToIris).toList();
         List<Iris> dataset = new ArrayList<>(unmodifiableDataset);
