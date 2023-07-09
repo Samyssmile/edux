@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
 }
 
-group = 'de.edux'
+group = 'de.nexent.edux'
 version = '1.0.1'
 
 repositories {
