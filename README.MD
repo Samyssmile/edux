@@ -1,6 +1,6 @@
-# EDUX Neural Network Library
+# EDUX - Java Machine Learning Library
 
-EDUX Neural Network Library is a user-friendly library for implementing machine learning algorithms and artificial neural networks in Java. It offers a straightforward and flexible interface to construct, train, and utilize neural networks.
+EDUX is a user-friendly library for solving problems with a machine learning approach.
 
 1. [Goal](#goal)
 2. [Installation](#installation)
@@ -9,10 +9,8 @@ EDUX Neural Network Library is a user-friendly library for implementing machine 
 5. [Features](#features)
 6. [Contributions](#contributions)
 
-
-
 ## Goal 
-Main goal of this project is a educational purpose.
+Main goal of this project is a user-friendly library for solving problems with a machine learning approach. The library should be easy to use and should be able to solve problems with a few lines of code. The library is currently under development and is not yet ready for production use.
 
 ## Installation
 
@@ -74,14 +72,25 @@ To classify a single record use the classify method.
 
     knnClassifier.classify(...);
 
+## Decision Tree
+A full working example can be found in 
+
+    package decisiontree.example.de.nexent.edux.DecisionTreeExample.java
+
+Example Output for IRIS Datenset
+
+    de.edux.ml.decisiontree.DecisionTree - Accuracy: 95,0000%
+    Feature Importance: [0.4444444444444444, 0.0, 0.4291223175466741, 0.42559077319203725]
+
 ## Features
 
 The library currently supports:
 
 - Multilayer Perceptron
 - K Nearest Neighbors
-- Descision Tree (progress)
+- Descision Tree
 - Support Vector Machine (progress)
+- Random Forest (progress)
 
 
 ![Neural Network](https://hc-linux.eu/github/iris-nn.png)

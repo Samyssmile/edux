@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group = 'io.github.samyssmile.edux'
+group = 'io.github.samyssmile'
 version = '1.0'
 
 repositories {

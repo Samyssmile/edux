@@ -100,7 +100,7 @@ public class MultilayerPerceptron {
             if (epoch % 10 == 0) {
                 double accuracy = evaluate(testInputs, testTargets) * 100;
                 if (accuracy == 100) {
-                    LOG.info("Best possible Accuracy: {}%", String.format("%.2f", accuracy));
+                    LOG.info("Stop training at: {}%", String.format("%.2f", accuracy));
                     return;
                 }
 
