@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.samyssmile'
-version = '1.0.2'
+version = '1.0.3'
 
 sourceCompatibility = '17'
 targetCompatibility = '17'
