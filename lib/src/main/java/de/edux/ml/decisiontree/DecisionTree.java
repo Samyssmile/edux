@@ -120,7 +120,7 @@ public class DecisionTree implements IDecisionTree {
   @Override
   public void train(
       double[][] features,
-      double[] labels,
+      int[] labels,
       int maxDepth,
       int minSamplesSplit,
       int minSamplesLeaf,
@@ -172,7 +172,7 @@ public class DecisionTree implements IDecisionTree {
   }
 
   @Override
-  public double evaluate(double[][] features, double[] labels) {
+  public double evaluate(double[][] features, int[] labels) {
     int correctPredictions = 0;
     for (int i = 0; i < features.length; i++) {
       if (predict(features[i]) == labels[i]) {

@@ -5,6 +5,8 @@ import de.edux.ml.decisiontree.IDecisionTree;
 import de.example.data.IrisProvider;
 import java.util.Arrays;
 
+import static de.edux.util.LabelDimensionConverter.convert2DLabelArrayTo1DLabelArray;
+
 public class DecisionTreeExample {
   private static final boolean SHUFFLE = true;
   private static final boolean NORMALIZE = true;
@@ -19,7 +21,7 @@ public class DecisionTreeExample {
     double[][] labels = datasetProvider.getTrainLabels();
 
     // 1 - SATOSA 2 - VERSICOLOR 3 - VIRGINICA
-    double[] decisionTreeTrainLabels = convert2DLabelArrayTo1DLabelArray(labels);
+    int[] decisionTreeTrainLabels = convert2DLabelArrayTo1DLabelArray(labels);
 
     // Train Decision Tree
     IDecisionTree decisionTree = new DecisionTree();
@@ -28,24 +30,13 @@ public class DecisionTreeExample {
     // Evaluate Decision Tree
     double[][] testFeatures = datasetProvider.getTestFeatures();
     double[][] testLabels = datasetProvider.getTestLabels();
-    double[] decisionTreeTestLabels = convert2DLabelArrayTo1DLabelArray(testLabels);
+    int[] decisionTreeTestLabels = convert2DLabelArrayTo1DLabelArray(testLabels);
     decisionTree.evaluate(testFeatures, decisionTreeTestLabels);
 
     // Get Feature Importance
     double[] featureImportance = decisionTree.getFeatureImportance();
     System.out.println("Feature Importance: " + Arrays.toString(featureImportance));
-
   }
 
-  private static double[] convert2DLabelArrayTo1DLabelArray(double[][] labels) {
-    double[] decisionTreeTrainLabels = new double[labels.length];
-    for (int i = 0; i < labels.length; i++) {
-      for (int j = 0; j < labels[i].length; j++) {
-        if (labels[i][j] == 1) {
-          decisionTreeTrainLabels[i] = (j+1);
-        }
-      }
-    }
-    return decisionTreeTrainLabels;
-  }
+
 }

@@ -4,7 +4,7 @@ public interface IDecisionTree {
 
   void train(
       double[][] features,
-      double[] labels,
+      int[] labels,
       int maxDepth,
       int minSamplesSplit,
       int minSamplesLeaf,
@@ -24,7 +24,7 @@ public interface IDecisionTree {
    * @param labels the labels to evaluate
    * @return true if the decision tree correctly classified the features and labels, false otherwise
    */
-  double evaluate(double[][] features, double[] labels);
+  double evaluate(double[][] features, int[] labels);
 
   /**
    * Returns the feature importance of the decision tree.

@@ -2,7 +2,7 @@ package de.edux.ml.nn.network;
 
 import de.edux.ml.nn.Neuron;
 import de.edux.functions.activation.ActivationFunction;
-import de.edux.ml.nn.config.Configuration;
+import de.edux.ml.nn.config.NetworkConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +14,7 @@ public class MultilayerPerceptron {
 
     private final double[][] inputs;
     private final double[][] targets;
-    private final Configuration config;
+    private final NetworkConfiguration config;
     private final ActivationFunction hiddenLayerActivationFunction;
     private final ActivationFunction outputLayerActivationFunction;
     private final double[][] testInputs;
@@ -22,7 +22,7 @@ public class MultilayerPerceptron {
     private final List<Neuron[]> hiddenLayers;
     private final Neuron[] outputLayer;
 
-    public MultilayerPerceptron(double[][] inputs, double[][] targets, double[][] testInputs, double[][] testTargets, Configuration config) {
+    public MultilayerPerceptron(double[][] inputs, double[][] targets, double[][] testInputs, double[][] testTargets, NetworkConfiguration config) {
         this.inputs = inputs;
         this.targets = targets;
         this.testInputs = testInputs;
