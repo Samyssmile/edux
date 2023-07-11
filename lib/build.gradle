@@ -1,9 +1,14 @@
 plugins {
     id 'java-library'
+    id 'maven-publish'
+    id 'signing'
 }
 
-group = 'de.nexent.edux'
-version = '1.0.1'
+group = 'io.github.samyssmile'
+version = '1.0.2'
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 repositories {
     mavenCentral()
@@ -11,13 +16,10 @@ repositories {
 
 dependencies {
     implementation 'com.opencsv:opencsv:5.7.1'
-
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.20.0'
-
     api 'org.apache.commons:commons-math3:3.6.1'
-
     implementation 'com.google.guava:guava:31.1-jre'
 }
 
@@ -32,5 +34,80 @@ testing {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    archiveClassifier.set('sources')
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'io.github.samyssmile'
+            artifactId = 'edux'
+            version = '1.0.2'
+            from components.java
+            artifact sourceJar
+            artifact javadocJar
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'Edux'
+                description = 'Educational library for machine learning challenges'
+                url = 'https://github.com/Samyssmile/edux'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'samyssmile'
+                        name = 'Samuel Abramov'
+                        email = 'publish@abramov-samuel.de'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/Samyssmile/edux.git'
+                    developerConnection = 'scm:git:ssh://github.com/Samyssmile/edux.git'
+                    url = 'https://github.com/Samyssmile/edux'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = "sonatype"
+            url = version.endsWith('SNAPSHOT') ? 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                    : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username = System.getenv("OSSRH_USERNAME")
+                password = System.getenv("OSSRH_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
     }
 }
