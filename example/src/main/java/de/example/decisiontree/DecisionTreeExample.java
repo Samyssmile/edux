@@ -25,7 +25,7 @@ public class DecisionTreeExample {
 
     // Train Decision Tree
     IDecisionTree decisionTree = new DecisionTree();
-    decisionTree.train(features, decisionTreeTrainLabels, 5, 2, 1, 8);
+    decisionTree.train(features, decisionTreeTrainLabels, 6, 2, 1, 4);
 
     // Evaluate Decision Tree
     double[][] testFeatures = datasetProvider.getTestFeatures();
