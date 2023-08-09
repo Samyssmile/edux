@@ -40,6 +40,12 @@ public class MultilayerPerceptronExample {
         // - 2 Hidden Layer with 12 and 6 Neurons
         // - 3 Output Neurons
         // - Learning Rate of 0.1
+        // - 1000 Epochs
+        // - Leaky ReLU as Activation Function for Hidden Layers
+        // - Softmax as Activation Function for Output Layer
+        // - Categorical Cross Entropy as Loss Function
+        // - Xavier as Weight Initialization for Hidden Layers
+        // - Xavier as Weight Initialization for Output Layer
         NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(12, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
 
         MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(features, labels, testFeatures, testLabels, networkConfiguration);

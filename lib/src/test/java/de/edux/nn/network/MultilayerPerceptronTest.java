@@ -1,6 +1,7 @@
 package de.edux.nn.network;
 
 import de.edux.functions.activation.ActivationFunction;
+import de.edux.functions.initialization.Initialization;
 import de.edux.ml.nn.config.NetworkConfiguration;
 import de.edux.ml.nn.network.MultilayerPerceptron;
 import de.edux.functions.loss.LossFunction;
@@ -23,7 +24,7 @@ public class MultilayerPerceptronTest {
         double[][] targets = {{0, 1, 0}};
         double[][] testInputs = {{0.2, 0.3, 0.4}};
         double[][] testTargets = {{0, 0, 1}};
-        config = new NetworkConfiguration(3, List.of(5), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY);
+        config = new NetworkConfiguration(3, List.of(5), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.HE);
 
         mlp = new MultilayerPerceptron(inputs, targets, testInputs, testTargets, config);
     }

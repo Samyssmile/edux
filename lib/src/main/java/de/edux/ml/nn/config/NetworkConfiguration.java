@@ -9,5 +9,4 @@ import java.util.List;
 public record NetworkConfiguration(int inputSize, List<Integer> hiddenLayersSize, int outputSize, double learningRate, int epochs,
                                    ActivationFunction hiddenLayerActivationFunction, ActivationFunction outputLayerActivationFunction, LossFunction lossFunction, Initialization hiddenLayerWeightInitialization, Initialization outputLayerWeightInitialization) {
 
-
 }
