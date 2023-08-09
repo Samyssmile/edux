@@ -1,0 +1,44 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['java']
+
+    steps:
+      - name: Auschecken des Repositorys
+        uses: actions/checkout@v2
+
+      - name: CodeQL initialisieren
+        uses: github/codeql-action/init@v1
+        with:
+          languages: ${{ matrix.language }}
+
+      # Fügen Sie Ihre benutzerdefinierten Build-Schritte hier hinzu
+      - name: Java und Gradle konfigurieren
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # Oder jede andere Version, die Sie verwenden möchten
+          distribution: 'adopt'
+
+      - name: Abhängigkeiten herunterladen
+        run: ./gradlew dependencies
+
+      - name: Code mit Gradle bauen
+        run: ./gradlew build
+
+      - name: CodeQL-Analyse ausführen
+        uses: github/codeql-action/analyze@v1
