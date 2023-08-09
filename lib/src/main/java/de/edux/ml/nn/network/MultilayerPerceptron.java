@@ -1,5 +1,6 @@
 package de.edux.ml.nn.network;
 
+import de.edux.functions.initialization.Initialization;
 import de.edux.ml.nn.Neuron;
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.ml.nn.config.NetworkConfiguration;
@@ -38,7 +39,7 @@ public class MultilayerPerceptron {
         for (int layerSize : config.hiddenLayersSize()) {
             Neuron[] hiddenLayer = new Neuron[layerSize];
             for (int i = 0; i < layerSize; i++) {
-                hiddenLayer[i] = new Neuron(inputSizeForCurrentLayer, hiddenLayerActivationFunction);
+                hiddenLayer[i] = new Neuron(inputSizeForCurrentLayer, hiddenLayerActivationFunction, this.config.hiddenLayerWeightInitialization());
             }
             hiddenLayers.add(hiddenLayer);
             inputSizeForCurrentLayer = layerSize;
@@ -46,7 +47,7 @@ public class MultilayerPerceptron {
 
         outputLayer = new Neuron[config.outputSize()];
         for (int i = 0; i < config.outputSize(); i++) {
-            outputLayer[i] = new Neuron(inputSizeForCurrentLayer, outputLayerActivationFunction);
+            outputLayer[i] = new Neuron(inputSizeForCurrentLayer, outputLayerActivationFunction, this.config.outputLayerWeightInitialization());
         }
     }
 

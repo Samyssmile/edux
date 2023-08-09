@@ -1,6 +1,7 @@
 package de.edux.edux.nn;
 
 import de.edux.functions.activation.ActivationFunction;
+import de.edux.functions.initialization.Initialization;
 import de.edux.ml.nn.Neuron;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,7 @@ public class NeuronTest {
 
     @BeforeEach
     public void setUp() {
-        neuron = new Neuron(inputSize, dummyActivationFunction);
+        neuron = new Neuron(inputSize, dummyActivationFunction, Initialization.XAVIER);
     }
 
     @Test

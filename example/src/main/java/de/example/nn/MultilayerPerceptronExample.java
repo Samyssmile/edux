@@ -1,6 +1,7 @@
 package de.example.nn;
 
 import de.edux.functions.activation.ActivationFunction;
+import de.edux.functions.initialization.Initialization;
 import de.edux.functions.loss.LossFunction;
 import de.edux.ml.nn.config.NetworkConfiguration;
 import de.edux.ml.nn.network.MultilayerPerceptron;
@@ -39,7 +40,7 @@ public class MultilayerPerceptronExample {
         // - 2 Hidden Layer with 12 and 6 Neurons
         // - 3 Output Neurons
         // - Learning Rate of 0.1
-        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(12, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY);
+        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(12, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
 
         MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(features, labels, testFeatures, testLabels, networkConfiguration);
         multilayerPerceptron.train();

@@ -1,20 +1,19 @@
 package de.edux.ml.nn;
 
 import de.edux.functions.activation.ActivationFunction;
+import de.edux.functions.initialization.Initialization;
 
 public class Neuron {
     private double[] weights;
     private double bias;
     private final ActivationFunction activationFunction;
 
-    public Neuron(int inputSize, ActivationFunction activationFunction) {
+    public Neuron(int inputSize, ActivationFunction activationFunction, Initialization initialization) {
         this.weights = new double[inputSize];
         this.activationFunction = activationFunction;
-        this.bias = Math.random() * 2 - 1;
+        this.bias = initialization.weightInitialization(inputSize, new double[1])[0];
+        this.weights = initialization.weightInitialization(inputSize, weights);
 
-        for (int i = 0; i < inputSize; i++) {
-            this.weights[i] = Math.random() * 2 - 1;
-        }
     }
 
     public double calculateOutput(double[] input) {
