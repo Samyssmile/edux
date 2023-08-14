@@ -21,7 +21,7 @@ To install, include the library as a dependency in your Java project file.
 ### Gradle
 
 ```
- implementation 'io.github.samyssmile:edux:1.0.2'
+ implementation 'io.github.samyssmile:edux:1.0.4'
 ```
 
 ### Maven
