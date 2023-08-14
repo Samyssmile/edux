@@ -16,7 +16,22 @@ Main goal of this project is a user-friendly library for solving problems with a
 
 ## Installation
 
-To install, include the library as a dependency in your Java project file. As the library is not yet available on a package management repository, you will have to manually download the repository and include it in your project.
+To install, include the library as a dependency in your Java project file.
+
+### Gradle
+
+```
+ implementation 'io.github.samyssmile:edux:1.0.2'
+```
+
+### Maven
+```
+  <dependency>
+     <groupId>io.github.samyssmile</groupId>
+     <artifactId>edux</artifactId>
+     <version>1.0.4</version>
+ </dependency>
+```
 
 ## Usage - Neural Network
 
