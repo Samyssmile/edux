@@ -12,7 +12,7 @@ EDUX is a user-friendly library for solving problems with a machine learning app
 6. [Contributions](#contributions)
 
 ## Goal 
-The main goal of this project is to create a user-friendly library for solving problems using a machine learning approach. The library is designed to be easy to use, enabling the solution of problems with just a few lines of code. Please note that the library is currently under development and is not yet ready for production use.
+The main goal of this project is to create a user-friendly library for solving problems using a machine learning approach. The library is designed to be easy to use, enabling the solution of problems with just a few lines of code.
 
 ## Installation
 
