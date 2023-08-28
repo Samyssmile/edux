@@ -14,6 +14,15 @@ EDUX is a user-friendly library for solving problems with a machine learning app
 ## Goal 
 The main goal of this project is to create a user-friendly library for solving problems using a machine learning approach. The library is designed to be easy to use, enabling the solution of problems with just a few lines of code.
 
+## Features
+
+The library currently supports:
+
+- Multilayer Perceptron (Neural Network)
+- K Nearest Neighbors
+- Descision Tree
+- Support Vector Machine
+
 ## Installation
 
 To install, include the library as a dependency in your Java project file.
@@ -98,16 +107,6 @@ Example Output for IRIS Datenset
 
     de.edux.ml.decisiontree.DecisionTree - Accuracy: 95,0000%
     Feature Importance: [0.4444444444444444, 0.0, 0.4291223175466741, 0.42559077319203725]
-
-## Features
-
-The library currently supports:
-
-- Multilayer Perceptron
-- K Nearest Neighbors
-- Descision Tree
-- Support Vector Machine (progress)
-- Random Forest (progress)
 
 
 ![Neural Network](https://hc-linux.eu/github/iris-nn.png)
