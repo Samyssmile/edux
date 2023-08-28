@@ -33,9 +33,9 @@ To install, include the library as a dependency in your Java project file.
  </dependency>
 ```
 
-## Usage - Neural Network
+## How to train Neural Network
 
-1. You need to implement a IDataProvider Interface to provide the data for the network. Example for the IRIS-Dataset.
+1. You need to implement an Interface called IDataProvider to provide the data for the network. Example for the IRIS-Dataset.
  ```
    public class IrisProvider implements IDataProvider<Iris>
  ```
