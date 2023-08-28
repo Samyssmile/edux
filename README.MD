@@ -14,6 +14,15 @@ EDUX is a user-friendly library for solving problems with a machine learning app
 ## Goal 
 The main goal of this project is to create a user-friendly library for solving problems using a machine learning approach. The library is designed to be easy to use, enabling the solution of problems with just a few lines of code.
 
+## Features
+
+The library currently supports:
+
+- Multilayer Perceptron (Neural Network)
+- K Nearest Neighbors
+- Descision Tree
+- Support Vector Machine
+
 ## Installation
 
 To install, include the library as a dependency in your Java project file.
@@ -33,82 +42,12 @@ To install, include the library as a dependency in your Java project file.
  </dependency>
 ```
 
-## How to train Neural Network
+## How to use this library
 
-1. You need to implement an Interface called IDataProvider to provide the data for the network. Example for the IRIS-Dataset.
- ```
-   public class IrisProvider implements IDataProvider<Iris>
- ```
-2. Create a Neural Network Configuration.
-```
-    var neuralNetworkConfiguration = new Configuration(
-                                         inputSize, 
-                                         hiddenLayersSize, 
-                                         outputSize, 
-                                         learningRate,
-                                         epochs,
-                                         ActivationFunction.LEAKY_RELU, // Activation function of the hidden layers
-                                         ActivationFunction.SOFTMAX, // Activation function of the output layer
-                                         LossFunction.CATEGORICAL_CROSS_ENTROPY);// Loss function of the network
-```
-3. Create a Neural Network with the configuration and data from provider. Finaly train the network.
-```
-   var neuralNetwork = new NeuralNetwork(features, labels, testFeatures, testLabels, neuralNetworkConfiguration);
-   neuralNetwork.train();
-```
+### Working examples
+You can find working examples for all algorithms in the [examples](https://github.com/Samyssmile/edux/tree/main/example/src/main/java/de/example) folder.
 
-You can predict the output with the predict method.
-```
-   var prediction = neuralNetwork.predict(yourInputYouWantToPredict);
-```
-
-
-
-## K Nearest Neighbors
-
-Its also possible to use the K Nearest Neighbors algorithm. 
-
-    KnnClassifier knnClassifier = new KnnClassifier(1, labeledPoints);
-
-a full working example can be found in 
-
-    package knn.example.de.nexent.edux.KnnExample.java
-
-1. Implement IDataProvider Interface to get your data.
-2. Transform your data to LabeledPoints.
-3. Create a KnnClassifier with the number of neighbors and the labeled points.
-
-You can evaluate the accuracy of the classifier with the evaluate method.
-
-    knnClassifier.evaluate(testLabeledPoints);
-    
-    output
-    [main] INFO  knn.ml.de.nexent.edux.KnnClassifier - Accuracy: 98.33333333333333%
-
-To classify a single record use the classify method.
-
-    knnClassifier.classify(...);
-
-## Decision Tree
-A full working example can be found in 
-
-    package decisiontree.example.de.nexent.edux.DecisionTreeExample.java
-
-Example Output for IRIS Datenset
-
-    de.edux.ml.decisiontree.DecisionTree - Accuracy: 95,0000%
-    Feature Importance: [0.4444444444444444, 0.0, 0.4291223175466741, 0.42559077319203725]
-
-## Features
-
-The library currently supports:
-
-- Multilayer Perceptron
-- K Nearest Neighbors
-- Descision Tree
-- Support Vector Machine (progress)
-- Random Forest (progress)
-
+In all examples the IRIS dataset is used. The IRIS dataset is a multivariate dataset introduced by the British statistician and biologist Ronald Fisher in his 1936 paper *The use of multiple measurements in taxonomic problems*
 
 ![Neural Network](https://hc-linux.eu/github/iris-nn.png)
 ## Contributions
