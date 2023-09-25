@@ -7,8 +7,11 @@ plugins {
 group = 'io.github.samyssmile'
 version = '1.0.4'
 
-sourceCompatibility = '17'
-targetCompatibility = '17'
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 repositories {
     mavenCentral()

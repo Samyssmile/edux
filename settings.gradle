@@ -1,4 +1,3 @@
-rootProject.name = 'Edux'
+rootProject.name = 'edux'
 include 'lib'
 include 'example'
-
