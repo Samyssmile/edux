@@ -5,6 +5,12 @@ plugins {
 group = 'io.github.samyssmile'
 version = '1.0.4'
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 repositories {
     mavenCentral()
 }
