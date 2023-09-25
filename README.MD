@@ -52,4 +52,4 @@ In all examples the IRIS dataset is used. The IRIS dataset is a multivariate dat
 ![Neural Network](https://hc-linux.eu/github/iris-nn.png)
 ## Contributions
 
-Contributions are warmly welcomed! If you find a bug, please create an issue with a detailed description of the problem. If you wish to suggest an improvement or fix a bug, please make a pull request.
+Contributions are warmly welcomed! If you find a bug, please create an issue with a detailed description of the problem. If you wish to suggest an improvement or fix a bug, please make a pull request. Also checkout the [Rules and Guidelines](https://github.com/Samyssmile/edux/wiki/Rules-&-Guidelines-for-New-Developers) page for more information.
