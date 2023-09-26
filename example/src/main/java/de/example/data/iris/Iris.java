@@ -1,4 +1,4 @@
-package de.example.data;
+package de.example.data.iris;
 
 public class Iris {
     public double sepalLength;

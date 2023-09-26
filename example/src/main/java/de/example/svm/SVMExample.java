@@ -3,7 +3,7 @@ package de.example.svm;
 import de.edux.ml.svm.ISupportVectorMachine;
 import de.edux.ml.svm.SVMKernel;
 import de.edux.ml.svm.SupportVectorMachine;
-import de.example.data.IrisProvider;
+import de.example.data.iris.IrisProvider;
 
 public class SVMExample {
     private static final boolean SHUFFLE = true;

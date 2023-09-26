@@ -3,8 +3,8 @@ package de.example.knn;
 import de.edux.ml.knn.ILabeledPoint;
 import de.edux.ml.knn.KnnClassifier;
 import de.edux.ml.knn.KnnPoint;
-import de.example.data.Iris;
-import de.example.data.IrisProvider;
+import de.example.data.iris.Iris;
+import de.example.data.iris.IrisProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
  * Dataset: Iris
  * First transfer the iris data into KnnPoints, use the variety as label. Then use the KnnClassifier to classify the test data.
  */
-public class KnnExample {
+public class KnnIrisExample {
     private static final boolean SHUFFLE = true;
-    private final static boolean NORMALIZE = true;
+    private static final boolean NORMALIZE = true;
 
     public static void main(String[] args) {
         var datasetProvider = new IrisProvider(NORMALIZE, SHUFFLE, 0.6);
