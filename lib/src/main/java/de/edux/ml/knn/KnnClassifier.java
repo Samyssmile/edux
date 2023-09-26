@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class KnnClassifier {
     private static final Logger LOG = LoggerFactory.getLogger(KnnClassifier.class);
-    private int k;
+    private final int k;
     private List<ILabeledPoint> trainingPoints;
 
     public KnnClassifier(int k, List<ILabeledPoint> trainingPoints) {

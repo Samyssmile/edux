@@ -1,7 +1,7 @@
-package de.example.data;
+package de.example.data.iris;
 
-import de.edux.data.reader.CSVDataReader;
-import de.edux.data.reader.DataReader;
+import de.edux.data.reader.CSVIDataReader;
+import de.edux.data.reader.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class IrisDataUtil {
     private static final Logger logger = LoggerFactory.getLogger(IrisDataUtil.class);
     public static List<Iris> loadIrisDataSet(boolean normalize, boolean shuffle) {
-        DataReader dataReader = new CSVDataReader();
+        IDataReader dataReader = new CSVIDataReader();
         File csvFile = new File("example"+ File.separator + "datasets"+ File.separator +  "iris" + File.separator + "iris.csv");
         List<String[]> csvLines = dataReader.readFile(csvFile, ',');
         List<Iris> unmodifiableDataset = csvLines.stream().map(IrisDataUtil::mapToIris).toList();

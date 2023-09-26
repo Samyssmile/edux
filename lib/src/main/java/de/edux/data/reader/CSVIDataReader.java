@@ -11,11 +11,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-public class CSVDataReader implements DataReader {
+public class CSVIDataReader implements IDataReader {
 
     public List<String[]> readFile(File file, char separator) {
         CSVParser csvParser = new CSVParserBuilder().withSeparator(separator).build(); // custom separator
-        List<String[]> result = null;
+        List<String[]> result;
         try(CSVReader reader = new CSVReaderBuilder(
                 new FileReader(file))
                 .withCSVParser(csvParser)   // custom CSV parser

@@ -5,15 +5,7 @@ import de.edux.functions.initialization.Initialization;
 import de.edux.functions.loss.LossFunction;
 import de.edux.ml.nn.config.NetworkConfiguration;
 import de.edux.ml.nn.network.MultilayerPerceptron;
-import de.example.data.IrisProvider;
-
-import java.util.List;
-
-import de.edux.functions.activation.ActivationFunction;
-import de.edux.functions.loss.LossFunction;
-import de.edux.ml.nn.config.NetworkConfiguration;
-import de.edux.ml.nn.network.MultilayerPerceptron;
-import de.example.data.IrisProvider;
+import de.example.data.iris.IrisProvider;
 
 import java.util.List;
 

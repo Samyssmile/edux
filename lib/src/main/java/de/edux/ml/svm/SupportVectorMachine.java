@@ -10,10 +10,9 @@ public class SupportVectorMachine implements ISupportVectorMachine {
 
     private static final Logger LOG = LoggerFactory.getLogger(SupportVectorMachine.class);
 
-    private SVMKernel kernel;
-    private double c;
-    private Map<String, SVMModel> models; // Für One-vs-One: Ein Modell für jedes Paar von Klassen
-
+    private final SVMKernel kernel;
+    private final double c;
+    private final Map<String, SVMModel> models;
     public SupportVectorMachine(SVMKernel kernel, double c) {
         this.kernel = kernel;
         this.c = c;

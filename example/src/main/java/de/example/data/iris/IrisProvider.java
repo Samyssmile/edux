@@ -1,4 +1,4 @@
-package de.example.data;
+package de.example.data.iris;
 
 import de.edux.data.provider.IDataProvider;
 import org.slf4j.Logger;
@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static de.example.data.IrisDataUtil.loadIrisDataSet;
+import static de.example.data.iris.IrisDataUtil.loadIrisDataSet;
 
 public class IrisProvider implements IDataProvider<Iris> {
     private static final Logger LOG = LoggerFactory.getLogger(IrisProvider.class);
@@ -45,7 +45,6 @@ public class IrisProvider implements IDataProvider<Iris> {
         LOG.info("Test data set size: " + testData.size());
         LOG.info("Classes: " + getTrainLabels()[0].length);
         LOG.info("===========================================================");
-
     }
 
     @Override

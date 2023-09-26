@@ -2,7 +2,7 @@ package de.example.decisiontree;
 
 import de.edux.ml.decisiontree.DecisionTree;
 import de.edux.ml.decisiontree.IDecisionTree;
-import de.example.data.IrisProvider;
+import de.example.data.iris.IrisProvider;
 import java.util.Arrays;
 
 import static de.edux.util.LabelDimensionConverter.convert2DLabelArrayTo1DLabelArray;

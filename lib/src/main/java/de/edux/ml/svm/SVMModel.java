@@ -2,7 +2,7 @@ package de.edux.ml.svm;
 
 public class SVMModel {
 
-    private SVMKernel kernel;
+    private final SVMKernel kernel;
     private double c;
     private double[] weights;
     private double bias = 0.0;
