@@ -42,7 +42,6 @@ public class MultilayerPerceptronExample {
 
         MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(features, labels, testFeatures, testLabels, networkConfiguration);
         multilayerPerceptron.train();
-        multilayerPerceptron.evaluate(testFeatures, testLabels);
     }
 }
 

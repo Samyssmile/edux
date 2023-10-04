@@ -22,6 +22,7 @@ public class MultilayerPerceptron {
     private final double[][] testTargets;
     private final List<Neuron[]> hiddenLayers;
     private final Neuron[] outputLayer;
+    private double bestAccuracy;
 
     public MultilayerPerceptron(double[][] inputs, double[][] targets, double[][] testInputs, double[][] testTargets, NetworkConfiguration config) {
         this.inputs = inputs;
@@ -73,7 +74,7 @@ public class MultilayerPerceptron {
     }
 
     public void train() {
-        double bestAccuracy = 0;
+         bestAccuracy = 0;
         for (int epoch = 0; epoch < config.epochs(); epoch++) {
             for (int i = 0; i < inputs.length; i++) {
                 double[] output = feedforward(inputs[i]);
@@ -140,7 +141,7 @@ public class MultilayerPerceptron {
         }
     }
 
-    public double evaluate(double[][] testInputs, double[][] testTargets) {
+    private double evaluate(double[][] testInputs, double[][] testTargets) {
         int correctCount = 0;
 
         for (int i = 0; i < testInputs.length; i++) {
@@ -164,5 +165,9 @@ public class MultilayerPerceptron {
 
     public double[] predict(double[] input) {
         return feedforward(input);
+    }
+
+    public double getAccuracy() {
+        return bestAccuracy;
     }
 }
