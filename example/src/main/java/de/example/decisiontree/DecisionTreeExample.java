@@ -20,23 +20,18 @@ public class DecisionTreeExample {
     double[][] features = datasetProvider.getTrainFeatures();
     double[][] labels = datasetProvider.getTrainLabels();
 
-    // 1 - SATOSA 2 - VERSICOLOR 3 - VIRGINICA
-    int[] decisionTreeTrainLabels = convert2DLabelArrayTo1DLabelArray(labels);
-
     // Train Decision Tree
     IDecisionTree decisionTree = new DecisionTree();
-    decisionTree.train(features, decisionTreeTrainLabels, 6, 2, 1, 4);
+    decisionTree.train(features, labels, 6, 2, 1, 4);
 
     // Evaluate Decision Tree
     double[][] testFeatures = datasetProvider.getTestFeatures();
     double[][] testLabels = datasetProvider.getTestLabels();
-    int[] decisionTreeTestLabels = convert2DLabelArrayTo1DLabelArray(testLabels);
-    decisionTree.evaluate(testFeatures, decisionTreeTestLabels);
+    decisionTree.evaluate(testFeatures, testLabels);
 
     // Get Feature Importance
     double[] featureImportance = decisionTree.getFeatureImportance();
     System.out.println("Feature Importance: " + Arrays.toString(featureImportance));
   }
-
 
 }
