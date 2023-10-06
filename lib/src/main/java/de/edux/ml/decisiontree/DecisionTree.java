@@ -146,12 +146,10 @@ public class DecisionTree implements IDecisionTree {
   }
 
   private double predict(double[] feature, Node node) {
-    // If we are at a leaf node, return the most common label
     if (node.isLeaf) {
       return getMostCommonLabel(node.data);
     }
 
-    // Else move to the next node
     if (feature[node.splitFeature] < node.value) {
       return predict(feature, node.left);
     } else {
@@ -183,12 +181,9 @@ public class DecisionTree implements IDecisionTree {
       }
     }
 
-    // Calculate accuracy: ratio of correct predictions to total predictions
     double accuracy = (double) correctPredictions / features.length;
 
-    // Log the accuracy value (optional)
     LOG.info("Model Accuracy: {}%", accuracy * 100);
-
     return accuracy;
   }
 

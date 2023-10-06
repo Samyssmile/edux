@@ -1,10 +1,10 @@
-package de.edux.ml.decisiontree;
+package de.edux.ml;
 
 import de.edux.data.provider.Penguin;
 import de.edux.data.provider.SeabornDataProcessor;
 import de.edux.data.provider.SeabornProvider;
+import de.edux.ml.randomforest.RandomForest;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class DecisionTreeTest {
+class RandomForestTest {
     private static final boolean SHUFFLE = true;
     private static final boolean NORMALIZE = true;
     private static final boolean FILTER_INCOMPLETE_RECORDS = true;
@@ -22,7 +22,7 @@ class DecisionTreeTest {
     private static SeabornProvider seabornProvider;
     @BeforeAll
     static void setup() {
-        URL url = DecisionTreeTest.class.getClassLoader().getResource(CSV_FILE_PATH);
+        URL url = RandomForestTest.class.getClassLoader().getResource(CSV_FILE_PATH);
         if (url == null) {
             throw new IllegalStateException("Cannot find file: " + CSV_FILE_PATH);
         }
@@ -32,8 +32,7 @@ class DecisionTreeTest {
         List<List<Penguin>> trainTestSplittedList = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
         seabornProvider = new SeabornProvider(dataset, trainTestSplittedList.get(0), trainTestSplittedList.get(1));
     }
-
-    @RepeatedTest(5)
+    @Test
     void train() {
         double[][] features = seabornProvider.getTrainFeatures();
         double[][] labels = seabornProvider.getTrainLabels();
@@ -46,25 +45,17 @@ class DecisionTreeTest {
         assertTrue(testFeatures.length > 0);
         assertTrue(testLabels.length > 0);
 
-        IDecisionTree decisionTree = new DecisionTree();
-        int maxDepth = 10;
-        int minSampleSplit = 2;
-        int minSampleLeaf = 1;
-        int maxLeafNodes = 8;
-        decisionTree.train(features, labels, maxDepth, minSampleSplit, minSampleLeaf, maxLeafNodes);
-        double accuracy = decisionTree.evaluate(testFeatures, testLabels);
+        int numberOfTrees = 100;
+        int maxDepth = 24;
+        int minSampleSize = 2;
+        int minSamplesLeaf = 1;
+        int maxLeafNodes = 12;
+        int numFeatures = (int) Math.sqrt(features.length)*3;
+
+        RandomForest randomForest = new RandomForest();
+        randomForest.train(numberOfTrees, features, labels, maxDepth, minSampleSize, minSamplesLeaf, maxLeafNodes,numFeatures);
+        double accuracy = randomForest.evaluate(testFeatures, testLabels);
+        System.out.println(accuracy);
         assertTrue(accuracy>0.7);
-    }
-
-    @Test
-    void predict() {
-    }
-
-    @Test
-    void evaluate() {
-    }
-
-    @Test
-    void getFeatureImportance() {
     }
 }
