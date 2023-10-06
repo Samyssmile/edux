@@ -1,10 +1,12 @@
 package de.edux.ml.decisiontree;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A decision tree classifier.
@@ -13,24 +15,7 @@ import org.slf4j.LoggerFactory;
  * The decision tree is built by recursively splitting the training data based on
  * the feature that results in the minimum Gini index, which is a measure of impurity.
  * </p>
- *
- * <p>
- * Once the decision tree is built, new instances can be classified by traversing the tree
- * from the root to a leaf node. The class of the leaf node is then assigned to the instance.
- * </p>
- *
- * <p>
- * The decision tree algorithm implemented here includes several stopping conditions to avoid
- * overfitting, including a maximum depth, a minimum number of samples per leaf, and a minimum
- * number of samples to allow a split.
- * </p>
- *
- * <p>
- * The decision tree can be used for multiclass classification problems. For binary classification,
- * the output is either 0 or 1. For multiclass classification, the output is the class with the
- * maximum frequency in the leaf node.
- * </p>
- */
+*/
 public class DecisionTree implements IDecisionTree {
   private static final Logger LOG = LoggerFactory.getLogger(DecisionTree.class);
   private Node root;
@@ -38,8 +23,6 @@ public class DecisionTree implements IDecisionTree {
   private int minSamplesSplit;
   private int minSamplesLeaf;
   private int maxLeafNodes;
-
-
 
   private double calculateGiniIndex(double[] labels) {
     if (labels.length == 0) {
@@ -120,7 +103,7 @@ public class DecisionTree implements IDecisionTree {
   @Override
   public void train(
       double[][] features,
-      int[] labels,
+      double[][] labels,
       int maxDepth,
       int minSamplesSplit,
       int minSamplesLeaf,
@@ -133,14 +116,31 @@ public class DecisionTree implements IDecisionTree {
     double[][] data = new double[features.length][];
     for (int i = 0; i < features.length; i++) {
       data[i] = Arrays.copyOf(features[i], features[i].length + 1);
-      data[i][data[i].length - 1] = labels[i];
+      data[i][data[i].length - 1] = getIndexOfHighestValue(labels[i]);
     }
     root = new Node(data);
     buildTree(root);
   }
 
+  private double getIndexOfHighestValue(double[] labels) {
+    if (labels == null || labels.length == 0) {
+      throw new IllegalArgumentException("Array must not be null or empty");
+    }
+
+    int maxIndex = 0;
+    double maxValue = labels[0];
+
+    for (int i = 1; i < labels.length; i++) {
+      if (labels[i] > maxValue) {
+        maxValue = labels[i];
+        maxIndex = i;
+      }
+    }
+
+    return maxIndex;
+  }
+
   @Override
-  // Add to the DecisionTree class
   public double predict(double[] feature) {
     return predict(feature, root);
   }
@@ -172,17 +172,26 @@ public class DecisionTree implements IDecisionTree {
   }
 
   @Override
-  public double evaluate(double[][] features, int[] labels) {
+  public double evaluate(double[][] features, double[][] labels) {
     int correctPredictions = 0;
     for (int i = 0; i < features.length; i++) {
-      if (predict(features[i]) == labels[i]) {
+      double predictedLabel = predict(features[i]);
+      double actualLabel = getIndexOfHighestValue(labels[i]);
+
+      if (predictedLabel == actualLabel) {
         correctPredictions++;
       }
     }
+
+    // Calculate accuracy: ratio of correct predictions to total predictions
     double accuracy = (double) correctPredictions / features.length;
-    LOG.info("Accuracy: " + String.format("%.4f", accuracy * 100) + "%");
+
+    // Log the accuracy value (optional)
+    LOG.info("Model Accuracy: {}%", accuracy * 100);
+
     return accuracy;
   }
+
 
   @Override
   public double[] getFeatureImportance() {
