@@ -1,5 +1,6 @@
 package de.edux.ml;
 
+import de.edux.api.Classifier;
 import de.edux.data.provider.Penguin;
 import de.edux.data.provider.SeabornDataProcessor;
 import de.edux.data.provider.SeabornProvider;
@@ -28,9 +29,9 @@ class RandomForestTest {
         }
         File csvFile = new File(url.getPath());
         var seabornDataProcessor = new SeabornDataProcessor();
-        var dataset = seabornDataProcessor.loadTDataSet(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
-        List<List<Penguin>> trainTestSplittedList = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
-        seabornProvider = new SeabornProvider(dataset, trainTestSplittedList.get(0), trainTestSplittedList.get(1));
+        var dataset = seabornDataProcessor.loadDataSetFromCSV(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
+        var splitedDataset = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
+        seabornProvider = new SeabornProvider(dataset, splitedDataset.trainData(), splitedDataset.testData());
     }
     @Test
     void train() {
@@ -46,14 +47,14 @@ class RandomForestTest {
         assertTrue(testLabels.length > 0);
 
         int numberOfTrees = 100;
-        int maxDepth = 24;
+        int maxDepth = 8;
         int minSampleSize = 2;
         int minSamplesLeaf = 1;
-        int maxLeafNodes = 12;
+        int maxLeafNodes = 2;
         int numFeatures = (int) Math.sqrt(features.length)*3;
 
-        RandomForest randomForest = new RandomForest();
-        randomForest.train(numberOfTrees, features, labels, maxDepth, minSampleSize, minSamplesLeaf, maxLeafNodes,numFeatures);
+        Classifier randomForest = new RandomForest( numberOfTrees, maxDepth, minSampleSize, minSamplesLeaf, maxLeafNodes,numFeatures);
+        randomForest.train( features, labels);
         double accuracy = randomForest.evaluate(testFeatures, testLabels);
         System.out.println(accuracy);
         assertTrue(accuracy>0.7);

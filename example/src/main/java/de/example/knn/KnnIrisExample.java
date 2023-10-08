@@ -1,12 +1,12 @@
 package de.example.knn;
 
-import de.edux.ml.knn.ILabeledPoint;
+import de.edux.api.Classifier;
 import de.edux.ml.knn.KnnClassifier;
-import de.edux.ml.knn.KnnPoint;
+import de.edux.ml.nn.network.api.Dataset;
 import de.example.data.iris.Iris;
-import de.example.data.iris.IrisProvider;
+import de.example.data.iris.IrisDataProcessor;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -17,28 +17,18 @@ import java.util.List;
 public class KnnIrisExample {
     private static final boolean SHUFFLE = true;
     private static final boolean NORMALIZE = true;
+    private static final boolean FILTER_INCOMPLETE_RECORDS = true;
+    private static final double TRAIN_TEST_SPLIT_RATIO = 0.75;
+    private static final File CSV_FILE = new File("example" + File.separator + "datasets" + File.separator + "iris" + File.separator + "iris.csv");
 
     public static void main(String[] args) {
-        var datasetProvider = new IrisProvider(NORMALIZE, SHUFFLE, 0.6);
-        datasetProvider.printStatistics();
+        var irisDataProcessor = new IrisDataProcessor();
+        List<Iris> data = irisDataProcessor.loadDataSetFromCSV(CSV_FILE, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
+        irisDataProcessor.split(data, TRAIN_TEST_SPLIT_RATIO);
 
-        List<ILabeledPoint> labeledPoints = new ArrayList<>();
-        for (int i = 0; i < datasetProvider.getTrainFeatures().length; i++) {
-            labeledPoints.add(new KnnPoint(datasetProvider.getTrainFeatures()[i], datasetProvider.getTrainData().get(i).variety));
-        }
-
-        KnnClassifier knnClassifier = new KnnClassifier(1, labeledPoints);
-
-        // Evaluate on test data
-        // transfer Iris to KnnPoint
-        List<Iris> testDataset = datasetProvider.getTestData();
-        List<ILabeledPoint> testLabeledPoints = new ArrayList<>();
-        testDataset.forEach(iris -> {
-            ILabeledPoint labeledPoint = new KnnPoint(iris.getFeatures(), iris.variety);
-            testLabeledPoints.add(labeledPoint);
-        });
-
-        //Evaluate
-        knnClassifier.evaluate(testLabeledPoints);
+        Classifier knn = new KnnClassifier(2);
+        //Train and evaluate
+        knn.train(irisDataProcessor.getTrainFeatures(), irisDataProcessor.getTrainLabels());
+        knn.evaluate(irisDataProcessor.getTestFeatures(), irisDataProcessor.getTestLabels());
     }
 }

@@ -3,6 +3,7 @@ package de.edux.ml.decisiontree;
 import de.edux.data.provider.Penguin;
 import de.edux.data.provider.SeabornDataProcessor;
 import de.edux.data.provider.SeabornProvider;
+import de.edux.ml.nn.network.api.Dataset;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -28,9 +29,9 @@ class DecisionTreeTest {
         }
         File csvFile = new File(url.getPath());
         var seabornDataProcessor = new SeabornDataProcessor();
-        var dataset = seabornDataProcessor.loadTDataSet(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
-        List<List<Penguin>> trainTestSplittedList = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
-        seabornProvider = new SeabornProvider(dataset, trainTestSplittedList.get(0), trainTestSplittedList.get(1));
+        var dataset = seabornDataProcessor.loadDataSetFromCSV(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
+        Dataset<Penguin> splitedDataset = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
+        seabornProvider = new SeabornProvider(dataset, splitedDataset.trainData(), splitedDataset.testData());
     }
 
     @RepeatedTest(5)
@@ -45,13 +46,13 @@ class DecisionTreeTest {
         assertTrue(labels.length > 0);
         assertTrue(testFeatures.length > 0);
         assertTrue(testLabels.length > 0);
-
-        IDecisionTree decisionTree = new DecisionTree();
-        int maxDepth = 10;
+        int maxDepth = 12;
         int minSampleSplit = 2;
         int minSampleLeaf = 1;
         int maxLeafNodes = 8;
-        decisionTree.train(features, labels, maxDepth, minSampleSplit, minSampleLeaf, maxLeafNodes);
+        DecisionTree decisionTree = new DecisionTree(maxDepth, minSampleSplit, minSampleLeaf, maxLeafNodes);
+
+        decisionTree.train(features, labels);
         double accuracy = decisionTree.evaluate(testFeatures, testLabels);
         assertTrue(accuracy>0.7);
     }

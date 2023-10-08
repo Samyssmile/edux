@@ -1,5 +1,6 @@
 package de.edux.ml.randomforest;
 
+import de.edux.api.Classifier;
 import de.edux.ml.decisiontree.DecisionTree;
 import de.edux.ml.decisiontree.IDecisionTree;
 import org.slf4j.Logger;
@@ -11,35 +12,76 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 
-public class RandomForest {
+/**
+ * <h1>RandomForest Classifier</h1>
+ * RandomForest is an ensemble learning method, which constructs a multitude of decision trees
+ * at training time and outputs the class that is the mode of the classes output by
+ * individual trees, or a mean prediction of the individual trees (regression).
+ * <p>
+ * <b>Note:</b> Training and prediction are performed in a parallel manner using thread pooling.
+ * RandomForest handles the training of individual decision trees and their predictions, and
+ * determines the final prediction by voting (classification) or averaging (regression) the
+ * outputs of all the decision trees in the forest. RandomForest is particularly well suited
+ * for multiclass classification and regression on datasets with complex structures.
+ * <p>
+ * Usage example:
+ * <pre>
+ * {@code
+ * RandomForest forest = new RandomForest();
+ * forest.train(numTrees, features, labels, maxDepth, minSamplesSplit, minSamplesLeaf,
+ *              maxLeafNodes, numberOfFeatures);
+ * double prediction = forest.predict(sampleFeatures);
+ * double accuracy = forest.evaluate(testFeatures, testLabels);
+ * }
+ * </pre>
+ * <p>
+ * <b>Thread Safety:</b> This class uses concurrent features but may not be entirely thread-safe
+ * and should be used with caution in a multithreaded environment.
+ * <p>
+ * Use {@link #train(double[][], double[][])} to train the forest,
+ * {@link #predict(double[])} to predict a single sample, and {@link #evaluate(double[][], double[][])}
+ * to evaluate accuracy against a test set.
+ */
+public class RandomForest implements Classifier {
     private static final Logger LOG = LoggerFactory.getLogger(RandomForest.class);
 
-    private final List<IDecisionTree> trees = new ArrayList<>();
+    private final List<Classifier> trees = new ArrayList<>();
     private final ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+    private final int numTrees;
+    private final int maxDepth;
+    private final int minSamplesSplit;
+    private final int minSamplesLeaf;
+    private final int maxLeafNodes;
+    private final int numberOfFeatures;
 
-    public void train(int numTrees,
-                      double[][] features,
-                      double[][] labels,
-                      int maxDepth,
-                      int minSamplesSplit,
-                      int minSamplesLeaf,
-                      int maxLeafNodes,
-                      int numberOfFeatures) {
+    public RandomForest(int numTrees, int maxDepth,
+                 int minSamplesSplit,
+                 int minSamplesLeaf,
+                 int maxLeafNodes,
+                 int numberOfFeatures) {
+        this.numTrees = numTrees;
+        this.maxDepth = maxDepth;
+        this.minSamplesSplit = minSamplesSplit;
+        this.minSamplesLeaf = minSamplesLeaf;
+        this.maxLeafNodes = maxLeafNodes;
+        this.numberOfFeatures = numberOfFeatures;
+    }
 
+    public boolean train(double[][] features, double[][] labels) {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        List<Future<IDecisionTree>> futures = new ArrayList<>();
+        List<Future<Classifier>> futures = new ArrayList<>();
 
         for (int i = 0; i < numTrees; i++) {
             futures.add(executor.submit(() -> {
-                IDecisionTree tree = new DecisionTree();
+                Classifier tree = new DecisionTree(maxDepth, minSamplesSplit, minSamplesLeaf, maxLeafNodes);
                 Sample subsetSample = getRandomSubset(numberOfFeatures, features, labels);
-                tree.train(subsetSample.featureSamples(), subsetSample.labelSamples(), maxDepth, minSamplesSplit, minSamplesLeaf, maxLeafNodes);
+                tree.train(subsetSample.featureSamples(), subsetSample.labelSamples());
                 return tree;
             }));
         }
 
-        for (Future<IDecisionTree> future : futures) {
+        for (Future<Classifier> future : futures) {
             try {
                 trees.add(future.get());
             } catch (ExecutionException | InterruptedException e) {
@@ -56,6 +98,7 @@ public class RandomForest {
             executor.shutdownNow();
             Thread.currentThread().interrupt();
         }
+        return true;
     }
 
     private Sample getRandomSubset(int numberOfFeatures, double[][] features, double[][] labels) {
@@ -74,19 +117,22 @@ public class RandomForest {
     }
 
 
-    public double predict(double[] feature) {
+    @Override
+    public double[] predict(double[] feature) {
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        List<Future<Double>> futures = new ArrayList<>();
+        List<Future<double[]>> futures = new ArrayList<>();
 
-        for (IDecisionTree tree : trees) {
+        for (Classifier tree : trees) {
             futures.add(executor.submit(() -> tree.predict(feature)));
         }
 
         Map<Double, Long> voteMap = new HashMap<>();
-        for (Future<Double> future : futures) {
+        for (Future<double[]> future : futures) {
             try {
-                double prediction = future.get();
-                voteMap.merge(prediction, 1L, Long::sum);
+                double[] prediction = future.get();
+                /*               voteMap.merge(prediction, 1L, Long::sum);*/
+                double label = getIndexOfHighestValue(prediction);
+                voteMap.merge(label, 1L, Long::sum);
             } catch (InterruptedException | ExecutionException e) {
                 LOG.error("Failed to retrieve prediction from future task. Thread: " +
                         Thread.currentThread().getName(), e);
@@ -102,25 +148,32 @@ public class RandomForest {
             executor.shutdownNow();
             Thread.currentThread().interrupt();
         }
-
-        return voteMap.entrySet().stream()
+        double predictionLabel = voteMap.entrySet().stream()
                 .max(Map.Entry.comparingByValue())
-                .map(Map.Entry::getKey)
-                .orElseThrow(() -> new RuntimeException("Failed to find the most common prediction"));
+                .get()
+                .getKey();
+
+        double[] prediction = new double[trees.get(0).predict(feature).length];
+        prediction[(int) predictionLabel] = 1;
+        return prediction;
     }
 
-
+    @Override
     public double evaluate(double[][] features, double[][] labels) {
         int correctPredictions = 0;
         for (int i = 0; i < features.length; i++) {
-            double predictedLabel = predict(features[i]);
+            double[] predictedLabelProbabilities = predict(features[i]);
+            double predictedLabel = getIndexOfHighestValue(predictedLabelProbabilities);
             double actualLabel = getIndexOfHighestValue(labels[i]);
             if (predictedLabel == actualLabel) {
                 correctPredictions++;
             }
         }
-        return (double) correctPredictions / features.length;
+        double accuracy = (double) correctPredictions / features.length;
+        LOG.info("RandomForest - Accuracy: " + String.format("%.4f", accuracy * 100) + "%");
+        return accuracy;
     }
+
 
     private double getIndexOfHighestValue(double[] labels) {
         int maxIndex = 0;

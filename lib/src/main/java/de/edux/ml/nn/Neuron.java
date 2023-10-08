@@ -4,6 +4,7 @@ import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.initialization.Initialization;
 
 public class Neuron {
+    private final Initialization initialization;
     private double[] weights;
     private double bias;
     private final ActivationFunction activationFunction;
@@ -11,9 +12,14 @@ public class Neuron {
     public Neuron(int inputSize, ActivationFunction activationFunction, Initialization initialization) {
         this.weights = new double[inputSize];
         this.activationFunction = activationFunction;
+        this.initialization = initialization;
         this.bias = initialization.weightInitialization(inputSize, new double[1])[0];
         this.weights = initialization.weightInitialization(inputSize, weights);
 
+    }
+
+    public Initialization getInitialization() {
+        return initialization;
     }
 
     public double calculateOutput(double[] input) {
@@ -48,5 +54,13 @@ public class Neuron {
 
     public ActivationFunction getActivationFunction() {
         return activationFunction;
+    }
+
+    public void setWeights(double[] weights) {
+        this.weights = weights;
+    }
+
+    public void setBias(double bias) {
+        this.bias = bias;
     }
 }

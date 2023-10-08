@@ -1,11 +1,11 @@
 package de.example.data.seaborn;
 
-import de.edux.data.provider.DataUtil;
+import de.edux.data.provider.DataProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SeabornDataProcessor extends DataUtil<Penguin> {
+public class SeabornDataProcessor extends DataProcessor<Penguin> {
     @Override
     public void normalize(List<Penguin> penguins) {
         double maxBillLength = penguins.stream().mapToDouble(Penguin::billLengthMm).max().orElse(1);
@@ -118,4 +118,67 @@ public class SeabornDataProcessor extends DataUtil<Penguin> {
 
         return targets;
     }
+
+    @Override
+    public String getDatasetDescription() {
+        return "Seaborn penguins dataset";
+    }
+
+    @Override
+    public double[][] getTrainFeatures() {
+        return featuresOf(getSplitedDataset().trainData());
+    }
+
+    @Override
+    public double[][] getTrainLabels() {
+        return labelsOf(getSplitedDataset().trainData());
+    }
+
+    @Override
+    public double[][] getTestFeatures() {
+        return featuresOf(getSplitedDataset().testData());
+    }
+
+    @Override
+    public double[][] getTestLabels() {
+        return labelsOf(getSplitedDataset().testData());
+    }
+
+    private double[][] featuresOf(List<Penguin> data) {
+        double[][] features = new double[data.size()][4]; // 4 numerische Eigenschaften
+
+        for (int i = 0; i < data.size(); i++) {
+            Penguin p = data.get(i);
+            features[i][0] = p.billLengthMm();
+            features[i][1] = p.billDepthMm();
+            features[i][2] = p.flipperLengthMm();
+            features[i][3] = p.bodyMassG();
+        }
+
+        return features;
+    }
+
+    private double[][] labelsOf(List<Penguin> data) {
+        double[][] labels = new double[data.size()][3]; // 3 Pinguinarten
+
+        for (int i = 0; i < data.size(); i++) {
+            Penguin p = data.get(i);
+            switch (p.species().toLowerCase()) {
+                case "adelie":
+                    labels[i] = new double[]{1.0, 0.0, 0.0};
+                    break;
+                case "chinstrap":
+                    labels[i] = new double[]{0.0, 1.0, 0.0};
+                    break;
+                case "gentoo":
+                    labels[i] = new double[]{0.0, 0.0, 1.0};
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unbekannte Pinguinart: " + p.species());
+            }
+        }
+
+        return labels;
+    }
+
 }
