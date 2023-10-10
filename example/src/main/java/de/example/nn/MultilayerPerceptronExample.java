@@ -38,10 +38,11 @@ public class MultilayerPerceptronExample {
         // - Categorical Cross Entropy as Loss Function
         // - Xavier as Weight Initialization for Hidden Layers
         // - Xavier as Weight Initialization for Output Layer
-        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(12, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
+        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(32, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
 
-        MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(features, labels, testFeatures, testLabels, networkConfiguration);
-        multilayerPerceptron.train();
+        MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
+        multilayerPerceptron.train(features, labels);
+        multilayerPerceptron.evaluate(testFeatures, testLabels);
     }
 }
 

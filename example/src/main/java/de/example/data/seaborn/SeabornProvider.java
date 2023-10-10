@@ -49,6 +49,19 @@ public class SeabornProvider implements IDataProvider<Penguin> {
     public double[][] getTrainFeatures() {
         return featuresOf(trainingData);
     }
+    @Override
+    public double[][] getTrainLabels() {
+        return labelsOf(trainingData);
+    }
+    @Override
+    public double[][] getTestFeatures() {
+        return featuresOf(testData);
+    }
+
+    @Override
+    public double[][] getTestLabels() {
+        return labelsOf(testData);
+    }
 
     private double[][] featuresOf(List<Penguin> data) {
         double[][] features = new double[data.size()][4]; // 4 numerische Eigenschaften
@@ -63,13 +76,6 @@ public class SeabornProvider implements IDataProvider<Penguin> {
 
         return features;
     }
-
-
-    @Override
-    public double[][] getTrainLabels() {
-        return labelsOf(trainingData);
-    }
-
     private double[][] labelsOf(List<Penguin> data) {
         double[][] labels = new double[data.size()][3]; // 3 Pinguinarten
 
@@ -93,15 +99,7 @@ public class SeabornProvider implements IDataProvider<Penguin> {
         return labels;
     }
 
-    @Override
-    public double[][] getTestFeatures() {
-        return featuresOf(testData);
-    }
 
-    @Override
-    public double[][] getTestLabels() {
-        return labelsOf(testData);
-    }
 
     @Override
     public String getDescription() {

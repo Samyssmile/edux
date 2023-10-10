@@ -33,9 +33,9 @@ class MultilayerPerceptronTest {
         }
         File csvFile = new File(url.getPath());
         var seabornDataProcessor = new SeabornDataProcessor();
-        var dataset = seabornDataProcessor.loadTDataSet(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
-        List<List<Penguin>> trainTestSplittedList = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
-        seabornProvider = new SeabornProvider(dataset, trainTestSplittedList.get(0), trainTestSplittedList.get(1));
+        var dataset = seabornDataProcessor.loadDataSetFromCSV(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
+        var trainTestSplittedList = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
+        seabornProvider = new SeabornProvider(dataset, trainTestSplittedList.trainData(), trainTestSplittedList.testData());
 
     }
 
@@ -52,11 +52,11 @@ class MultilayerPerceptronTest {
         assertTrue(testFeatures.length > 0);
         assertTrue(testLabels.length > 0);
 
-        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(24, 6), 3, 0.001, 10000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
+        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(128,256, 512), 3, 0.01, 300, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
 
-        MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(features, labels, testFeatures, testLabels, networkConfiguration);
-        multilayerPerceptron.train();
-        double accuracy = multilayerPerceptron.getAccuracy();
+        MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
+        multilayerPerceptron.train(features, labels);
+        double accuracy = multilayerPerceptron.evaluate(testFeatures, testLabels);
         assertTrue(accuracy > 0.7);
 
     }

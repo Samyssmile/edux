@@ -1,6 +1,7 @@
 package de.example.data.iris;
 
-public class Iris {
+
+public class Iris{
     public double sepalLength;
     public double sepalWidth;
     public double petalLength;
@@ -28,4 +29,5 @@ public class Iris {
     public double[] getFeatures() {
         return new double[]{sepalLength, sepalWidth, petalLength, petalWidth};
     }
+
 }

@@ -1,5 +1,6 @@
 package de.edux.ml.nn.network;
 
+import de.edux.api.Classifier;
 import de.edux.functions.initialization.Initialization;
 import de.edux.ml.nn.Neuron;
 import de.edux.functions.activation.ActivationFunction;
@@ -10,26 +11,24 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultilayerPerceptron {
+public class MultilayerPerceptron implements Classifier {
     private static final Logger LOG = LoggerFactory.getLogger(MultilayerPerceptron.class);
 
-    private final double[][] inputs;
-    private final double[][] targets;
     private final NetworkConfiguration config;
     private final ActivationFunction hiddenLayerActivationFunction;
     private final ActivationFunction outputLayerActivationFunction;
-    private final double[][] testInputs;
-    private final double[][] testTargets;
-    private final List<Neuron[]> hiddenLayers;
-    private final Neuron[] outputLayer;
+    private List<Neuron[]> hiddenLayers;
+    private Neuron[] outputLayer;
+    private final double[][] testFeatures;
+    private final double[][] testLabels;
     private double bestAccuracy;
+    private ArrayList<Neuron[]> bestHiddenLayers;
+    private Neuron[] bestOutputLayer;
 
-    public MultilayerPerceptron(double[][] inputs, double[][] targets, double[][] testInputs, double[][] testTargets, NetworkConfiguration config) {
-        this.inputs = inputs;
-        this.targets = targets;
-        this.testInputs = testInputs;
-        this.testTargets = testTargets;
+    public MultilayerPerceptron(NetworkConfiguration config, double[][] testFeatures, double[][] testLabels) {
         this.config = config;
+        this.testFeatures = testFeatures;
+        this.testLabels = testLabels;
 
         hiddenLayerActivationFunction = config.hiddenLayerActivationFunction();
         outputLayerActivationFunction = config.outputLayerActivationFunction();
@@ -55,7 +54,6 @@ public class MultilayerPerceptron {
     private double[] feedforward(double[] input) {
         double[] currentInput = input;
 
-        // Pass input through all hidden layers
         for (Neuron[] layer : hiddenLayers) {
             double[] hiddenOutputs = new double[layer.length];
             for (int i = 0; i < layer.length; i++) {
@@ -64,7 +62,6 @@ public class MultilayerPerceptron {
             currentInput = hiddenOutputs;
         }
 
-        // Pass input through output layer
         double[] output = new double[config.outputSize()];
         for (int i = 0; i < config.outputSize(); i++) {
             output[i] = outputLayer[i].calculateOutput(currentInput);
@@ -73,16 +70,20 @@ public class MultilayerPerceptron {
         return outputLayerActivationFunction.calculateActivation(output);
     }
 
-    public void train() {
-         bestAccuracy = 0;
-        for (int epoch = 0; epoch < config.epochs(); epoch++) {
-            for (int i = 0; i < inputs.length; i++) {
-                double[] output = feedforward(inputs[i]);
+    @Override
+    public boolean train(double[][] features, double[][] labels) {
+        bestAccuracy = 0;
+        int epochsWithoutImprovement = 0;
+        final int PATIENCE = 10;
 
-                // Calculate error signals
+        for (int epoch = 0; epoch < config.epochs(); epoch++) {
+            for (int i = 0; i < features.length; i++) {
+                double[] output = feedforward(features[i]);
+
                 double[] output_error_signal = new double[config.outputSize()];
-                for (int j = 0; j < config.outputSize(); j++)
-                    output_error_signal[j] = targets[i][j] - output[j];
+                for (int j = 0; j < config.outputSize(); j++) {
+                    output_error_signal[j] = labels[i][j] - output[j];
+                }
 
                 List<double[]> hidden_error_signals = new ArrayList<>();
                 for (int j = hiddenLayers.size() - 1; j >= 0; j--) {
@@ -96,31 +97,63 @@ public class MultilayerPerceptron {
                     output_error_signal = hidden_error_signal;
                 }
 
-                updateWeights(i, output_error_signal, hidden_error_signals);
+
+                updateWeights(i, output_error_signal, hidden_error_signals, features);
             }
 
-            if (epoch % 10 == 0) {
-                double accuracy = evaluate(testInputs, testTargets) * 100;
-                if (accuracy == 100) {
-                    LOG.info("Stop training at: {}%", String.format("%.2f", accuracy));
-                    return;
-                }
+            double accuracy = evaluate(testFeatures, testLabels);
+            LOG.info("Epoch: {} - Accuracy: {}%", epoch, String.format("%.2f", accuracy * 100));
 
-                if (accuracy > bestAccuracy) {
-                    bestAccuracy = accuracy;
-                    LOG.info("Best Accuracy: {}%", String.format("%.2f", bestAccuracy));
-                }
-                // if accuracy 20% lower than best accuracy, stop training
-                if (bestAccuracy - accuracy > 20) {
-                    LOG.info("Local Minama found, stop training");
-                    return;
-                }
+            if (accuracy > bestAccuracy) {
+                bestAccuracy = accuracy;
+                epochsWithoutImprovement = 0;
+                saveBestModel(hiddenLayers, outputLayer);
+            } else {
+                epochsWithoutImprovement++;
+            }
+
+            if (epochsWithoutImprovement >= PATIENCE) {
+                LOG.info("Early stopping: Stopping training as the model has not improved in the last {} epochs.", PATIENCE);
+                loadBestModel();
+                LOG.info("Best accuracy after restoring best MLP model: {}%", String.format("%.2f", bestAccuracy * 100));
+                break;
             }
         }
+        return true;
     }
 
-    private void updateWeights(int i, double[] output_error_signal, List<double[]> hidden_error_signals) {
-        double[] currentInput = inputs[i];
+    private void loadBestModel() {
+        this.hiddenLayers = this.bestHiddenLayers;
+        this.outputLayer = this.bestOutputLayer;
+    }
+
+    private void saveBestModel(List<Neuron[]> hiddenLayers, Neuron[] outputLayer) {
+        this.bestHiddenLayers = new ArrayList<>();
+        this.bestOutputLayer = new Neuron[outputLayer.length];
+        for (int i = 0; i < hiddenLayers.size(); i++) {
+            Neuron[] layer = hiddenLayers.get(i);
+            Neuron[] newLayer = new Neuron[layer.length];
+            for (int j = 0; j < layer.length; j++) {
+                newLayer[j] = new Neuron(layer[j].getWeights().length, layer[j].getActivationFunction(), layer[j].getInitialization());
+                newLayer[j].setBias(layer[j].getBias());
+                for (int k = 0; k < layer[j].getWeights().length; k++) {
+                    newLayer[j].getWeights()[k] = layer[j].getWeight(k);
+                }
+            }
+            this.bestHiddenLayers.add(newLayer);
+        }
+        for (int i = 0; i < outputLayer.length; i++) {
+            this.bestOutputLayer[i] = new Neuron(outputLayer[i].getWeights().length, outputLayer[i].getActivationFunction(), outputLayer[i].getInitialization());
+            this.bestOutputLayer[i].setBias(outputLayer[i].getBias());
+            for (int j = 0; j < outputLayer[i].getWeights().length; j++) {
+                this.bestOutputLayer[i].getWeights()[j] = outputLayer[i].getWeight(j);
+            }
+        }
+
+    }
+
+    private void updateWeights(int i, double[] output_error_signal, List<double[]> hidden_error_signals, double[][] features) {
+        double[] currentInput = features[i];
 
         for (int j = 0; j < hiddenLayers.size(); j++) {
             Neuron[] layer = hiddenLayers.get(j);
@@ -131,7 +164,7 @@ public class MultilayerPerceptron {
             }
             currentInput = new double[layer.length];
             for (int k = 0; k < layer.length; k++) {
-                currentInput[k] = layer[k].calculateOutput(inputs[i]);
+                currentInput[k] = layer[k].calculateOutput(features[i]);
             }
         }
 
@@ -141,7 +174,8 @@ public class MultilayerPerceptron {
         }
     }
 
-    private double evaluate(double[][] testInputs, double[][] testTargets) {
+    @Override
+    public double evaluate(double[][] testInputs, double[][] testTargets) {
         int correctCount = 0;
 
         for (int i = 0; i < testInputs.length; i++) {
@@ -167,7 +201,4 @@ public class MultilayerPerceptron {
         return feedforward(input);
     }
 
-    public double getAccuracy() {
-        return bestAccuracy;
-    }
 }

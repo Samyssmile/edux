@@ -62,7 +62,10 @@ public class IrisProvider implements IDataProvider<Iris> {
         return labelsOf(trainingData);
     }
 
-
+    @Override
+    public double[][] getTestLabels() {
+        return labelsOf(testData);
+    }
 
     @Override
     public double[][] getTestFeatures() {
@@ -100,10 +103,7 @@ public class IrisProvider implements IDataProvider<Iris> {
         }
         return labels;
     }
-    @Override
-    public double[][] getTestLabels() {
-        return labelsOf(testData);
-    }
+
 
     @Override
     public String getDescription() {
