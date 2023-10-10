@@ -7,6 +7,26 @@ import org.slf4j.LoggerFactory;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 
+/**
+ * The {@code KnnClassifier} class provides an implementation of the k-Nearest Neighbors algorithm for classification tasks.
+ * It stores the training dataset and predicts the label for new data points based on the majority label of its k-nearest neighbors in the feature space.
+ * Distance between data points is computed using the Euclidean distance metric.
+ * Optionally, predictions can be weighted by the inverse of the distance to give closer neighbors higher influence.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * int k = 3;  // Specify the number of neighbors to consider
+ * KnnClassifier knn = new KnnClassifier(k);
+ * knn.train(trainingFeatures, trainingLabels);
+ *
+ * double[] prediction = knn.predict(inputFeatures);
+ * double accuracy = knn.evaluate(testFeatures, testLabels);
+ * }</pre>
+ *
+ * <p>Note: The label arrays should be in one-hot encoding format.</p>
+ *
+ *
+ */
 public class KnnClassifier implements Classifier {
     Logger LOG = LoggerFactory.getLogger(KnnClassifier.class);
     private double[][] trainFeatures;
@@ -14,6 +34,12 @@ public class KnnClassifier implements Classifier {
     private int k;
     private static final double EPSILON = 1e-10;
 
+    /**
+     * Initializes a new instance of {@code KnnClassifier} with specified k.
+     *
+     * @param k an integer value representing the number of neighbors to consider during classification
+     * @throws IllegalArgumentException if k is not a positive integer
+     */
     public KnnClassifier(int k) {
         if (k <= 0) {
             throw new IllegalArgumentException("k must be a positive integer");

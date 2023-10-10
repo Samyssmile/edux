@@ -14,12 +14,11 @@ import de.edux.ml.svm.SupportVectorMachine;
 import de.example.data.seaborn.Penguin;
 import de.example.data.seaborn.SeabornDataProcessor;
 
-import java.util.ArrayList;
-import java.util.Map;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 /**

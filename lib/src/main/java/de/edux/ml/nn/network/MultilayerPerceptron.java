@@ -1,9 +1,8 @@
 package de.edux.ml.nn.network;
 
 import de.edux.api.Classifier;
-import de.edux.functions.initialization.Initialization;
-import de.edux.ml.nn.Neuron;
 import de.edux.functions.activation.ActivationFunction;
+import de.edux.ml.nn.Neuron;
 import de.edux.ml.nn.config.NetworkConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,43 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The {@code MultilayerPerceptron} class represents a simple feedforward neural network,
+ * which consists of input, hidden, and output layers. It implements the {@code Classifier}
+ * interface, facilitating both the training and prediction processes on a given dataset.
+ *
+ * <p>This implementation utilizes a backpropagation algorithm for training the neural network
+ * to adjust weights and biases, considering a set configuration defined by {@link NetworkConfiguration}.
+ * The network's architecture is multi-layered, comprising one or more hidden layers in addition
+ * to the input and output layers. Neurons within these layers utilize activation functions defined
+ * per layer through the configuration.</p>
+ *
+ * <p>The training process adjusts the weights and biases of neurons within the network based on
+ * the error between predicted and expected outputs. Additionally, the implementation provides functionality
+ * to save and restore the best model achieved during training based on accuracy. Early stopping is applied
+ * during training to prevent overfitting and unnecessary computational expense by monitoring the performance
+ * improvement across epochs.</p>
+ *
+ * <p>Usage example:</p>
+ * <pre>
+ *    NetworkConfiguration config = ... ;
+ *    double[][] testFeatures = ... ;
+ *    double[][] testLabels = ... ;
+ *
+ *    MultilayerPerceptron mlp = new MultilayerPerceptron(config, testFeatures, testLabels);
+ *    mlp.train(features, labels);
+ *
+ *    double accuracy = mlp.evaluate(testFeatures, testLabels);
+ *    double[] prediction = mlp.predict(singleInput);
+ * </pre>
+ *
+ * <p>Note: This implementation logs informative messages, such as accuracy per epoch, using SLF4J logging.</p>
+ *
+ * @see de.edux.api.Classifier
+ * @see de.edux.ml.nn.Neuron
+ * @see de.edux.ml.nn.config.NetworkConfiguration
+ * @see de.edux.functions.activation.ActivationFunction
+ */
 public class MultilayerPerceptron implements Classifier {
     private static final Logger LOG = LoggerFactory.getLogger(MultilayerPerceptron.class);
 

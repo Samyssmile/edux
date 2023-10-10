@@ -7,10 +7,29 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * The {@code SupportVectorMachine} class is an implementation of a Support Vector Machine (SVM) classifier, utilizing the one-vs-one strategy for multi-class classification.
+ * This SVM implementation accepts a kernel function and trains separate binary classifiers for each pair of classes in the training set, using provided kernel function and regularization parameter C.
+ * During the prediction, each model in the pair casts a vote and the final predicted class is the one that gets the most votes among all binary classifiers.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * SVMKernel kernel = ... ;  // Define an appropriate SVM kernel function
+ * double c = ... ;  // Define an appropriate regularization parameter
+ *
+ * SupportVectorMachine svm = new SupportVectorMachine(kernel, c);
+ * svm.train(trainingFeatures, trainingLabels);
+ *
+ * double[] prediction = svm.predict(inputFeatures);
+ * double accuracy = svm.evaluate(testFeatures, testLabels);
+ * }</pre>
+ *
+ * <p>Note: Label arrays are expected to be in one-hot encoding format and will be internally converted to single label format for training.</p>
+ *
+ * @see de.edux.api.Classifier
+ */
 public class SupportVectorMachine implements Classifier {
-
     private static final Logger LOG = LoggerFactory.getLogger(SupportVectorMachine.class);
-
     private final SVMKernel kernel;
     private final double c;
     private final Map<String, SVMModel> models;
