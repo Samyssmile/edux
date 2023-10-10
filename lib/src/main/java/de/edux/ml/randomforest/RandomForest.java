@@ -2,7 +2,6 @@ package de.edux.ml.randomforest;
 
 import de.edux.api.Classifier;
 import de.edux.ml.decisiontree.DecisionTree;
-import de.edux.ml.decisiontree.IDecisionTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * <h1>RandomForest Classifier</h1>
+ * RandomForest Classifier
  * RandomForest is an ensemble learning method, which constructs a multitude of decision trees
  * at training time and outputs the class that is the mode of the classes output by
  * individual trees, or a mean prediction of the individual trees (regression).

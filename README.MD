@@ -35,7 +35,7 @@ Include the library as a dependency in your Java project file.
 ### Gradle
 
 ```
- implementation 'io.github.samyssmile:edux:1.0.4'
+ implementation 'io.github.samyssmile:edux:1.0.5'
 ```
 
 ### Maven
@@ -43,7 +43,7 @@ Include the library as a dependency in your Java project file.
   <dependency>
      <groupId>io.github.samyssmile</groupId>
      <artifactId>edux</artifactId>
-     <version>1.0.4</version>
+     <version>1.0.5</version>
  </dependency>
 ```
 
