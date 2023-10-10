@@ -30,7 +30,6 @@ public class KnnSeabornExample {
         var seabornProvider = new SeabornProvider(data, dataset.trainData(), dataset.testData());
         seabornProvider.printStatistics();
         Classifier knn = new KnnClassifier(2);
-        //Train and evaluate
         knn.train(seabornProvider.getTrainFeatures(), seabornProvider.getTrainLabels());
         knn.evaluate(seabornProvider.getTestFeatures(), seabornProvider.getTestLabels());
     }

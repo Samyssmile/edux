@@ -14,12 +14,12 @@ import java.util.List;
 public class CSVIDataReader implements IDataReader {
 
     public List<String[]> readFile(File file, char separator) {
-        CSVParser csvParser = new CSVParserBuilder().withSeparator(separator).build(); // custom separator
+        CSVParser customCSVParser = new CSVParserBuilder().withSeparator(separator).build(); // custom separator
         List<String[]> result;
         try(CSVReader reader = new CSVReaderBuilder(
                 new FileReader(file))
-                .withCSVParser(csvParser)   // custom CSV parser
-                .withSkipLines(1)           // skip the first line, header info
+                .withCSVParser(customCSVParser)
+                .withSkipLines(1)
                 .build()){
             result = reader.readAll();
         } catch (CsvException | IOException e) {

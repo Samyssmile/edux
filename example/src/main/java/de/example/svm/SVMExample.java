@@ -14,14 +14,11 @@ public class SVMExample {
         var datasetProvider = new IrisProvider(NORMALIZE, SHUFFLE, 0.6);
         datasetProvider.printStatistics();
 
-        //Get Features and Labels
         var features = datasetProvider.getTrainFeatures();
-        // 1 - SATOSA 2 - VERSICOLOR 3 - VIRGINICA
         var labels = datasetProvider.getTrainLabels();
 
-
         Classifier supportVectorMachine = new SupportVectorMachine(SVMKernel.LINEAR, 1);
-        //ONEvsONE Strategy
+
         supportVectorMachine.train(features, labels);
 
         double[][] testFeatures = datasetProvider.getTestFeatures();
