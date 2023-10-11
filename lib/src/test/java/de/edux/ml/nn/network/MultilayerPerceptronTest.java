@@ -1,6 +1,5 @@
 package de.edux.ml.nn.network;
 
-import de.edux.data.provider.Penguin;
 import de.edux.data.provider.SeabornDataProcessor;
 import de.edux.data.provider.SeabornProvider;
 import de.edux.functions.activation.ActivationFunction;
@@ -9,7 +8,6 @@ import de.edux.functions.loss.LossFunction;
 import de.edux.ml.nn.config.NetworkConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
