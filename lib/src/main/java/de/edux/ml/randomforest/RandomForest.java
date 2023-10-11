@@ -129,7 +129,6 @@ public class RandomForest implements Classifier {
         for (Future<double[]> future : futures) {
             try {
                 double[] prediction = future.get();
-                /*               voteMap.merge(prediction, 1L, Long::sum);*/
                 double label = getIndexOfHighestValue(prediction);
                 voteMap.merge(label, 1L, Long::sum);
             } catch (InterruptedException | ExecutionException e) {

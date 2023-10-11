@@ -14,7 +14,7 @@ import java.util.List;
 public class CSVIDataReader implements IDataReader {
 
     public List<String[]> readFile(File file, char separator) {
-        CSVParser customCSVParser = new CSVParserBuilder().withSeparator(separator).build(); // custom separator
+        CSVParser customCSVParser = new CSVParserBuilder().withSeparator(separator).build();
         List<String[]> result;
         try(CSVReader reader = new CSVReaderBuilder(
                 new FileReader(file))

@@ -22,13 +22,13 @@ public class KnnSeabornExample {
     private static final File CSV_FILE = new File("example" + File.separator + "datasets" + File.separator + "seaborn-penguins" + File.separator + "penguins.csv");
 
     public static void main(String[] args) {
-        //Load Data, shuffle, normalize, filter incomplete records out.
         var seabornDataProcessor = new SeabornDataProcessor();
         List<Penguin> data = seabornDataProcessor.loadDataSetFromCSV(CSV_FILE, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
-        //Split dataset into train and test
+
         Dataset<Penguin> dataset = seabornDataProcessor.split(data, TRAIN_TEST_SPLIT_RATIO);
         var seabornProvider = new SeabornProvider(data, dataset.trainData(), dataset.testData());
         seabornProvider.printStatistics();
+
         Classifier knn = new KnnClassifier(2);
         knn.train(seabornProvider.getTrainFeatures(), seabornProvider.getTrainLabels());
         knn.evaluate(seabornProvider.getTestFeatures(), seabornProvider.getTestLabels());
