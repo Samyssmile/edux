@@ -27,7 +27,7 @@ public class KnnIrisExample {
         irisDataProcessor.split(data, TRAIN_TEST_SPLIT_RATIO);
 
         Classifier knn = new KnnClassifier(2);
-        //Train and evaluate
+
         knn.train(irisDataProcessor.getTrainFeatures(), irisDataProcessor.getTrainLabels());
         knn.evaluate(irisDataProcessor.getTestFeatures(), irisDataProcessor.getTestLabels());
     }

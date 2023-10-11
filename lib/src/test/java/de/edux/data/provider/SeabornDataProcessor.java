@@ -143,7 +143,7 @@ public class SeabornDataProcessor extends DataProcessor<Penguin> {
     }
 
     private double[][] featuresOf(List<Penguin> data) {
-        double[][] features = new double[data.size()][4]; // 4 numerische Eigenschaften
+        double[][] features = new double[data.size()][4];
 
         for (int i = 0; i < data.size(); i++) {
             Penguin p = data.get(i);
@@ -157,7 +157,7 @@ public class SeabornDataProcessor extends DataProcessor<Penguin> {
     }
 
     private double[][] labelsOf(List<Penguin> data) {
-        double[][] labels = new double[data.size()][3]; // 3 Pinguinarten
+        double[][] labels = new double[data.size()][3];
 
         for (int i = 0; i < data.size(); i++) {
             Penguin p = data.get(i);

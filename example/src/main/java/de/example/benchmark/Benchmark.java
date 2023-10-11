@@ -90,7 +90,6 @@ public class Benchmark {
         });
 
 
-        //Sort and print results with numeration begin with best average accuracy
         System.out.println("Classifier performances (sorted by average accuracy):");
         results.entrySet().stream()
                 .map(entry -> {

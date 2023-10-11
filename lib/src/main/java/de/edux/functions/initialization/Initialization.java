@@ -1,7 +1,6 @@
 package de.edux.functions.initialization;
 
 public enum Initialization {
-    //Xavier and HE
     XAVIER {
         @Override
         public double[] weightInitialization(int inputSize, double[] weights) {

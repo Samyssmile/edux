@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ActivationFunctionTest {
 
-    private static final double DELTA = 1e-6; // used to compare floating point numbers
+    private static final double DELTA = 1e-6;
 
     @Test
     public void testSigmoid() {

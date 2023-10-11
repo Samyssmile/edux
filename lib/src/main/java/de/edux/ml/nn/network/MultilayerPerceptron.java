@@ -88,8 +88,16 @@ public class MultilayerPerceptron implements Classifier {
     }
 
     private double[] feedforward(double[] input) {
-        double[] currentInput = input;
 
+        double[] currentInput = passInputTroughAllHiddenLayers(input);
+
+        double[] output = passInputTroughOutputLayer(currentInput);
+
+        return outputLayerActivationFunction.calculateActivation(output);
+    }
+
+    private double[] passInputTroughAllHiddenLayers(double[] input) {
+        double[] currentInput = input;
         for (Neuron[] layer : hiddenLayers) {
             double[] hiddenOutputs = new double[layer.length];
             for (int i = 0; i < layer.length; i++) {
@@ -97,13 +105,15 @@ public class MultilayerPerceptron implements Classifier {
             }
             currentInput = hiddenOutputs;
         }
+        return currentInput;
+    }
 
+    private double[] passInputTroughOutputLayer(double[] currentInput) {
         double[] output = new double[config.outputSize()];
         for (int i = 0; i < config.outputSize(); i++) {
             output[i] = outputLayer[i].calculateOutput(currentInput);
         }
-
-        return outputLayerActivationFunction.calculateActivation(output);
+        return output;
     }
 
     @Override

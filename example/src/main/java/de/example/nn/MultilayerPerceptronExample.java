@@ -15,15 +15,12 @@ public class MultilayerPerceptronExample {
     private final static boolean NORMALIZE = true;
 
     public static void main(String[] args) {
-        // Get IRIS dataset
         var datasetProvider = new IrisProvider(NORMALIZE, SHUFFLE, 0.7);
         datasetProvider.printStatistics();
 
-        //Get Features and Labels
         double[][] features = datasetProvider.getTrainFeatures();
         double[][] labels = datasetProvider.getTrainLabels();
 
-        //Get Test Features and Labels
         double[][] testFeatures = datasetProvider.getTestFeatures();
         double[][] testLabels = datasetProvider.getTestLabels();
 

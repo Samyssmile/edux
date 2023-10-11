@@ -42,30 +42,25 @@ public class SupportVectorMachine implements Classifier {
     @Override
     public boolean train(double[][] features, double[][] labels) {
         var oneDLabels = convert2DLabelArrayTo1DLabelArray(labels);
-        // Identify unique class labels
         Set<Integer> uniqueLabels = Arrays.stream(oneDLabels).boxed().collect(Collectors.toSet());
         Integer[] uniqueLabelsArray = uniqueLabels.toArray(new Integer[0]);
 
-        // In One-vs-One, you should consider every possible pair of classes
         for (int i = 0; i < uniqueLabelsArray.length; i++) {
             for (int j = i + 1; j < uniqueLabelsArray.length; j++) {
                 String key = uniqueLabelsArray[i] + "-" + uniqueLabelsArray[j];
                 SVMModel model = new SVMModel(kernel, c);
 
-                // Filter the features and labels for the two classes
                 List<double[]> list = new ArrayList<>();
                 List<Integer> pairLabelsList = new ArrayList<>();
                 for (int k = 0; k < features.length; k++) {
                     if (oneDLabels[k] == uniqueLabelsArray[i] || oneDLabels[k] == uniqueLabelsArray[j]) {
                         list.add(features[k]);
-                        // Ensure that the sign of the label matches our assumption
                         pairLabelsList.add(oneDLabels[k] == uniqueLabelsArray[i] ? 1 : -1);
                     }
                 }
                 double[][] pairFeatures = list.toArray(new double[0][]);
                 int[] pairLabels = pairLabelsList.stream().mapToInt(Integer::intValue).toArray();
 
-                // Train the model on the pair
                 model.train(pairFeatures, pairLabels);
                 models.put(key, model);
             }
@@ -76,18 +71,16 @@ public class SupportVectorMachine implements Classifier {
     @Override
     public double[] predict(double[] features) {
         Map<Integer, Integer> voteCount = new HashMap<>();
-        // In One-vs-One, you look at the prediction of each model and count the votes
+
         for (Map.Entry<String, SVMModel> entry : models.entrySet()) {
             int prediction = entry.getValue().predict(features);
 
-            // map prediction back to actual class label
             String[] classes = entry.getKey().split("-");
             int classLabel = (prediction == 1) ? Integer.parseInt(classes[0]) : Integer.parseInt(classes[1]);
 
             voteCount.put(classLabel, voteCount.getOrDefault(classLabel, 0) + 1);
         }
 
-        // The final prediction is the class with the most votes
         int prediction = voteCount.entrySet().stream().max(Map.Entry.comparingByValue()).get().getKey();
         double[] result = new double[models.size()];
         result[prediction - 1] = 1;
