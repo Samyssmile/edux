@@ -36,7 +36,6 @@ public class MultilayerPerceptronSeabornExample {
         double[][] testLabels = seabornProvider.getTestLabels();
 
         NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(32, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
-
         Classifier multilayerPerceptron = new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
         multilayerPerceptron.train(features, labels);
         multilayerPerceptron.evaluate(testFeatures, testLabels);

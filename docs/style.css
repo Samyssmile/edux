@@ -1,0 +1,132 @@
+/* Reset einiger Browser-Standardeinstellungen */
+html, body, div, h1, h2, h3, p, pre {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+title {
+    display: none; /* Versteckt den Titel, da er nicht benötigt wird */
+    font: #ff9800;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f0f0f0;
+    padding: 0 20px;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0; /* Graue Linie für etwas Kontrast */
+}
+
+header h1 {
+    color: #ff9800; /* Eine grüne Farbe für den Titel, passend zu einem Technologiethema */
+}
+
+h2, h3 {
+    margin: 20px 0;
+    color: #333;
+}
+
+.integration-section h3 {
+    color: #ff9800; /* Orange für Unterüberschriften, um Aufmerksamkeit auf die Integrationsmethoden zu lenken */
+}
+
+p {
+    color: #666;
+    margin-bottom: 20px; /* Etwas mehr Raum unter Absätzen */
+}
+
+pre {
+    background: #fff6e5; /* Ein leichtes Grau, um den Code hervorzuheben */
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    white-space: pre-wrap; /* Damit der Code umbricht und im Container bleibt */
+    word-break: normal;
+    overflow-x: auto; /* Erlaubt das horizontale Scrollen, wenn der Inhalt zu breit für den Bildschirm ist */
+}
+
+code {
+    background: #fff6e5; /* Ein leichtes Grau, um den Code hervorzuheben */
+    padding: 2px 5px;
+    border-radius: 3px;
+    /*Source Code Font*/
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+.integration-section {
+    margin-bottom: 30px; /* Extra Abstand zwischen den Integrationsmethoden */
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px 0;
+    color: #555;
+    background-color: #f5f5f5; /* Ein leichter Hintergrund für die Fußzeile für den Kontrast */
+    border-top: 1px solid #e0e0e0; /* Eine obere Grenze zur Trennung */
+}
+
+.log-ausgabe {
+    background: #333; /* Ein leichtes Grau, um den Code hervorzuheben */
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 5px;
+    border-radius: 5px;
+    white-space: pre-wrap; /* Damit der Code umbricht und im Container bleibt */
+    word-break: normal;
+    overflow-x: auto; /* Erlaubt das horizontale Scrollen, wenn der Inhalt zu breit für den Bildschirm ist */
+}
+
+.log{
+    color: #fff;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+}
+
+/* Andere Stile... */
+
+#features {
+    background-color: #f7f7f7; /* Ein leichter Hintergrund, um die Sektion hervorzuheben */
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+#features h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#features p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+#features ul {
+    padding: 0;
+    padding-left: 30px; /* Dies entspricht etwa der Breite eines Tabstopp-Abstands */
+}
+
+#features ul li {
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: 500; /* Macht den Text etwas dicker */
+    list-style-type: disc; /* Spezifiziert den Typ des Aufzählungspunkts - ein schwarzer Kreis */
+
+}

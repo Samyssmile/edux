@@ -1,0 +1,15 @@
+de.edux.api
+de.edux.data.provider
+de.edux.data.reader
+de.edux.functions.activation
+de.edux.functions.initialization
+de.edux.functions.loss
+de.edux.ml.decisiontree
+de.edux.ml.knn
+de.edux.ml.nn.config
+de.edux.ml.nn.network
+de.edux.ml.nn.network.api
+de.edux.ml.randomforest
+de.edux.ml.svm
+de.edux.util
+de.edux.util.math
