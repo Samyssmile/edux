@@ -2,7 +2,6 @@ package de.edux.ml.nn.network;
 
 import de.edux.api.Classifier;
 import de.edux.functions.activation.ActivationFunction;
-import de.edux.ml.nn.Neuron;
 import de.edux.ml.nn.config.NetworkConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,7 @@ import java.util.List;
  * <p>Note: This implementation logs informative messages, such as accuracy per epoch, using SLF4J logging.</p>
  *
  * @see de.edux.api.Classifier
- * @see de.edux.ml.nn.Neuron
+ * @see de.edux.ml.nn.network.Neuron
  * @see de.edux.ml.nn.config.NetworkConfiguration
  * @see de.edux.functions.activation.ActivationFunction
  */

@@ -1,8 +1,6 @@
-package de.edux.edux.nn;
-
+package de.edux.ml.nn.network;
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.initialization.Initialization;
-import de.edux.ml.nn.Neuron;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
