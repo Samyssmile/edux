@@ -1,5 +1,34 @@
 package de.edux.functions.activation;
-
+/**
+ * Enumerates common activation functions used in neural networks and similar machine learning architectures.
+ *
+ * <p>Each member of this enum represents a distinct type of activation function, a critical component in
+ * neural networks. Activation functions determine the output of a neural network layer for a given set of
+ * input, and they help normalize the output of each neuron to a specific range, usually between 1 and -1 or
+ * between 1 and 0.</p>
+ *
+ * <p>This enum simplifies the process of selecting and utilizing an activation function. It provides an
+ * abstraction where the user can easily switch between different functions, making it easier to experiment
+ * with neural network design. Additionally, each function includes a method for calculating its derivative,
+ * which is essential for backpropagation in neural network training.</p>
+ *
+ * <p>Available functions include:</p>
+ * <ul>
+ *   <li><b>SIGMOID</b>: Normalizes inputs between 0 and 1, crucial for binary classification.</li>
+ *   <li><b>RELU</b>: Addresses the vanishing gradient problem, allowing for faster and more effective training.</li>
+ *   <li><b>LEAKY_RELU</b>: Variation of RELU, prevents "dying neurons" by allowing a small gradient when the unit is not active.</li>
+ *   <li><b>TANH</b>: Normalizes inputs between -1 and 1, a scaled version of the sigmoid function.</li>
+ *   <li><b>SOFTMAX</b>: Converts a vector of raw scores to a probability distribution, typically used in multi-class classification.</li>
+ * </ul>
+ *
+ * <p>Each function overrides the {@code calculateActivation} and {@code calculateDerivative} methods, providing the
+ * specific implementation for the activation and its derivative based on input. These are essential for the forward
+ * and backward passes through the network, respectively.</p>
+ *
+ * <p><b>Note:</b> The {@code SOFTMAX} function additionally overrides {@code calculateActivation} for an array input,
+ * facilitating its common use in output layers of neural networks for classification tasks.</p>
+ *
+ */
 public enum ActivationFunction {
 
     SIGMOID {

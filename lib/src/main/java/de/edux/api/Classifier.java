@@ -1,5 +1,29 @@
 package de.edux.api;
 
+/**
+ * Provides a common interface for machine learning classifiers within the Edux API.
+ *
+ * <p>The {@code Classifier} interface is designed to encapsulate a variety of machine learning models, offering
+ * a consistent approach to training, evaluating, and utilizing classifiers. Implementations are expected to handle
+ * specifics related to different types of classification algorithms, such as neural networks, decision trees,
+ * support vector machines, etc.</p>
+ *
+ * <p>Each classifier must implement methods for training the model on a dataset, evaluating its performance,
+ * and making predictions on new, unseen data. This design allows for interchangeability of models and promotes
+ * a clean separation of concerns between the data processing and model training phases.</p>
+ *
+ * <p>Typical usage involves:</p>
+ * <ul>
+ *   <li>Creating an instance of a class that implements {@code Classifier}.</li>
+ *   <li>Training the classifier with known data via the {@code train} method.</li>
+ *   <li>Evaluating the classifier's performance with test data via the {@code evaluate} method.</li>
+ *   <li>Applying the trained classifier to new data to make predictions via the {@code predict} method.</li>
+ * </ul>
+ *
+ * <p>Implementing classes should ensure that proper validation is performed on the input data and
+ * any necessary pre-processing or feature scaling is applied consistent with the model's requirements.</p>
+ *
+ */
 public interface Classifier {
 
     /**
