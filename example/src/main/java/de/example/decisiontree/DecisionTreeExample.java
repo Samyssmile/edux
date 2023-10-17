@@ -17,11 +17,11 @@ public class DecisionTreeExample {
     double[][] features = datasetProvider.getTrainFeatures();
     double[][] labels = datasetProvider.getTrainLabels();
 
-    DecisionTree decisionTree = new DecisionTree(8, 2, 1, 4);
-    decisionTree.train(features, labels);
-
     double[][] testFeatures = datasetProvider.getTestFeatures();
     double[][] testLabels = datasetProvider.getTestLabels();
+
+    DecisionTree decisionTree = new DecisionTree(8, 2, 1, 4);
+    decisionTree.train(features, labels);
     decisionTree.evaluate(testFeatures, testLabels);
 
   }

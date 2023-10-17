@@ -1,9 +1,9 @@
-package de.edux.ml.nn;
+package de.edux.ml.nn.network;
 
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.initialization.Initialization;
 
-public class Neuron {
+class Neuron {
     private final Initialization initialization;
     private double[] weights;
     private double bias;
