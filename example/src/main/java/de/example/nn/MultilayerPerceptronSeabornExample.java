@@ -5,22 +5,17 @@ import de.edux.api.Classifier;
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.initialization.Initialization;
 import de.edux.functions.loss.LossFunction;
-import de.edux.ml.knn.KnnClassifier;
-import de.edux.ml.nn.config.NetworkConfiguration;
-import de.edux.ml.nn.network.MultilayerPerceptron;
 import de.edux.ml.nn.network.api.Dataset;
 import de.example.data.seaborn.Penguin;
+import de.edux.ml.nn.config.NetworkConfiguration;
+import de.edux.ml.nn.network.MultilayerPerceptron;
 import de.example.data.seaborn.SeabornDataProcessor;
 import de.example.data.seaborn.SeabornProvider;
 
 import java.io.File;
 import java.util.List;
 
-/**
- * Knn - K nearest neighbors
- * Dataset: Seaborn Penguins
- */
-public class MultilayerPerceptronExample2 {
+public class MultilayerPerceptronSeabornExample {
     private static final boolean SHUFFLE = true;
     private static final boolean NORMALIZE = true;
     private static final boolean FILTER_INCOMPLETE_RECORDS = true;
@@ -40,10 +35,10 @@ public class MultilayerPerceptronExample2 {
         double[][] testFeatures = seabornProvider.getTestFeatures();
         double[][] testLabels = seabornProvider.getTestLabels();
 
-        NetworkConfiguration networkConfiguration = new NetworkConfiguration(seabornProvider.getTrainFeatures()[0].length, List.of(32, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
+        NetworkConfiguration networkConfiguration = new NetworkConfiguration(features[0].length, List.of(32, 6), 3, 0.01, 1000, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
 
-        MultilayerPerceptron multilayerPerceptron = new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
-        multilayerPerceptron.train(seabornProvider.getTrainFeatures(), labels);
+        Classifier multilayerPerceptron = new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
+        multilayerPerceptron.train(features, labels);
         multilayerPerceptron.evaluate(testFeatures, testLabels);
     }
 
