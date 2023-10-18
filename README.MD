@@ -14,6 +14,9 @@ EDUX supports a variety of machine learning algorithms including:
 - **Support Vector Machine:** Effective for binary classification, and can be adapted for multi-class problems.
 - **RandomForest:** An ensemble method providing high accuracy through building multiple decision trees.
 
+### Battle Royale - Which algorithm is the best?
+We run all algorithms on the same dataset and compare the results.
+[Benchmark](https://github.com/Samyssmile/edux/discussions/42)
 
 ## Goal
 The main goal of this project is to create a user-friendly library for solving problems using a machine learning approach. The library is designed to be easy to use, enabling the solution of problems with just a few lines of code.

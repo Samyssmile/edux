@@ -1,0 +1,33 @@
+/* Stilisierung des Navigationsbereichs */
+nav {
+    background-color: #333; /* Beispielhintergrundfarbe */
+    overflow: hidden; /* Sicherstellen, dass nichts über die Navigationsleiste hinausragt */
+}
+
+/* Entfernt Bulletpoints von der Liste und setzt alle Listenelemente nebeneinander */
+nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex; /* Dies macht die Liste flexibel und alle Listenelemente werden nebeneinander angeordnet */
+}
+
+/* Stilisiert die Listenelemente */
+nav li {
+    flex-grow: 1; /* Erlaubt den Listenelementen, den verfügbaren Platz auszufüllen */
+    text-align: center; /* Zentriert den Text innerhalb der Listenelemente */
+}
+
+/* Stilisiert die Links innerhalb der Navigationsleiste */
+nav a {
+    display: block; /* Stellt den Link als Blockelement dar, damit er die gesamte Listenelementfläche ausfüllt */
+    padding: 14px 20px; /* Polsterung um den Link, für Klickbarkeitsbereich */
+    text-decoration: none; /* Entfernt die Unterstreichung von Links */
+    color: white; /* Setzt die Linkfarbe auf Weiß */
+}
+
+/* Ändert die Farbe des Links beim Darüberfahren mit der Maus */
+nav a:hover {
+    background-color: #ddd; /* Beispielhintergrundfarbe beim Darüberfahren */
+    color: black; /* Beispieltextfarbe beim Darüberfahren */
+}
