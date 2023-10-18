@@ -1,6 +1,7 @@
 package de.example.benchmark;
 
 import de.edux.api.Classifier;
+import de.edux.data.handler.EIncompleteRecordsHandlerStrategy;
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.initialization.Initialization;
 import de.edux.functions.loss.LossFunction;
@@ -27,7 +28,7 @@ import java.util.stream.IntStream;
 public class Benchmark {
     private static final boolean SHUFFLE = true;
     private static final boolean NORMALIZE = true;
-    private static final boolean FILTER_INCOMPLETE_RECORDS = true;
+    private static final EIncompleteRecordsHandlerStrategy INCOMPLETE_RECORD_HANDLER_STRATEGY = EIncompleteRecordsHandlerStrategy.DROP_RECORDS;
     private static final double TRAIN_TEST_SPLIT_RATIO = 0.75;
     private static final File CSV_FILE = new File("example" + File.separator + "datasets" + File.separator + "seaborn-penguins" + File.separator + "penguins.csv");
     private double[][] trainFeatures;
@@ -127,7 +128,7 @@ public class Benchmark {
 
     private void initFeaturesAndLabels() {
         var seabornDataProcessor = new SeabornDataProcessor();
-        List<Penguin> data = seabornDataProcessor.loadDataSetFromCSV(CSV_FILE, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
+        List<Penguin> data = seabornDataProcessor.loadDataSetFromCSV(CSV_FILE, ',', SHUFFLE, NORMALIZE, INCOMPLETE_RECORD_HANDLER_STRATEGY);
         seabornDataProcessor.split(data, TRAIN_TEST_SPLIT_RATIO);
 
         trainFeatures = seabornDataProcessor.getTrainFeatures();

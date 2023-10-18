@@ -1,5 +1,6 @@
 package de.edux.data.provider;
 
+import de.edux.data.handler.EIncompleteRecordsHandlerStrategy;
 import de.edux.data.reader.CSVIDataReader;
 import de.edux.ml.nn.network.api.Dataset;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,8 +96,7 @@ class DataProcessorTest {
 
         when(csvDataReader.readFile(any(), anyChar())).thenReturn(csvLine);
 
-        List<String> result = dataProcessor.loadDataSetFromCSV(dummyFile, separator, false, false, false);
-
+        List<String> result = dataProcessor.loadDataSetFromCSV(dummyFile, separator, false, false, EIncompleteRecordsHandlerStrategy.DO_NOT_HANDLE);
         assertEquals(2, result.size(), "Dataset size should be 2");
     }
 

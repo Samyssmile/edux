@@ -1,12 +1,13 @@
 package de.edux.data.provider;
 
+import de.edux.data.handler.EIncompleteRecordsHandlerStrategy;
 import de.edux.ml.nn.network.api.Dataset;
 
 import java.io.File;
 import java.util.List;
 
 public interface IDataUtil<T> {
-    List<T> loadDataSetFromCSV(File csvFile,  char csvSeparator, boolean normalize, boolean shuffle, boolean filterIncompleteRecords);
+    List<T> loadDataSetFromCSV(File csvFile,  char csvSeparator, boolean normalize, boolean shuffle, EIncompleteRecordsHandlerStrategy IncompleteRecordHandlerStrategy);
 
     Dataset<T> split(List<T> dataset, double trainTestSplitRatio);
 

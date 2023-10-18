@@ -1,5 +1,6 @@
 package de.edux.data.provider;
 
+import de.edux.data.handler.EIncompleteRecordsHandlerStrategy;
 import de.edux.data.reader.CSVIDataReader;
 import de.edux.data.reader.IDataReader;
 import de.edux.ml.nn.network.api.Dataset;
@@ -26,12 +27,13 @@ public abstract class DataProcessor<T> extends DataPostProcessor<T> implements I
     }
 
     @Override
-    public List<T> loadDataSetFromCSV(File csvFile, char csvSeparator, boolean normalize, boolean shuffle, boolean filterIncompleteRecords) {
-        List<String[]> x = csvDataReader.readFile(csvFile, csvSeparator);
-        List<T> unmodifiableDataset = csvDataReader.readFile(csvFile, csvSeparator)
+    public List<T> loadDataSetFromCSV(File csvFile, char csvSeparator, boolean normalize, boolean shuffle, EIncompleteRecordsHandlerStrategy incompleteRecordHandlerStrategy) {
+        List<String[]> rawDataset = csvDataReader.readFile(csvFile, csvSeparator);
+        List<String[]> cleanedDataset = incompleteRecordHandlerStrategy.getHandler().getCleanedDataset(rawDataset);
+
+        List<T> unmodifiableDataset = cleanedDataset
                 .stream()
                 .map(this::mapToDataRecord)
-                .filter(record -> !filterIncompleteRecords || record != null)
                 .toList();
 
         dataset = new ArrayList<>(unmodifiableDataset);

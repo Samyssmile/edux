@@ -1,5 +1,6 @@
 package de.edux.ml.decisiontree;
 
+import de.edux.data.handler.EIncompleteRecordsHandlerStrategy;
 import de.edux.data.provider.Penguin;
 import de.edux.data.provider.SeabornDataProcessor;
 import de.edux.data.provider.SeabornProvider;
@@ -10,14 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URL;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DecisionTreeTest {
     private static final boolean SHUFFLE = true;
     private static final boolean NORMALIZE = true;
-    private static final boolean FILTER_INCOMPLETE_RECORDS = true;
+    private static final EIncompleteRecordsHandlerStrategy INCOMPLETE_RECORD_HANDLER_STRATEGY = EIncompleteRecordsHandlerStrategy.DROP_RECORDS;
     private static final double TRAIN_TEST_SPLIT_RATIO = 0.7;
     private static final String CSV_FILE_PATH = "testdatasets/seaborn-penguins/penguins.csv";
     private static SeabornProvider seabornProvider;
@@ -29,7 +29,7 @@ class DecisionTreeTest {
         }
         File csvFile = new File(url.getPath());
         var seabornDataProcessor = new SeabornDataProcessor();
-        var dataset = seabornDataProcessor.loadDataSetFromCSV(csvFile, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
+        var dataset = seabornDataProcessor.loadDataSetFromCSV(csvFile, ',', SHUFFLE, NORMALIZE, INCOMPLETE_RECORD_HANDLER_STRATEGY);
         Dataset<Penguin> splitedDataset = seabornDataProcessor.split(dataset, TRAIN_TEST_SPLIT_RATIO);
         seabornProvider = new SeabornProvider(dataset, splitedDataset.trainData(), splitedDataset.testData());
     }
