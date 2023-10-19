@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DropIncompleteRecordHandlerTest {
   private List<String[]> dataset;
@@ -28,8 +29,7 @@ class DropIncompleteRecordHandlerTest {
     this.dataset.add(new String[] {"A", "B", "C"});
     this.dataset.add(new String[] {"A", "B", "C"});
 
-    List<String[]> cleanedDataset = incompleteRecordHandler.getCleanedDataset(dataset);
-    assertEquals(5, cleanedDataset.size());
+    assertEquals(5, incompleteRecordHandler.getCleanedDataset(dataset).size());
   }
 
   @Test
@@ -41,12 +41,23 @@ class DropIncompleteRecordHandlerTest {
     this.dataset.add(new String[] {"A", "B", "C"});
     this.dataset.add(new String[] {"A", "B", "C"});
 
-    List<String[]> cleanedDataset = incompleteRecordHandler.getCleanedDataset(dataset);
-    assertEquals(4, cleanedDataset.size());
+    assertEquals(4, incompleteRecordHandler.getCleanedDataset(dataset).size());
   }
 
   @Test
-  void testDropThreeIncompleteResults() {
+  void testDropTwoIncompleteResult() {
+
+    this.dataset.add(new String[] {"A", "B", "C"});
+    this.dataset.add(new String[] {"A", "", "C"});
+    this.dataset.add(new String[] {"A", "", "C"});
+    this.dataset.add(new String[] {"A", "B", "C"});
+    this.dataset.add(new String[] {"A", "B", "C"});
+
+    assertEquals(3, incompleteRecordHandler.getCleanedDataset(dataset).size());
+  }
+
+  @Test
+  void testThrowRuntimeExceptionForDroppingMoreThanHalfOfOriginalDataset() {
 
     this.dataset.add(new String[] {"A", "B", "C"});
     this.dataset.add(new String[] {"", "B", "C"});
@@ -54,20 +65,6 @@ class DropIncompleteRecordHandlerTest {
     this.dataset.add(new String[] {"A", "B", ""});
     this.dataset.add(new String[] {"A", "B", "C"});
 
-    List<String[]> cleanedDataset = incompleteRecordHandler.getCleanedDataset(dataset);
-    assertEquals(2, cleanedDataset.size());
-  }
-
-  @Test
-  void testDropAllIncompleteResults() {
-
-    this.dataset.add(new String[] {"A", "", "C"});
-    this.dataset.add(new String[] {"", "B", "C"});
-    this.dataset.add(new String[] {"A", "", "C"});
-    this.dataset.add(new String[] {"A", "B", ""});
-    this.dataset.add(new String[] {"A", "", "C"});
-
-    List<String[]> cleanedDataset = incompleteRecordHandler.getCleanedDataset(dataset);
-    assertEquals(0, cleanedDataset.size());
+    assertThrows(RuntimeException.class, () -> incompleteRecordHandler.getCleanedDataset(dataset));
   }
 }

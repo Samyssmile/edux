@@ -28,12 +28,13 @@ public class AverageFillIncompleteRecordsHandler implements IIncompleteRecordsHa
           }
         }
 
-        if (validFeatureCount == 0) {
-          continue;
+        if (validFeatureCount < dataset.size() * 0.5) {
+          throw new RuntimeException(
+              "Less than 50% of the records will be used to calculate the fill values. "
+                  + "Consider using another IncompleteRecordsHandlerStrategy or handle this exception.");
         }
 
         average = sum / validFeatureCount;
-
         for (String[] record : dataset) {
           if (!isCompleteFeature(record[columnIndex])) {
             record[columnIndex] = String.valueOf(average);
@@ -41,20 +42,31 @@ public class AverageFillIncompleteRecordsHandler implements IIncompleteRecordsHa
         }
       }
     }
+
     return dataset;
   }
 
   private List<String[]> dropRecordsWithIncompleteCategoricalFeature(
       List<String[]> dataset, List<String> typeOfFeatures) {
+    List<String[]> cleanedDataset = dataset;
 
     for (int columnIndex = 0; columnIndex < typeOfFeatures.size(); columnIndex++) {
       if (typeOfFeatures.get(columnIndex).equals("categorical")) {
         int columnIndexFin = columnIndex;
-        dataset =
-            dataset.stream().filter(record -> isCompleteFeature(record[columnIndexFin])).toList();
+        cleanedDataset =
+            cleanedDataset.stream()
+                .filter(record -> isCompleteFeature(record[columnIndexFin]))
+                .toList();
       }
     }
-    return dataset;
+
+    if (cleanedDataset.size() < dataset.size() * 0.5) {
+      throw new RuntimeException(
+          "More than 50% of the records will be dropped with this IncompleteRecordsHandlerStrategy. "
+              + "Consider using another IncompleteRecordsHandlerStrategy or handle this exception.");
+    }
+
+    return cleanedDataset;
   }
 
   private List<String> getFeatureTypes(List<String[]> dataset) {
@@ -71,6 +83,10 @@ public class AverageFillIncompleteRecordsHandler implements IIncompleteRecordsHa
         }
       }
       break;
+    }
+
+    if (featureTypes.isEmpty()) {
+      throw new RuntimeException("At least one full record needed with valid features");
     }
     return featureTypes;
   }
