@@ -26,41 +26,51 @@ class AverageFillIncompleteRecordHandlerTest {
   void dropRecordsWithIncompleteCategoricalFeature() {
 
     this.dataset.add(new String[] {"A", "1", "A"});
-    this.dataset.add(new String[] {"", "1", ""});
+    this.dataset.add(new String[] {"", "2", ""});
     this.dataset.add(new String[] {"C", "", "C"});
-    this.dataset.add(new String[] {"D", "1", ""});
-    this.dataset.add(new String[] {"E", "1", "E"});
-    for (String[] data : dataset) {
-      System.out.println(Arrays.toString(data));
-    }
+    this.dataset.add(new String[] {"D", "3", ""});
+    this.dataset.add(new String[] {"E", "4", "E"});
 
-    List<String[]> cleanedDataset = incompleteRecordHandler.getCleanedDataset(dataset);
-    System.out.println("----------------------------------------------------");
-    for (String[] data : cleanedDataset) {
-      System.out.println(Arrays.toString(data));
-    }
-
-    assertEquals(3, cleanedDataset.size());
+    assertAll(
+        () -> assertEquals(3, incompleteRecordHandler.getCleanedDataset(dataset).size()),
+        () ->
+            assertEquals(
+                2.5, Double.valueOf(incompleteRecordHandler.getCleanedDataset(dataset).get(1)[1])));
   }
 
   @Test
-  void fillWithAverageValues() {
+  void testThrowRuntimeExceptionForDroppingMoreThanHalfOfOriginalDataset() {
 
-    this.dataset.add(new String[] {"A", "1", "A"});
-    this.dataset.add(new String[] {"", "1", ""});
-    this.dataset.add(new String[] {"C", "", "C"});
-    this.dataset.add(new String[] {"D", "1", ""});
-    this.dataset.add(new String[] {"E", "1", "E"});
-    for (String[] data : dataset) {
-      System.out.println(Arrays.toString(data));
-    }
+    this.dataset.add(new String[] {"", "1", "A"});
+    this.dataset.add(new String[] {"B", "2", "B"});
+    this.dataset.add(new String[] {"C", "3", "C"});
+    this.dataset.add(new String[] {"D", "4", ""});
+    this.dataset.add(new String[] {"", "5", "E"});
 
-    List<String[]> cleanedDataset = incompleteRecordHandler.getCleanedDataset(dataset);
-    System.out.println("----------------------------------------------------");
-    for (String[] data : cleanedDataset) {
-      System.out.println(Arrays.toString(data));
-    }
+    assertThrows(RuntimeException.class, () -> incompleteRecordHandler.getCleanedDataset(dataset));
+  }
 
-    assertEquals(1, Integer.valueOf(cleanedDataset.get(2)[1]));
+  @Test
+  void testThrowRuntimeExceptionForZeroValidNumericalFeatures() {
+
+    this.dataset.add(new String[] {"A", "", "A"});
+    this.dataset.add(new String[] {"B", "", "B"});
+    this.dataset.add(new String[] {"C", "1", "C"});
+    this.dataset.add(new String[] {"D", "", "D"});
+    this.dataset.add(new String[] {"E", "", "E"});
+
+    assertThrows(RuntimeException.class, () -> incompleteRecordHandler.getCleanedDataset(dataset));
+  }
+
+  @Test
+  void testThrowRuntimeExceptionForAtLeastOneFullValidRecord() {
+
+    this.dataset.add(new String[] {"", "1", "A"});
+    this.dataset.add(new String[] {"B", "2", ""});
+    this.dataset.add(new String[] {"", "", "C"});
+    this.dataset.add(new String[] {"D", "3", ""});
+    this.dataset.add(new String[] {"", "4", "E"});
+
+    assertThrows(RuntimeException.class, () -> incompleteRecordHandler.getCleanedDataset(dataset));
   }
 }
