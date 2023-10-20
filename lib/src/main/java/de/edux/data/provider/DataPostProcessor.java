@@ -1,6 +1,7 @@
 package de.edux.data.provider;
 
 import java.util.List;
+import java.util.Optional;
 
 public abstract class DataPostProcessor<T> {
     public abstract void normalize(List<T> rowDataset);
@@ -20,5 +21,11 @@ public abstract class DataPostProcessor<T> {
     public abstract double[][] getTestLabels();
 
     public abstract double[][] getTestFeatures();
+
+    public abstract Optional<Integer> getIndexOfColumn(String columnName);
+
+    public abstract String[] getColumnDataOf(String columnName);
+
+    public abstract String[] getColumnNames();
 
 }

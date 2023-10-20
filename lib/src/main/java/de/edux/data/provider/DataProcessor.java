@@ -11,12 +11,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class DataProcessor<T> extends DataPostProcessor<T> implements IDataUtil<T> {
     private static final Logger LOG = LoggerFactory.getLogger(DataProcessor.class);
     private final IDataReader csvDataReader;
     private ArrayList<T> dataset;
     private Dataset<T> splitedDataset;
+    private String[] columnNames;
+    private List<String[]> rawDataset;
 
     public DataProcessor() {
         this.csvDataReader = new CSVIDataReader();
@@ -27,22 +30,23 @@ public abstract class DataProcessor<T> extends DataPostProcessor<T> implements I
     }
 
     @Override
-    public List<T> loadDataSetFromCSV(File csvFile, char csvSeparator, boolean normalize, boolean shuffle, EIncompleteRecordsHandlerStrategy incompleteRecordHandlerStrategy) {
-        List<String[]> rawDataset = csvDataReader.readFile(csvFile, csvSeparator);
-        List<String[]> cleanedDataset = incompleteRecordHandlerStrategy.getHandler().getCleanedDataset(rawDataset);
+    public List<T> loadDataSetFromCSV(File csvFile, char csvSeparator, boolean skipHeadline, boolean shuffle, EIncompleteRecordsHandlerStrategy incompleteRecordHandlerStrategy) {
+        rawDataset = csvDataReader.readFile(csvFile, csvSeparator);
 
-        List<T> unmodifiableDataset = cleanedDataset
+        if (skipHeadline) {
+            columnNames = rawDataset.remove(0);
+        } else {
+            columnNames = rawDataset.get(0);
+        }
+        List<String[]> csvDataset = incompleteRecordHandlerStrategy.getHandler().getCleanedDataset(rawDataset);
+
+        List<T> unmodifiableDataset = csvDataset
                 .stream()
                 .map(this::mapToDataRecord)
                 .toList();
 
         dataset = new ArrayList<>(unmodifiableDataset);
         LOG.info("Dataset loaded");
-
-        if (normalize) {
-            normalize(dataset);
-            LOG.info("Dataset normalized");
-        }
 
         if (shuffle) {
             Collections.shuffle(dataset);
@@ -54,7 +58,7 @@ public abstract class DataProcessor<T> extends DataPostProcessor<T> implements I
     /**
      * Split data into train and test data
      *
-     * @param data             data to split
+     * @param data                data to split
      * @param trainTestSplitRatio ratio of train data
      * @return list of train and test data. First element is train data, second element is test data.
      */
@@ -72,12 +76,41 @@ public abstract class DataProcessor<T> extends DataPostProcessor<T> implements I
         splitedDataset = new Dataset<>(trainDataset, testDataset);
         return splitedDataset;
     }
+
     public ArrayList<T> getDataset() {
         return dataset;
     }
 
     public Dataset<T> getSplitedDataset() {
         return splitedDataset;
+    }
+
+    @Override
+    public Optional<Integer> getIndexOfColumn(String columnName) {
+        for (int i = 0; i < columnNames.length; i++) {
+            if (columnNames[i].equals(columnName)) {
+                return Optional.of(i);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public String[] getColumnDataOf(String columnName) {
+        Optional<Integer> index = getIndexOfColumn(columnName);
+        if (index.isEmpty()) {
+            throw new IllegalArgumentException("Column name not found");
+        }
+        int columnIndex = index.get();
+        String[] columnData = new String[rawDataset.size()];
+        for (int i = 0; i < rawDataset.size(); i++) {
+            columnData[i] = rawDataset.get(i)[columnIndex];
+        }
+        return columnData;
+    }
+
+    @Override
+    public String[] getColumnNames() {
+        return columnNames;
     }
 }
 

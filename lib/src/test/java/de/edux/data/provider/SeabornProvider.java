@@ -54,6 +54,10 @@ public class SeabornProvider implements IDataProvider<Penguin> {
 
         for (int i = 0; i < data.size(); i++) {
             Penguin p = data.get(i);
+            if (p == null){
+                continue;
+      /*          throw new IllegalArgumentException("Missed value in dataset, try to use Imputation methods");*/
+            }
             features[i][0] = p.billLengthMm();
             features[i][1] = p.billDepthMm();
             features[i][2] = p.flipperLengthMm();

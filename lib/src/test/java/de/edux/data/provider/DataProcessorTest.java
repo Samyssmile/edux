@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -145,6 +146,11 @@ class DataProcessorTest {
             @Override
             public double[][] getTestFeatures() {
                 return new double[0][];
+            }
+
+            @Override
+            public Optional<Integer> getIndexOfColumn(String columnName) {
+                return Optional.empty();
             }
         };
     }

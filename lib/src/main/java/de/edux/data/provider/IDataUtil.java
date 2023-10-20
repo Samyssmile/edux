@@ -7,12 +7,11 @@ import java.io.File;
 import java.util.List;
 
 public interface IDataUtil<T> {
-    List<T> loadDataSetFromCSV(File csvFile,  char csvSeparator, boolean normalize, boolean shuffle, EIncompleteRecordsHandlerStrategy IncompleteRecordHandlerStrategy);
+    List<T> loadDataSetFromCSV(File csvFile,  char csvSeparator, boolean skipHeadline, boolean shuffle, EIncompleteRecordsHandlerStrategy IncompleteRecordHandlerStrategy);
 
     Dataset<T> split(List<T> dataset, double trainTestSplitRatio);
 
     double[][] getInputs(List<T> dataset);
 
     double[][] getTargets(List<T> dataset);
-
 }
