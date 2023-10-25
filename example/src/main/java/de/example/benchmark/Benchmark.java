@@ -1,6 +1,8 @@
 package de.example.benchmark;
 
 import de.edux.api.Classifier;
+import de.edux.data.provider.DataProcessor;
+import de.edux.data.reader.CSVIDataReader;
 import de.edux.functions.activation.ActivationFunction;
 import de.edux.functions.initialization.Initialization;
 import de.edux.functions.loss.LossFunction;
@@ -11,8 +13,6 @@ import de.edux.ml.nn.network.MultilayerPerceptron;
 import de.edux.ml.randomforest.RandomForest;
 import de.edux.ml.svm.SVMKernel;
 import de.edux.ml.svm.SupportVectorMachine;
-import de.example.data.seaborn.Penguin;
-import de.example.data.seaborn.SeabornDataProcessor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -25,11 +25,10 @@ import java.util.stream.IntStream;
  * Compare the performance of different classifiers
  */
 public class Benchmark {
-    private static final boolean SHUFFLE = true;
-    private static final boolean NORMALIZE = true;
-    private static final boolean FILTER_INCOMPLETE_RECORDS = true;
-    private static final double TRAIN_TEST_SPLIT_RATIO = 0.75;
-    private static final File CSV_FILE = new File("example" + File.separator + "datasets" + File.separator + "seaborn-penguins" + File.separator + "penguins.csv");
+    private static final double TRAIN_TEST_SPLIT_RATIO = 0.70;
+    private static final File CSV_FILE = new File("example" + File.separator + "datasets" + File.separator + "iris" + File.separator + "iris.csv");
+    private static final boolean SKIP_HEAD = true;
+
     private double[][] trainFeatures;
     private double[][] trainLabels;
     private double[][] testFeatures;
@@ -49,7 +48,7 @@ public class Benchmark {
         Classifier randomForest = new RandomForest(100, 10, 2, 1, 3, 60);
         Classifier svm = new SupportVectorMachine(SVMKernel.LINEAR, 1);
 
-        networkConfiguration = new NetworkConfiguration(trainFeatures[0].length, List.of(128,256, 512), 3, 0.01, 300, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
+        networkConfiguration = new NetworkConfiguration(trainFeatures[0].length, List.of(128, 256, 512), 3, 0.01, 300, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
         multilayerPerceptron = new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
         Map<String, Classifier> classifiers = Map.of(
                 "KNN", knn,
@@ -67,7 +66,7 @@ public class Benchmark {
         results.put("MLP", new ArrayList<>());
 
 
-        IntStream.range(0, 50).forEach(i -> {
+        IntStream.range(0, 1).forEach(i -> {
             knn.train(trainFeatures, trainLabels);
             decisionTree.train(trainFeatures, trainLabels);
             randomForest.train(trainFeatures, trainLabels);
@@ -126,16 +125,21 @@ public class Benchmark {
     }
 
     private void initFeaturesAndLabels() {
-        var seabornDataProcessor = new SeabornDataProcessor();
-        List<Penguin> data = seabornDataProcessor.loadDataSetFromCSV(CSV_FILE, ',', SHUFFLE, NORMALIZE, FILTER_INCOMPLETE_RECORDS);
-        seabornDataProcessor.split(data, TRAIN_TEST_SPLIT_RATIO);
+        var featureColumnIndices = new int[]{0, 1, 2, 3};
+        var targetColumnIndex = 4;
 
-        trainFeatures = seabornDataProcessor.getTrainFeatures();
-        trainLabels = seabornDataProcessor.getTrainLabels();
+        var dataProcessor = new DataProcessor(new CSVIDataReader())
+                .loadDataSetFromCSV(CSV_FILE, ',', SKIP_HEAD, featureColumnIndices, targetColumnIndex)
+                .normalize()
+                .shuffle()
+                .split(TRAIN_TEST_SPLIT_RATIO);
 
-        testFeatures = seabornDataProcessor.getTestFeatures();
-        testLabels = seabornDataProcessor.getTestLabels();
 
+
+        trainFeatures = dataProcessor.getTrainFeatures(featureColumnIndices);
+        trainLabels = dataProcessor.getTrainLabels(targetColumnIndex);
+        testFeatures = dataProcessor.getTestFeatures(featureColumnIndices);
+        testLabels = dataProcessor.getTestLabels(targetColumnIndex);
 
     }
 }

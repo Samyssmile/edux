@@ -19,7 +19,6 @@ public class CSVIDataReader implements IDataReader {
         try(CSVReader reader = new CSVReaderBuilder(
                 new FileReader(file))
                 .withCSVParser(customCSVParser)
-                .withSkipLines(1)
                 .build()){
             result = reader.readAll();
         } catch (CsvException | IOException e) {

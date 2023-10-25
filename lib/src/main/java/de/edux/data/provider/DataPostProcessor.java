@@ -1,24 +1,21 @@
 package de.edux.data.provider;
 
+import de.edux.functions.imputation.ImputationStrategy;
+
 import java.util.List;
 
-public abstract class DataPostProcessor<T> {
-    public abstract void normalize(List<T> rowDataset);
+public interface DataPostProcessor {
+    DataPostProcessor normalize();
 
-    public abstract T mapToDataRecord(String[] csvLine);
+    DataPostProcessor shuffle();
 
-    public abstract double[][] getInputs(List<T> dataset);
+    DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
 
-    public abstract double[][] getTargets(List<T> dataset);
+    DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy);
 
-    public abstract String getDatasetDescription();
+    List<String[]> getDataset();
 
-    public abstract double[][] getTrainFeatures();
+    DataProcessor split(double splitRatio);
 
-    public abstract double[][] getTrainLabels();
-
-    public abstract double[][] getTestLabels();
-
-    public abstract double[][] getTestFeatures();
 
 }

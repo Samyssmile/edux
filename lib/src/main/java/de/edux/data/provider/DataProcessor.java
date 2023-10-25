@@ -1,81 +1,160 @@
 package de.edux.data.provider;
 
-import de.edux.data.reader.CSVIDataReader;
 import de.edux.data.reader.IDataReader;
-import de.edux.ml.nn.network.api.Dataset;
+import de.edux.functions.imputation.ImputationStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public abstract class DataProcessor<T> extends DataPostProcessor<T> implements IDataUtil<T> {
+public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
     private static final Logger LOG = LoggerFactory.getLogger(DataProcessor.class);
-    private final IDataReader csvDataReader;
-    private ArrayList<T> dataset;
-    private Dataset<T> splitedDataset;
+    private String[] columnNames;
+    private final IDataReader dataReader;
+    private final Normalizer normalizer;
+    private List<String[]> dataset;
+    private List<String[]> trainData;
+    private List<String[]> testData;
 
-    public DataProcessor() {
-        this.csvDataReader = new CSVIDataReader();
+    @Override
+    public DataProcessor split(double splitRatio) {
+        int splitIndex = (int) (dataset.size() * splitRatio);
+        trainData = dataset.subList(0, splitIndex);
+        testData = dataset.subList(splitIndex, dataset.size());
+
+        return this;
     }
 
-    public DataProcessor(IDataReader csvDataReader) {
-        this.csvDataReader = csvDataReader;
+    public DataProcessor(IDataReader dataReader) {
+        this.dataReader = dataReader;
+        normalizer = new DataNormalizer();
     }
 
     @Override
-    public List<T> loadDataSetFromCSV(File csvFile, char csvSeparator, boolean normalize, boolean shuffle, boolean filterIncompleteRecords) {
-        List<String[]> x = csvDataReader.readFile(csvFile, csvSeparator);
-        List<T> unmodifiableDataset = csvDataReader.readFile(csvFile, csvSeparator)
-                .stream()
-                .map(this::mapToDataRecord)
-                .filter(record -> !filterIncompleteRecords || record != null)
-                .toList();
+    public DataProcessor loadDataSetFromCSV(File csvFile, char csvSeparator, boolean skipHead, int[] inputColumns, int targetColumn) {
+        dataset = dataReader.readFile(csvFile, csvSeparator);
 
-        dataset = new ArrayList<>(unmodifiableDataset);
+        if (skipHead) {
+            skipHead();
+        }
+
+        List<String> uniqueClasses = new ArrayList<>();
+        for (String[] row : dataset) {
+            String label = row[targetColumn];
+            if (!uniqueClasses.contains(label)) {
+                uniqueClasses.add(label);
+            }
+        }
+
+        for (int i = 0; i < uniqueClasses.size(); i++) {
+            indexToClassMap.put(uniqueClasses.get(i), i);
+        }
+
         LOG.info("Dataset loaded");
-
-        if (normalize) {
-            normalize(dataset);
-            LOG.info("Dataset normalized");
-        }
-
-        if (shuffle) {
-            Collections.shuffle(dataset);
-            LOG.info("Dataset shuffled");
-        }
-        return dataset;
+        return this;
     }
 
-    /**
-     * Split data into train and test data
-     *
-     * @param data             data to split
-     * @param trainTestSplitRatio ratio of train data
-     * @return list of train and test data. First element is train data, second element is test data.
-     */
+    private void skipHead() {
+        columnNames = dataset.remove(0);
+    }
+
     @Override
-    public Dataset<T> split(List<T> data, double trainTestSplitRatio) {
-        if (trainTestSplitRatio < 0.0 || trainTestSplitRatio > 1.0) {
-            throw new IllegalArgumentException("Train-test split ratio must be between 0.0 and 1.0");
-        }
-
-        int trainSize = (int) (data.size() * trainTestSplitRatio);
-
-        List<T> trainDataset = data.subList(0, trainSize);
-        List<T> testDataset = data.subList(trainSize, data.size());
-
-        splitedDataset = new Dataset<>(trainDataset, testDataset);
-        return splitedDataset;
+    public DataPostProcessor normalize() {
+        this.dataset = this.normalizer.normalize(dataset);
+        return this;
     }
-    public ArrayList<T> getDataset() {
+
+    @Override
+    public DataPostProcessor shuffle() {
+        Collections.shuffle(dataset);
+        return this;
+    }
+
+
+    @Override
+    public List<String[]> getDataset() {
         return dataset;
     }
 
-    public Dataset<T> getSplitedDataset() {
-        return splitedDataset;
-    }
-}
+    @Override
+    public double[][] getInputs(List<String[]> dataset, int[] inputColumns) {
+        if (dataset == null || dataset.isEmpty() || inputColumns == null || inputColumns.length == 0) {
+            throw new IllegalArgumentException("Did you call split() before?");
+        }
 
+        int numRows = dataset.size();
+        double[][] inputs = new double[numRows][inputColumns.length];
+
+        for (int i = 0; i < numRows; i++) {
+            String[] row = dataset.get(i);
+            for (int j = 0; j < inputColumns.length; j++) {
+                int colIndex = inputColumns[j];
+                try {
+                    inputs[i][j] = Double.parseDouble(row[colIndex]);
+                } catch (NumberFormatException e) {
+                    inputs[i][j] = 0;
+                }
+            }
+        }
+
+        return inputs;
+    }
+
+
+    private Map<String, Integer> indexToClassMap = new HashMap<>();
+
+    @Override
+    public double[][] getTargets(List<String[]> dataset, int targetColumn) {
+        if (dataset == null || dataset.isEmpty()) {
+            throw new IllegalArgumentException("Dataset darf nicht leer sein.");
+        }
+
+        double[][] targets = new double[dataset.size()][indexToClassMap.size()];
+        for (int i = 0; i < dataset.size(); i++) {
+            String value = dataset.get(i)[targetColumn];
+            int index = indexToClassMap.get(value);
+            targets[i][index] = 1.0;
+        }
+
+        return targets;
+    }
+
+    @Override
+    public Map<String, Integer> getClassMap() {
+        return indexToClassMap;
+    }
+
+
+    @Override
+    public DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy) {
+        return null;
+    }
+
+    @Override
+    public DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy) {
+        return null;
+    }
+
+
+    @Override
+    public double[][] getTrainFeatures( int[] inputColumns) {
+        return getInputs(trainData, inputColumns);
+    }
+
+    @Override
+    public double[][] getTrainLabels( int targetColumn) {
+        return getTargets(trainData, targetColumn);
+    }
+
+    @Override
+    public double[][] getTestFeatures( int[] inputColumns) {
+        return getInputs(testData, inputColumns);
+    }
+
+    @Override
+    public double[][] getTestLabels( int targetColumn) {
+        return getTargets(testData, targetColumn);
+    }
+
+}

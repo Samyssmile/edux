@@ -1,152 +1,159 @@
 package de.edux.data.provider;
 
-import de.edux.data.reader.CSVIDataReader;
-import de.edux.ml.nn.network.api.Dataset;
+import de.edux.data.reader.IDataReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.Mockito.when;
 
-
 @ExtendWith(MockitoExtension.class)
 class DataProcessorTest {
-    @InjectMocks
-    private DataProcessor<String> dataProcessor = getDummyDataUtil();
+
+    private static final boolean SKIP_HEAD = true;
+    private List<String[]> dummyDataset;
+
+    private DataProcessor dataProcessor;
 
     @Mock
-    private CSVIDataReader csvDataReader;
+    IDataReader dataReader;
 
     @BeforeEach
     void setUp() {
-        dataProcessor = getDummyDataUtil();
+        dummyDataset = new ArrayList<>();
+        dummyDataset.add(new String[]{"col1", "col2", "Name", "col4", "col5"});
+        dummyDataset.add(new String[]{"1", "2", "3", "Anna", "5"});
+        dummyDataset.add(new String[]{"6", "7", "8", "Nina", "10"});
+        dummyDataset.add(new String[]{"11", "12", "13", "Johanna", "15"});
+        dummyDataset.add(new String[]{"16", "17", "18", "Isabela", "20"});
+        when(dataReader.readFile(any(), anyChar())).thenReturn(dummyDataset);
+        dataProcessor = new DataProcessor(dataReader);
     }
 
     @Test
-    void testSplitWithValidRatio() {
-        List<String> dataset = Arrays.asList("A", "B", "C", "D", "E");
-        double trainTestSplitRatio = 0.6;
-
-        Dataset<String> result = dataProcessor.split(dataset, trainTestSplitRatio);
-
-        assertEquals(3, result.trainData().size(), "Train dataset size should be 3");
-        assertEquals(2, result.testData().size(), "Test dataset size should be 2");
+    void shouldSkipHead() {
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', SKIP_HEAD, new int[]{0, 1, 2, 4}, 3);
+        assertEquals(4, dataProcessor.getDataset().size(), "Number of rows does not match.");
     }
 
     @Test
-    void testSplitWithZeroRatio() {
-        List<String> dataset = Arrays.asList("A", "B", "C", "D", "E");
-        double trainTestSplitRatio = 0.0;
-
-        Dataset<String> result = dataProcessor.split(dataset, trainTestSplitRatio);
-
-        assertEquals(0, result.trainData().size(), "Train dataset size should be 0");
-        assertEquals(5, result.testData().size(), "Test dataset size should be 5");
+    void shouldNotSkipHead() {
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', false, new int[]{0, 1, 2, 4}, 3);
+        assertEquals(5, dataProcessor.getDataset().size(), "Number of rows does not match.");
     }
+
 
     @Test
-    void testSplitWithFullRatio() {
-        List<String> dataset = Arrays.asList("A", "B", "C", "D", "E");
-        double trainTestSplitRatio = 1.0;
+    void getTargets() {
+        when(dataReader.readFile(any(), anyChar())).thenReturn(dummyDataset);
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', SKIP_HEAD, new int[]{0, 1, 2, 4}, 3)
+                        .split(0.5);
+        dummyDataset.add(new String[]{"21", "22", "23", "Isabela", "25"});
 
-        Dataset<String> result = dataProcessor.split(dataset, trainTestSplitRatio);
-
-        assertEquals(5, result.trainData().size(), "Train dataset size should be 5");
-        assertEquals(0, result.testData().size(), "Test dataset size should be 0");
-    }
-
-    @Test
-    void testSplitWithInvalidNegativeRatio() {
-        List<String> dataset = Arrays.asList("A", "B", "C", "D", "E");
-        double trainTestSplitRatio = -0.1;
-
-        assertThrows(IllegalArgumentException.class, () -> dataProcessor.split(dataset, trainTestSplitRatio));
-    }
-
-    @Test
-    void testSplitWithInvalidAboveOneRatio() {
-        List<String> dataset = Arrays.asList("A", "B", "C", "D", "E");
-        double trainTestSplitRatio = 1.1;
-
-        assertThrows(IllegalArgumentException.class, () -> dataProcessor.split(dataset, trainTestSplitRatio));
-    }
-
-    @Test
-    void testLoadTDataSetWithoutNormalizationAndShuffling() {
-        File dummyFile = new File("dummy.csv");
-        char separator = ',';
-        String[] csvFirstLine = {"A", "B", "C", "D", "E"};
-        String[] csvSecondLine = {"F", "G", "H", "I", "J"};
-        List<String[]> csvLine = new ArrayList<>();
-        csvLine.add(csvFirstLine);
-        csvLine.add(csvSecondLine);
-
-        when(csvDataReader.readFile(any(), anyChar())).thenReturn(csvLine);
-
-        List<String> result = dataProcessor.loadDataSetFromCSV(dummyFile, separator, false, false, false);
-
-        assertEquals(2, result.size(), "Dataset size should be 2");
-    }
-
-    private DataProcessor<String> getDummyDataUtil() {
-        return new DataProcessor<>(csvDataReader) {
-
-            @Override
-            public void normalize(List<String> dataset) {
-            }
-
-            @Override
-            public String mapToDataRecord(String[] csvLine) {
-                return null;
-            }
-
-            @Override
-            public double[][] getInputs(List<String> dataset) {
-                return new double[0][];
-            }
-
-            @Override
-            public double[][] getTargets(List<String> dataset) {
-                return new double[0][];
-            }
-
-            @Override
-            public String getDatasetDescription() {
-                return null;
-            }
-
-            @Override
-            public double[][] getTrainFeatures() {
-                return new double[0][];
-            }
-
-            @Override
-            public double[][] getTrainLabels() {
-                return new double[0][];
-            }
-
-            @Override
-            public double[][] getTestLabels() {
-                return new double[0][];
-            }
-
-            @Override
-            public double[][] getTestFeatures() {
-                return new double[0][];
-            }
+        double[][] targets = dataProcessor.getTargets(dummyDataset, 3);
+        double[][] expectedTargets = {
+                {1.0, 0.0, 0.0, 0.0}, // Anna
+                {0.0, 1.0, 0.0, 0.0}, // Nina
+                {0.0, 0.0, 1.0, 0.0}, // Johanna
+                {0.0, 0.0, 0.0, 1.0}, // Isabela
+                {0.0, 0.0, 0.0, 1.0}  // Isabela
         };
+
+        for (int i = 0; i < expectedTargets.length; i++) {
+            assertArrayEquals(expectedTargets[i], targets[i], "Die Zielzeile " + i + " stimmt nicht überein.");
+        }
+
+        Map<String, Integer> classMap = dataProcessor.getClassMap();
+        Map<String, Integer> expectedClassMap = Map.of(
+                "Anna", 0,
+                "Nina", 1,
+                "Johanna", 2,
+                "Isabela", 3);
+
+        assertEquals(expectedClassMap, classMap, "Die Klassen stimmen nicht überein.");
+    }
+
+    @Test
+    void getInputs() {
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', SKIP_HEAD, new int[]{0, 1, 2, 4}, 3)
+                .split(0.5);
+        double[][] inputs = dataProcessor.getInputs(dummyDataset, new int[]{0, 1, 2, 4});
+
+        double[][] expectedInputs = {
+                {1.0, 2.0, 3.0, 5.0},
+                {6.0, 7.0, 8.0, 10.0},
+                {11.0, 12.0, 13.0, 15.0},
+                {16.0, 17.0, 18.0, 20.0}
+        };
+
+        assertEquals(expectedInputs.length, inputs.length, "Die Anzahl der Zeilen stimmt nicht überein.");
+
+        for (int i = 0; i < expectedInputs.length; i++) {
+            assertArrayEquals(expectedInputs[i], inputs[i], "Die Zeile " + i + " entspricht nicht den erwarteten Werten.");
+        }
+    }
+
+    private List<String[]> duplicateList(List<String[]> list) {
+        List<String[]> duplicate = new ArrayList<>();
+        for (String[] row : list) {
+            duplicate.add(row.clone());
+        }
+        return duplicate;
+    }
+
+    @Test
+    void shouldNormalize() {
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', SKIP_HEAD, new int[]{0, 1, 2, 4}, 3)
+                .split(0.5);
+        List<String[]> normalizedDataset = dataProcessor.normalize().getDataset();
+
+        String[][] expectedNormalizedValues = {
+                {"0.0", "0.0", "0.0", "Anna", "0.0"},
+                {"0.3333333333333333", "0.3333333333333333", "0.3333333333333333", "Nina", "0.3333333333333333"},
+                {"0.6666666666666666", "0.6666666666666666", "0.6666666666666666", "Johanna", "0.6666666666666666"},
+                {"1.0", "1.0", "1.0", "Isabela", "1.0"}
+        };
+
+        for (int i = 1; i < normalizedDataset.size(); i++) {
+            String[] row = normalizedDataset.get(i);
+            assertArrayEquals(expectedNormalizedValues[i], row, "Die Zeile " + i + " entspricht nicht den erwarteten normalisierten Werten.");
+        }
+    }
+
+    @Test
+    void shouldShuffle() {
+        List<String[]> originalDataset = duplicateList(dummyDataset);
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', false, new int[]{0, 1, 2, 4}, 3)
+                .split(0.5);
+        List<String[]> shuffledDataset = dataProcessor.shuffle().getDataset();
+
+        assertNotEquals(originalDataset, shuffledDataset, "Die Reihenfolge der Zeilen hat sich nicht geändert.");
+    }
+
+
+    @Test
+    void shouldReturnTrainTestDataset() {
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', false, new int[]{0, 1, 2, 4}, 3);
+        dataProcessor.split(0.5);
+
+        int[] inputColumns = new int[]{0, 1, 2, 4};
+        double[][] trainFeatures = dataProcessor.getTrainFeatures(inputColumns);
+        double[][] testFeatures = dataProcessor.getTestFeatures(inputColumns);
+
+        double[][] trainLabels = dataProcessor.getTrainLabels(3);
+        double[][] testLabels = dataProcessor.getTestLabels(3);
+
     }
 
 }
