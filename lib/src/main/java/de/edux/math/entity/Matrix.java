@@ -7,14 +7,8 @@ import de.edux.math.Validations;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * @author ImGolem?
- */
 public class Matrix implements Entity<Matrix>, Iterable<Double> {
 
-    /**
-     * Represents a raw matrix as a default two-dimension array
-     */
     private final double[][] raw;
 
     public Matrix(double[][] matrix) {

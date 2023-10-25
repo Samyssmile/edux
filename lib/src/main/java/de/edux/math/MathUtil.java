@@ -1,8 +1,5 @@
 package de.edux.math;
 
-/**
- * @author ImGolem?
- */
 public final class MathUtil {
 
     public static double[] unwrap(double[][] matrix) {

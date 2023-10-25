@@ -7,14 +7,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * @author ImGolem?
- */
 public class Vector implements Entity<Vector>, Iterable<Double> {
 
-    /**
-     * Represents a raw vector as a default array
-     */
     private final double[] raw;
 
     public Vector(double[] vector) {

@@ -1,8 +1,5 @@
 package de.edux.math;
 
-/**
- * @author ImGolem?
- */
 public interface Entity<T> {
 
     T add(T another);
