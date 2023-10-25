@@ -1,12 +1,11 @@
 package de.edux.math.entity;
 
-import de.edux.math.EntityTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MatrixTest implements EntityTest {
+public class MatrixTest {
 
     static Matrix first;
     static Matrix second;
@@ -25,7 +24,6 @@ public class MatrixTest implements EntityTest {
         });
     }
 
-    @Override
     @Test
     public void testAdd() {
         assertEquals(new Matrix(new double[][] {
@@ -35,7 +33,6 @@ public class MatrixTest implements EntityTest {
         }), first.add(second));
     }
 
-    @Override
     @Test
     public void testSubtract() {
         assertEquals(new Matrix(new double[][] {
@@ -45,13 +42,6 @@ public class MatrixTest implements EntityTest {
         }), first.subtract(second));
     }
 
-    @Override
-    @Test
-    public void testMultiply() {
-        // TODO other matrices
-    }
-
-    @Override
     @Test
     public void testScalarMultiply() {
         assertEquals(new Matrix(new double[][] {
