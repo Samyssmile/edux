@@ -94,16 +94,10 @@ public class Vector implements Entity<Vector>, Iterable<Double> {
         return result;
     }
 
-    /**
-     * @return length of the vector
-     */
     public int length() {
         return raw.length;
     }
 
-    /**
-     * @return raw vector (array)
-     */
     public double[] raw() {
         return raw.clone();
     }
