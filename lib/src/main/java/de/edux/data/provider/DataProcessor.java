@@ -46,6 +46,7 @@ public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
                 uniqueClasses.add(label);
             }
         }
+        List<String[]> csvDataset = incompleteRecordHandlerStrategy.getHandler().getCleanedDataset(rawDataset);
 
         for (int i = 0; i < uniqueClasses.size(); i++) {
             indexToClassMap.put(uniqueClasses.get(i), i);
@@ -151,6 +152,21 @@ public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
     public double[][] getTestFeatures( int[] inputColumns) {
         return getInputs(testData, inputColumns);
     }
+
+    public void imputation(String columnName, ImputationStrategy imputationStrategy) {
+        String[] columnDataToUpdate = getColumnDataOf(columnName);
+        String[] updatedColumnData = imputationStrategy.getImputation().performImputation(columnDataToUpdate);
+        int columnIndex = getIndexOfColumn(columnName).get();
+
+        for (int row = 0; row < rawDataset.size(); row++) {
+            rawDataset.get(row)[columnIndex] = updatedColumnData[row];
+        }
+    }
+    public void imputation(int columnIndex, ImputationStrategy imputationStrategy) {
+        String columnName = getColumnNames()[columnIndex];
+        this.imputation(columnName, imputationStrategy);
+    }
+}
 
     @Override
     public double[][] getTestLabels( int targetColumn) {
