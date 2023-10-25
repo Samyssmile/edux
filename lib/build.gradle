@@ -5,11 +5,11 @@ plugins {
 }
 
 group = 'io.github.samyssmile'
-version = '1.0.4'
+version = '1.0.5'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -18,11 +18,19 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.ejml:ejml-core:0.43.1'
+    implementation 'org.ejml:ejml-ddense:0.43.1'
+    implementation 'org.ejml:ejml-simple:0.43.1'
     implementation 'com.opencsv:opencsv:5.8'
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.20.0'
     api 'org.apache.commons:commons-math3:3.6.1'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }
 
 testing {
@@ -33,12 +41,6 @@ testing {
     }
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     archiveClassifier.set('sources')
@@ -46,6 +48,7 @@ task sourceJar(type: Jar) {
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set('javadoc')
+    javadoc.destinationDir = file("${rootProject.projectDir}/docs/javadocs") // Definiert das Ausgabeverzeichnis für die generierten JavaDocs.
     from javadoc.destinationDir
 }
 
@@ -54,7 +57,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'io.github.samyssmile'
             artifactId = 'edux'
-            version = '1.0.4'
+            version = '1.0.5'
             from components.java
             artifact sourceJar
             artifact javadocJar
