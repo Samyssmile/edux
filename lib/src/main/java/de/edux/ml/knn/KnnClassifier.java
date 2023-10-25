@@ -1,66 +1,119 @@
 package de.edux.ml.knn;
 
+import de.edux.api.Classifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
-public class KnnClassifier {
-    private static final Logger LOG = LoggerFactory.getLogger(KnnClassifier.class);
+/**
+ * The {@code KnnClassifier} class provides an implementation of the k-Nearest Neighbors algorithm for classification tasks.
+ * It stores the training dataset and predicts the label for new data points based on the majority label of its k-nearest neighbors in the feature space.
+ * Distance between data points is computed using the Euclidean distance metric.
+ * Optionally, predictions can be weighted by the inverse of the distance to give closer neighbors higher influence.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * int k = 3;  // Specify the number of neighbors to consider
+ * KnnClassifier knn = new KnnClassifier(k);
+ * knn.train(trainingFeatures, trainingLabels);
+ *
+ * double[] prediction = knn.predict(inputFeatures);
+ * double accuracy = knn.evaluate(testFeatures, testLabels);
+ * }</pre>
+ *
+ * <p>Note: The label arrays should be in one-hot encoding format.</p>
+ *
+ *
+ */
+public class KnnClassifier implements Classifier {
+    Logger LOG = LoggerFactory.getLogger(KnnClassifier.class);
+    private double[][] trainFeatures;
+    private double[][] trainLabels;
     private int k;
-    private List<ILabeledPoint> trainingPoints;
+    private static final double EPSILON = 1e-10;
 
-    public KnnClassifier(int k, List<ILabeledPoint> trainingPoints) {
+    /**
+     * Initializes a new instance of {@code KnnClassifier} with specified k.
+     *
+     * @param k an integer value representing the number of neighbors to consider during classification
+     * @throws IllegalArgumentException if k is not a positive integer
+     */
+    public KnnClassifier(int k) {
+        if (k <= 0) {
+            throw new IllegalArgumentException("k must be a positive integer");
+        }
         this.k = k;
-        this.trainingPoints = trainingPoints;
     }
 
-    private double distance(ILabeledPoint a, ILabeledPoint b) {
-        double[] aFeatures = a.getFeatures();
-        double[] bFeatures = b.getFeatures();
+    @Override
+    public boolean train(double[][] features, double[][] labels) {
+        if (features.length == 0 || features.length != labels.length) {
+            return false;
+        }
+        this.trainFeatures = features;
+        this.trainLabels = labels;
+        return true;
+    }
 
-        if (aFeatures.length != bFeatures.length) {
-            throw new IllegalArgumentException("Both points must have the same number of features");
+    @Override
+    public double evaluate(double[][] testInputs, double[][] testTargets) {
+        LOG.info("Evaluating...");
+        int correct = 0;
+        for (int i = 0; i < testInputs.length; i++) {
+            double[] prediction = predict(testInputs[i]);
+            if (Arrays.equals(prediction, testTargets[i])) {
+                correct++;
+            }
+        }
+        double accuracy = (double) correct / testInputs.length;
+        LOG.info("KNN - Accuracy: " + accuracy * 100 + "%");
+        return accuracy;
+    }
+
+    @Override
+    public double[] predict(double[] feature) {
+        PriorityQueue<Neighbor> pq = new PriorityQueue<>((a, b) -> Double.compare(b.distance, a.distance));
+        for (int i = 0; i < trainFeatures.length; i++) {
+            double distance = calculateDistance(trainFeatures[i], feature);
+            pq.offer(new Neighbor(distance, trainLabels[i]));
+            if (pq.size() > k) {
+                pq.poll();
+            }
         }
 
-        double sum = 0.0;
-        for (int i = 0; i < aFeatures.length; i++) {
-            sum += Math.pow(aFeatures[i] - bFeatures[i], 2);
+        double[] aggregatedLabel = new double[trainLabels[0].length];
+        double totalWeight = 0;
+        for (Neighbor neighbor : pq) {
+            double weight = 1 / (neighbor.distance + EPSILON);
+            for (int i = 0; i < aggregatedLabel.length; i++) {
+                aggregatedLabel[i] += neighbor.label[i] * weight;
+            }
+            totalWeight += weight;
+        }
+
+        for (int i = 0; i < aggregatedLabel.length; i++) {
+            aggregatedLabel[i] /= totalWeight;
+        }
+        return aggregatedLabel;
+    }
+
+    private double calculateDistance(double[] a, double[] b) {
+        double sum = 0;
+        for (int i = 0; i < a.length; i++) {
+            sum += Math.pow(a[i] - b[i], 2);
         }
         return Math.sqrt(sum);
     }
 
-    public String classify(ILabeledPoint unknown) {
-        PriorityQueue<ILabeledPoint> nearestNeighbors = new PriorityQueue<>(
-                Comparator.comparingDouble(p -> distance(p, unknown))
-        );
+    private static class Neighbor {
+        private double distance;
+        private double[] label;
 
-        for (ILabeledPoint p : trainingPoints) {
-            if (nearestNeighbors.size() < k) {
-                nearestNeighbors.add(p);
-            } else if (distance(p, unknown) < distance(nearestNeighbors.peek(), unknown)) {
-                nearestNeighbors.poll();
-                nearestNeighbors.add(p);
-            }
+        public Neighbor(double distance, double[] label) {
+            this.distance = distance;
+            this.label = label;
         }
-
-        Map<String, Long> labelCounts = nearestNeighbors.stream()
-                .collect(Collectors.groupingBy(ILabeledPoint::getLabel, Collectors.counting()));
-        return Collections.max(labelCounts.entrySet(), Map.Entry.comparingByValue()).getKey();
-    }
-
-    public double evaluate(List<ILabeledPoint> testPoints) {
-        int correct = 0;
-
-        for (ILabeledPoint p : testPoints) {
-            if (classify(p).equals(p.getLabel())) {
-                correct++;
-            }
-        }
-
-        double accuracy = (double) correct / testPoints.size()*100;
-        LOG.info("Accuracy: {}%", accuracy);
-        return accuracy;
     }
 }
