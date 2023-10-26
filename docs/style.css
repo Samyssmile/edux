@@ -53,7 +53,6 @@ p {
 }
 
 pre {
-    background: #fff6e5; /* Ein leichtes Grau, um den Code hervorzuheben */
     padding: 15px;
     margin: 20px 0;
     border-radius: 5px;
@@ -63,7 +62,6 @@ pre {
 }
 
 code {
-    background: #fff6e5; /* Ein leichtes Grau, um den Code hervorzuheben */
     padding: 2px 5px;
     border-radius: 3px;
     /*Source Code Font*/

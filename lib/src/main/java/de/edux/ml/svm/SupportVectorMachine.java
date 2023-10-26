@@ -33,6 +33,26 @@ public class SupportVectorMachine implements Classifier {
     private final SVMKernel kernel;
     private final double c;
     private final Map<String, SVMModel> models;
+
+    /**
+     * Constructs a new instance of SupportVectorMachine with a specified kernel and regularization parameter.
+     *
+     * This constructor initializes a new Support Vector Machine (SVM) for classification tasks. The SVM employs a one-vs-one strategy
+     * for multi-class classification. Each model pair within the SVM is trained using the provided kernel function and
+     * the regularization parameter C.
+     *
+     * The kernel is crucial for handling non-linearly separable data by defining a new space in which data points are projected. The
+     * correct choice of a kernel significantly impacts the performance of the SVM. The regularization parameter C controls the trade-off
+     * between achieving a low training error and a low testing error that is the ability of the SVM to generalize to unseen data.
+     *
+     * @param kernel  The kernel to be used for the transformation of the input space. This is necessary for achieving an optimal
+     *                separation in a higher-dimensional space when data is not linearly separable in the original space. The kernel
+     *                defines how data points in space are interpreted based on their similarity.
+     * @param c       The regularization parameter that controls the trade-off between allowing training errors and enforcing rigid margins.
+     *                It helps to prevent overfitting by controlling the strength of the penalty for errors. A higher value of C tries to
+     *                minimize the classification error, potentially at the expense of simplicity, while a lower value of C prioritizes
+     *                simplicity, potentially allowing some misclassifications.
+     */
     public SupportVectorMachine(SVMKernel kernel, double c) {
         this.kernel = kernel;
         this.c = c;
