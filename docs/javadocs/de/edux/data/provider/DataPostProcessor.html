@@ -5,7 +5,7 @@
 <title>DataPostProcessor (lib 1.0.5 API)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="declaration: package: de.edux.data.provider, class: DataPostProcessor">
+<meta name="description" content="declaration: package: de.edux.data.provider, interface: DataPostProcessor">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -39,7 +39,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li>Verschachtelt</li>
 <li>Feld</li>
-<li><a href="#constructor-summary">Konstruktor</a></li>
+<li>Konstruktor</li>
 <li><a href="#method-summary">Methode</a></li>
 </ul>
 </li>
@@ -47,7 +47,7 @@ loadScripts(document, 'script');</script>
 <p>Details:</p>
 <ul>
 <li>Feld</li>
-<li><a href="#constructor-detail">Konstruktor</a></li>
+<li>Konstruktor</li>
 <li><a href="#method-detail">Methode</a></li>
 </ul>
 </li>
@@ -59,13 +59,13 @@ loadScripts(document, 'script');</script>
 <li>Übersicht:&nbsp;</li>
 <li>Verschachtelt&nbsp;|&nbsp;</li>
 <li>Feld&nbsp;|&nbsp;</li>
-<li><a href="#constructor-summary">Konstruktor</a>&nbsp;|&nbsp;</li>
+<li>Konstruktor&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Methode</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Details:&nbsp;</li>
 <li>Feld&nbsp;|&nbsp;</li>
-<li><a href="#constructor-detail">Konstruktor</a>&nbsp;|&nbsp;</li>
+<li>Konstruktor&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Methode</a></li>
 </ul>
 </div>
@@ -82,35 +82,18 @@ loadScripts(document, 'script');</script>
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
 <div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">de.edux.data.provider</a></div>
-<h1 title="Klasse DataPostProcessor" class="title">Klasse DataPostProcessor&lt;T&gt;</h1>
-</div>
-<div class="inheritance" title="Vererbungsbaum"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">de.edux.data.provider.DataPostProcessor&lt;T&gt;</div>
+<h1 title="Schnittstelle DataPostProcessor" class="title">Schnittstelle DataPostProcessor</h1>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
-<dt>Bekannte direkte Unterklassen:</dt>
+<dt>Alle bekannten Implementierungsklassen:</dt>
 <dd><code><a href="DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></code></dd>
 </dl>
 <hr>
-<div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">DataPostProcessor&lt;T&gt;</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">Object</a></span></div>
+<div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">DataPostProcessor</span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
-<!-- ======== CONSTRUCTOR SUMMARY ======== -->
-<li>
-<section class="constructor-summary" id="constructor-summary">
-<h2>Konstruktorübersicht</h2>
-<div class="caption"><span>Konstruktoren</span></div>
-<div class="summary-table two-column-summary">
-<div class="table-header col-first">Konstruktor</div>
-<div class="table-header col-last">Beschreibung</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">DataPostProcessor</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-</div>
-</section>
-</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -122,116 +105,76 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifizierer und Typ</div>
 <div class="table-header col-second">Methode</div>
 <div class="table-header col-last">Beschreibung</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getDatasetDescription()" class="member-name-link">getDatasetDescription</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a><wbr>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a>[]&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getDataset()" class="member-name-link">getDataset</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double[][]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getInputs(java.util.List)" class="member-name-link">getInputs</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a>&gt;&nbsp;dataset)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#imputation(int,de.edux.functions.imputation.ImputationStrategy)" class="member-name-link">imputation</a><wbr>(int&nbsp;columnIndex,
+ <a href="../../functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a>&nbsp;imputationStrategy)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double[][]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTargets(java.util.List)" class="member-name-link">getTargets</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a>&gt;&nbsp;dataset)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#imputation(java.lang.String,de.edux.functions.imputation.ImputationStrategy)" class="member-name-link">imputation</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="../../functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a>&nbsp;imputationStrategy)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double[][]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTestFeatures()" class="member-name-link">getTestFeatures</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#normalize()" class="member-name-link">normalize</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double[][]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTestLabels()" class="member-name-link">getTestLabels</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#shuffle()" class="member-name-link">shuffle</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double[][]</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTrainFeatures()" class="member-name-link">getTrainFeatures</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#split(double)" class="member-name-link">split</a><wbr>(double&nbsp;splitRatio)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract double[][]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getTrainLabels()" class="member-name-link">getTrainLabels</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract <a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#mapToDataRecord(java.lang.String%5B%5D)" class="member-name-link">mapToDataRecord</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a>[]&nbsp;csvLine)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>abstract void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#normalize(java.util.List)" class="member-name-link">normalize</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a>&gt;&nbsp;rowDataset)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 </div>
 </div>
 </div>
-<div class="inherited-list">
-<h3 id="methods-inherited-from-class-java.lang.Object">Von Klasse geerbte Methoden&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">Object</a></h3>
-<code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#clone()" title="Klasse oder Schnittstelle in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="Klasse oder Schnittstelle in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#finalize()" title="Klasse oder Schnittstelle in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#getClass()" title="Klasse oder Schnittstelle in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#hashCode()" title="Klasse oder Schnittstelle in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notify()" title="Klasse oder Schnittstelle in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#notifyAll()" title="Klasse oder Schnittstelle in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#toString()" title="Klasse oder Schnittstelle in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait()" title="Klasse oder Schnittstelle in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long)" title="Klasse oder Schnittstelle in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="Klasse oder Schnittstelle in java.lang" class="external-link">wait</a></code></div>
 </section>
 </li>
 </ul>
 </section>
 <section class="details">
 <ul class="details-list">
-<!-- ========= CONSTRUCTOR DETAIL ======== -->
-<li>
-<section class="constructor-details" id="constructor-detail">
-<h2>Konstruktordetails</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="&lt;init&gt;()">
-<h3>DataPostProcessor</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DataPostProcessor</span>()</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
 <!-- ============ METHOD DETAIL ========== -->
 <li>
 <section class="method-details" id="method-detail">
 <h2>Methodendetails</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="normalize(java.util.List)">
+<section class="detail" id="normalize()">
 <h3>normalize</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">normalize</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a>&gt;&nbsp;rowDataset)</span></div>
+<div class="member-signature"><span class="return-type"><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></span>&nbsp;<span class="element-name">normalize</span>()</div>
 </section>
 </li>
 <li>
-<section class="detail" id="mapToDataRecord(java.lang.String[])">
-<h3>mapToDataRecord</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a></span>&nbsp;<span class="element-name">mapToDataRecord</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a>[]&nbsp;csvLine)</span></div>
+<section class="detail" id="shuffle()">
+<h3>shuffle</h3>
+<div class="member-signature"><span class="return-type"><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></span>&nbsp;<span class="element-name">shuffle</span>()</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getInputs(java.util.List)">
-<h3>getInputs</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">getInputs</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a>&gt;&nbsp;dataset)</span></div>
+<section class="detail" id="imputation(java.lang.String,de.edux.functions.imputation.ImputationStrategy)">
+<h3>imputation</h3>
+<div class="member-signature"><span class="return-type"><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></span>&nbsp;<span class="element-name">imputation</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a>&nbsp;columnName,
+ <a href="../../functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a>&nbsp;imputationStrategy)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="getTargets(java.util.List)">
-<h3>getTargets</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">getTargets</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="DataPostProcessor.html" title="Typparameter in DataPostProcessor">T</a>&gt;&nbsp;dataset)</span></div>
+<section class="detail" id="imputation(int,de.edux.functions.imputation.ImputationStrategy)">
+<h3>imputation</h3>
+<div class="member-signature"><span class="return-type"><a href="DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></span>&nbsp;<span class="element-name">imputation</span><wbr><span class="parameters">(int&nbsp;columnIndex,
+ <a href="../../functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a>&nbsp;imputationStrategy)</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="getDatasetDescription()">
-<h3>getDatasetDescription</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">getDatasetDescription</span>()</div>
+<section class="detail" id="getDataset()">
+<h3>getDataset</h3>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/List.html" title="Klasse oder Schnittstelle in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">String</a>[]&gt;</span>&nbsp;<span class="element-name">getDataset</span>()</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getTrainFeatures()">
-<h3>getTrainFeatures</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">getTrainFeatures</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getTrainLabels()">
-<h3>getTrainLabels</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">getTrainLabels</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getTestLabels()">
-<h3>getTestLabels</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">getTestLabels</span>()</div>
-</section>
-</li>
-<li>
-<section class="detail" id="getTestFeatures()">
-<h3>getTestFeatures</h3>
-<div class="member-signature"><span class="modifiers">public abstract</span>&nbsp;<span class="return-type">double[][]</span>&nbsp;<span class="element-name">getTestFeatures</span>()</div>
+<section class="detail" id="split(double)">
+<h3>split</h3>
+<div class="member-signature"><span class="return-type"><a href="DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></span>&nbsp;<span class="element-name">split</span><wbr><span class="parameters">(double&nbsp;splitRatio)</span></div>
 </section>
 </li>
 </ul>
