@@ -2,8 +2,11 @@ de.edux.api
 de.edux.data.provider
 de.edux.data.reader
 de.edux.functions.activation
+de.edux.functions.imputation
 de.edux.functions.initialization
 de.edux.functions.loss
+de.edux.math
+de.edux.math.entity
 de.edux.ml.decisiontree
 de.edux.ml.knn
 de.edux.ml.nn.config
