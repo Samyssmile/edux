@@ -51,6 +51,8 @@ public class DecisionTree implements Classifier {
     private final int minSamplesSplit;
     private final int minSamplesLeaf;
     private final int maxLeafNodes;
+    private int currentLeafNodes;
+
     private final Map<Integer, Double> featureImportances;
 
     public DecisionTree(int maxDepth,
@@ -61,6 +63,7 @@ public class DecisionTree implements Classifier {
         this.minSamplesSplit = minSamplesSplit;
         this.minSamplesLeaf = minSamplesLeaf;
         this.maxLeafNodes = maxLeafNodes;
+        this.currentLeafNodes = 0;
         this.featureImportances = new HashMap<>();
     }
 
@@ -85,18 +88,35 @@ public class DecisionTree implements Classifier {
         Node node = new Node(features);
         node.predictedLabel = getMajorityLabel(labels);
 
-        boolean maxDepthReached = depth >= maxDepth;
-        boolean tooFewSamples = features.length < minSamplesSplit;
-        int currentLeafNodes = 0;
-        boolean maxLeafNodesReached = currentLeafNodes >= maxLeafNodes;
-
-        if (maxDepthReached || tooFewSamples || maxLeafNodesReached) {
+        if (shouldTerminate(features, depth)) {
+            currentLeafNodes++;
             return node;
         }
 
+        SplitResult bestSplit = findBestSplit(features, labels);
+        if (bestSplit != null) {
+            applyBestSplit(node, bestSplit, features, labels, depth);
+        } else {
+            currentLeafNodes++;
+        }
+
+        return node;
+    }
+
+    private boolean shouldTerminate(double[][] features, int depth) {
+        boolean maxDepthReached = depth >= maxDepth;
+        boolean tooFewSamples = features.length < minSamplesSplit;
+        boolean maxLeafNodesReached = currentLeafNodes >= maxLeafNodes;
+
+        if (maxDepthReached || tooFewSamples || maxLeafNodesReached) {
+            return true;
+        }
+        return false;
+    }
+
+    private SplitResult findBestSplit(double[][] features, double[][] labels) {
         double bestGini = Double.MAX_VALUE;
-        double[][] bestLeftFeatures = null, bestRightFeatures = null;
-        double[][] bestLeftLabels = null, bestRightLabels = null;
+        SplitResult bestSplit = null;
 
         for (int featureIndex = 0; featureIndex < features[0].length; featureIndex++) {
             for (double[] feature : features) {
@@ -111,29 +131,31 @@ public class DecisionTree implements Classifier {
                 if (gini < bestGini) {
                     bestGini = gini;
                     updateFeatureImportances(featureIndex, gini);
-                    bestLeftFeatures = leftFeatures;
-                    bestRightFeatures = rightFeatures;
-                    bestLeftLabels = leftLabels;
-                    bestRightLabels = rightLabels;
-                    node.splitFeatureIndex = featureIndex;
-                    node.splitValue = feature[featureIndex];
+                    bestSplit = new SplitResult(featureIndex, feature[featureIndex], leftFeatures, rightFeatures, leftLabels, rightLabels);
                 }
             }
         }
 
-        if (bestLeftFeatures != null && bestRightFeatures != null &&
-                bestLeftFeatures.length >= minSamplesLeaf && bestRightFeatures.length >= minSamplesLeaf) {
+        return bestSplit;
+    }
 
-            Node leftChild = buildTree(bestLeftFeatures, bestLeftLabels, depth + 1);
-            Node rightChild = buildTree(bestRightFeatures, bestRightLabels, depth + 1);
+    private void applyBestSplit(Node node, SplitResult bestSplit, double[][] features, double[][] labels, int depth) {
+        node.splitFeatureIndex = bestSplit.featureIndex;
+        node.splitValue = bestSplit.splitValue;
 
-            if(currentLeafNodes + 2 <= maxLeafNodes) {
-                node.left = leftChild;
-                node.right = rightChild;
+        if (bestSplit.bestLeftFeatures != null && bestSplit.bestRightFeatures != null &&
+                bestSplit.bestLeftFeatures.length >= minSamplesLeaf && bestSplit.bestRightFeatures.length >= minSamplesLeaf) {
+
+            if (currentLeafNodes + 2 <= maxLeafNodes) {
+                node.left = buildTree(bestSplit.bestLeftFeatures, bestSplit.bestLeftLabels, depth + 1);
+                node.right = buildTree(bestSplit.bestRightFeatures, bestSplit.bestRightLabels, depth + 1);
+                currentLeafNodes += 2;
+            } else {
+                currentLeafNodes++;
             }
+        } else {
+            currentLeafNodes++;
         }
-
-        return node;
     }
 
     private void updateFeatureImportances(int featureIndex, double giniReduction) {
@@ -147,7 +169,6 @@ public class DecisionTree implements Classifier {
                         Map.Entry::getKey,
                         e -> e.getValue() / totalImportance));
     }
-
 
     private double[][] filterRows(double[][] matrix, int featureIndex, double value, boolean lessThan) {
         return Arrays.stream(matrix)
@@ -232,8 +253,6 @@ public class DecisionTree implements Classifier {
         }
     }
 
-
-
     private double computeGini(double[][] leftLabels, double[][] rightLabels) {
         double leftImpurity = computeImpurity(leftLabels);
         double rightImpurity = computeImpurity(rightLabels);
@@ -241,7 +260,6 @@ public class DecisionTree implements Classifier {
         double rightWeight = ((double) rightLabels.length) / (leftLabels.length + rightLabels.length);
         return leftWeight * leftImpurity + rightWeight * rightImpurity;
     }
-
 
     private double computeImpurity(double[][] labels) {
         double impurity = 1.0;
@@ -255,9 +273,25 @@ public class DecisionTree implements Classifier {
         return impurity;
     }
 
+    private static class SplitResult {
+        int featureIndex;
+        double splitValue;
+        double[][] bestLeftFeatures;
+        double[][] bestRightFeatures;
+        double[][] bestLeftLabels;
+        double[][] bestRightLabels;
 
-
-    static class Node {
+        SplitResult(int featureIndex, double splitValue, double[][] bestLeftFeatures, double[][] bestRightFeatures,
+                    double[][] bestLeftLabels, double[][] bestRightLabels) {
+            this.featureIndex = featureIndex;
+            this.splitValue = splitValue;
+            this.bestLeftFeatures = bestLeftFeatures;
+            this.bestRightFeatures = bestRightFeatures;
+            this.bestLeftLabels = bestLeftLabels;
+            this.bestRightLabels = bestRightLabels;
+        }
+    }
+    private static class Node {
         double[][] data;
         Node left;
         Node right;

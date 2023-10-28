@@ -44,8 +44,8 @@ public class Benchmark {
         initFeaturesAndLabels();
 
         Classifier knn = new KnnClassifier(2);
-        Classifier decisionTree = new DecisionTree(8, 2, 1, 3);
-        Classifier randomForest = new RandomForest(100, 10, 2, 1, 3, 60);
+        Classifier decisionTree = new DecisionTree(2, 2, 3, 12);
+        Classifier randomForest = new RandomForest(500, 10, 2, 3, 3, 60);
         Classifier svm = new SupportVectorMachine(SVMKernel.LINEAR, 1);
 
         networkConfiguration = new NetworkConfiguration(trainFeatures[0].length, List.of(128, 256, 512), 3, 0.01, 300, ActivationFunction.LEAKY_RELU, ActivationFunction.SOFTMAX, LossFunction.CATEGORICAL_CROSS_ENTROPY, Initialization.XAVIER, Initialization.XAVIER);
@@ -66,7 +66,7 @@ public class Benchmark {
         results.put("MLP", new ArrayList<>());
 
 
-        IntStream.range(0, 1).forEach(i -> {
+        IntStream.range(0, 5).forEach(i -> {
             knn.train(trainFeatures, trainLabels);
             decisionTree.train(trainFeatures, trainLabels);
             randomForest.train(trainFeatures, trainLabels);
@@ -88,7 +88,6 @@ public class Benchmark {
             updateMLP(testFeatures, testLabels);
         });
 
-
         System.out.println("Classifier performances (sorted by average accuracy):");
         results.entrySet().stream()
                 .map(entry -> {
@@ -103,7 +102,6 @@ public class Benchmark {
                     System.out.printf("%s: %.2f%%\n", entry.getKey(), entry.getValue() * 100);
                 });
 
-        // Additionally, if you want to show other metrics, such as minimum or maximum accuracy, you can calculate and display them similarly.
         System.out.println("\nClassifier best and worst performances:");
         results.forEach((classifierName, accuracies) -> {
             double maxAccuracy = accuracies.stream()
@@ -116,8 +114,6 @@ public class Benchmark {
                     .orElse(0.0);
             System.out.printf("%s: Best: %.2f%%, Worst: %.2f%%\n", classifierName, maxAccuracy * 100, minAccuracy * 100);
         });
-
-
     }
 
     private void updateMLP(double[][] testFeatures, double[][] testLabels) {
@@ -133,8 +129,6 @@ public class Benchmark {
                 .normalize()
                 .shuffle()
                 .split(TRAIN_TEST_SPLIT_RATIO);
-
-
 
         trainFeatures = dataProcessor.getTrainFeatures(featureColumnIndices);
         trainLabels = dataProcessor.getTrainLabels(targetColumnIndex);

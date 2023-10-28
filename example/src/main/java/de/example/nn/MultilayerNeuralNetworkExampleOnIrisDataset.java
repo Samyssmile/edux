@@ -11,7 +11,7 @@ import de.edux.ml.nn.network.MultilayerPerceptron;
 import java.io.File;
 import java.util.List;
 
-public class MultilayerPerceptronExampleV2 {
+public class MultilayerNeuralNetworkExampleOnIrisDataset {
 
     private static final double TRAIN_TEST_SPLIT_RATIO = 0.70;
     private static final File CSV_FILE = new File("example" + File.separator + "datasets" + File.separator + "iris" + File.separator + "iris.csv");
