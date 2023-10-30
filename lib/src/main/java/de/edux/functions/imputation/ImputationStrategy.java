@@ -1,17 +1,16 @@
 package de.edux.functions.imputation;
 
 public enum ImputationStrategy {
-    //TODO: DUMMY, MEAN
-    AVERAGE(new AverageImputation()),
-    MODE(new ModeImputation());
+  AVERAGE(new AverageImputation()),
+  MODE(new ModeImputation());
 
-    private final IImputationStrategy imputation;
+  private final IImputationStrategy imputation;
 
-    ImputationStrategy(IImputationStrategy imputation) {
-        this.imputation = imputation;
-    }
+  ImputationStrategy(IImputationStrategy imputation) {
+    this.imputation = imputation;
+  }
 
-    public IImputationStrategy getImputation() {
-        return this.imputation;
-    }
+  public IImputationStrategy getImputation() {
+    return this.imputation;
+  }
 }

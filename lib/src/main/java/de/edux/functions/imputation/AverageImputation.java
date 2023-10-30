@@ -1,6 +1,7 @@
 package de.edux.functions.imputation;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class AverageImputation implements IImputationStrategy {
   @Override
@@ -13,6 +14,7 @@ public class AverageImputation implements IImputationStrategy {
     for (int index = 0; index < datasetColumn.length; index++) {
       if (datasetColumn[index].isBlank()) {
         updatedDatasetColumn[index] = String.valueOf(average);
+
       } else {
         updatedDatasetColumn[index] = datasetColumn[index];
       }
@@ -32,16 +34,15 @@ public class AverageImputation implements IImputationStrategy {
   }
 
   private boolean isNumeric(String value) {
-    return value.matches("-?\\d+(\\.\\d+)?");
+    return value.matches("-?\\d+(\\.\\d+)?") || value.isBlank();
   }
 
   private double calculateAverage(String[] datasetColumn) {
-    String[] filteredDatasetColumn =
-        (String[]) Arrays.stream(datasetColumn).filter((value) -> !value.isBlank()).toArray();
-    int validValueCount = filteredDatasetColumn.length;
+    List<String> filteredDatasetColumn =
+        Arrays.stream(datasetColumn).filter((value) -> !value.isBlank()).toList();
+    int validValueCount = filteredDatasetColumn.size();
     double sumOfValidValues =
-        Arrays.stream(filteredDatasetColumn).map(Double::parseDouble).reduce(0.0, Double::sum);
-
+        filteredDatasetColumn.stream().map(Double::parseDouble).reduce(0.0, Double::sum);
     return sumOfValidValues / validValueCount;
   }
 }

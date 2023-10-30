@@ -40,13 +40,7 @@ public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
       skipHead();
     }
 
-    List<String> uniqueClasses = new ArrayList<>();
-    for (String[] row : dataset) {
-      String label = row[targetColumn];
-      if (!uniqueClasses.contains(label)) {
-        uniqueClasses.add(label);
-      }
-    }
+    List<String> uniqueClasses = dataset.stream().map(row -> row[targetColumn]).distinct().toList();
 
     for (int i = 0; i < uniqueClasses.size(); i++) {
       indexToClassMap.put(uniqueClasses.get(i), i);
@@ -150,7 +144,7 @@ public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
     return columnNames;
   }
 
-  public void imputation(String columnName, ImputationStrategy imputationStrategy) {
+  public DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy) {
     String[] columnDataToUpdate = getColumnDataOf(columnName);
     String[] updatedColumnData =
         imputationStrategy.getImputation().performImputation(columnDataToUpdate);
@@ -159,26 +153,24 @@ public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
     for (int row = 0; row < dataset.size(); row++) {
       dataset.get(row)[columnIndex] = updatedColumnData[row];
     }
+    return this;
   }
 
-  public void imputation(int columnIndex, ImputationStrategy imputationStrategy) {
+  public DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy) {
     String columnName = getColumnNames()[columnIndex];
     this.imputation(columnName, imputationStrategy);
+    return this;
   }
 
-    @Override
-    public void drop_incomplete_records() {
-      dataset = dataset.stream().filter((record) -> {
-          for (String feature: record) {
-              if (feature.isBlank()) {
-                  return false;
-              }
-          }
-          return true;
-      }).toList();
-    }
+  @Override
+  public void performListWiseDeletion() {
+    dataset =
+        dataset.stream()
+            .filter((record) -> Arrays.stream(record).noneMatch(String::isBlank))
+            .toList();
+  }
 
-    @Override
+  @Override
   public double[][] getTrainFeatures(int[] inputColumns) {
     return getInputs(trainData, inputColumns);
   }
