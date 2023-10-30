@@ -6,23 +6,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DataPostProcessor {
-    DataPostProcessor normalize();
+  DataPostProcessor normalize();
 
-    DataPostProcessor shuffle();
+  DataPostProcessor shuffle();
 
-    DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
+  void imputation(String columnName, ImputationStrategy imputationStrategy);
 
-    DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy);
+  void imputation(int columnIndex, ImputationStrategy imputationStrategy);
 
-    List<String[]> getDataset();
+  void drop_incomplete_records();
 
-    DataProcessor split(double splitRatio);
+  List<String[]> getDataset();
 
-
-    public abstract Optional<Integer> getIndexOfColumn(String columnName);
-
-    public abstract String[] getColumnDataOf(String columnName);
-
-    public abstract String[] getColumnNames();
-
+  DataProcessor split(double splitRatio);
 }

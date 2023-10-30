@@ -1,4 +1,4 @@
-package de.edux.data.imputation;
+package de.edux.functions.imputation;
 
 public interface IImputationStrategy {
   String[] performImputation(String[] columnData);

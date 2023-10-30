@@ -1,4 +1,4 @@
-package de.edux.data.imputation;
+package de.edux.functions.imputation;
 
 import java.util.*;
 
