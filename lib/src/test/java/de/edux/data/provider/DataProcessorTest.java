@@ -1,33 +1,30 @@
 package de.edux.data.provider;
 
-import de.edux.data.reader.IDataReader;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.Mockito.when;
 
+import de.edux.data.reader.IDataReader;
+import de.edux.functions.imputation.ImputationStrategy;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(MockitoExtension.class)
 class DataProcessorTest {
-
     private static final boolean SKIP_HEAD = true;
-    private List<String[]> dummyDataset;
-
-    private DataProcessor dataProcessor;
-
     @Mock
     IDataReader dataReader;
+    List<String[]> dummyDatasetForImputationTest;
+    private List<String[]> dummyDataset;
+    private DataProcessor dataProcessor;
 
     @BeforeEach
     void setUp() {
@@ -38,6 +35,17 @@ class DataProcessorTest {
         dummyDataset.add(new String[]{"11", "12", "13", "Johanna", "15"});
         dummyDataset.add(new String[]{"16", "17", "18", "Isabela", "20"});
         when(dataReader.readFile(any(), anyChar())).thenReturn(dummyDataset);
+
+        dummyDatasetForImputationTest = new ArrayList<>();
+        dummyDatasetForImputationTest.add(new String[] {"Fruit", "Quantity", "Price"});
+        dummyDatasetForImputationTest.add(new String[] {"Apple", "", "8"});
+        dummyDatasetForImputationTest.add(new String[] {"Apple", "2", "9"});
+        dummyDatasetForImputationTest.add(new String[] {"", "3", "10"});
+        dummyDatasetForImputationTest.add(new String[] {"Peach", "3", ""});
+        dummyDatasetForImputationTest.add(new String[] {"Kiwi", "5", ""});
+        dummyDatasetForImputationTest.add(new String[] {"", "3", "11"});
+        dummyDatasetForImputationTest.add(new String[] {"Banana", "7", "12"});
+
         dataProcessor = new DataProcessor(dataReader);
     }
 
@@ -156,4 +164,27 @@ class DataProcessorTest {
 
     }
 
+    @Test
+    void shouldPerformImputationOnDataset() {
+        when(dataReader.readFile(any(), anyChar())).thenReturn(dummyDatasetForImputationTest);
+        dataProcessor.loadDataSetFromCSV(new File("mockpathhere"), ',', SKIP_HEAD, new int[]{0, 1}, 2);
+
+        ImputationStrategy modeImputter = ImputationStrategy.MODE;
+        ImputationStrategy averageImputter = ImputationStrategy.AVERAGE;
+
+        dataProcessor.imputation("Fruit",modeImputter);
+        dataProcessor.imputation("Quantity",modeImputter);
+        dataProcessor.imputation("Price",averageImputter);
+        var imputtedDataset = dataProcessor.getDataset();
+
+        assertAll(
+            () -> assertArrayEquals(new String[] {"Apple", "3", "8"}, imputtedDataset.get(0)),
+            () -> assertArrayEquals(new String[] {"Apple", "2", "9"}, imputtedDataset.get(1)),
+            () -> assertArrayEquals(new String[] {"Apple", "3", "10"}, imputtedDataset.get(2)),
+            () -> assertArrayEquals(new String[] {"Peach", "3", "10.0"}, imputtedDataset.get(3)),
+            () -> assertArrayEquals(new String[] {"Kiwi", "5", "10.0"}, imputtedDataset.get(4)),
+            () -> assertArrayEquals(new String[] {"Apple", "3", "11"}, imputtedDataset.get(5)),
+            () -> assertArrayEquals(new String[] {"Banana", "7", "12"}, imputtedDataset.get(6))
+        );
+  }
 }

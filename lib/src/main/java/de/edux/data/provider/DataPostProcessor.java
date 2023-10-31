@@ -1,21 +1,20 @@
 package de.edux.data.provider;
 
 import de.edux.functions.imputation.ImputationStrategy;
-
 import java.util.List;
 
 public interface DataPostProcessor {
-    DataPostProcessor normalize();
+  DataPostProcessor normalize();
 
-    DataPostProcessor shuffle();
+  DataPostProcessor shuffle();
 
-    DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
+  DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
 
-    DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy);
+  DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy);
 
-    List<String[]> getDataset();
+  void performListWiseDeletion();
 
-    DataProcessor split(double splitRatio);
+  List<String[]> getDataset();
 
-
+  DataProcessor split(double splitRatio);
 }
