@@ -1,11 +1,11 @@
 package de.edux.ml.nn.network.api;
 
 public interface IPerceptron {
-    void train(double[][] inputs, double[][] targetOutputs);
+  void train(double[][] inputs, double[][] targetOutputs);
 
-    double[] predict(double[] inputs);
+  double[] predict(double[] inputs);
 
-    void backpropagate(double[] inputs, double target);
+  void backpropagate(double[] inputs, double target);
 
-    double evaluate(double[][] inputs, double[][] targetOutputs);
+  double evaluate(double[][] inputs, double[][] targetOutputs);
 }
