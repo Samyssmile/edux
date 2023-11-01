@@ -14,12 +14,7 @@ public class MathMatrix implements ConcurrentMatrixMultiplication {
   @Override
   public double[][] multiplyMatrices(double[][] a, double[][] b)
       throws IncompatibleDimensionsException {
-    LOG.info(
-        "Multiplying matrices of size {}x{} and {}x{}",
-        a.length,
-        a[0].length,
-        b.length,
-        b[0].length);
+
     int aRows = a.length;
     int aCols = a[0].length;
     int bCols = b[0].length;
@@ -53,7 +48,6 @@ public class MathMatrix implements ConcurrentMatrixMultiplication {
       LOG.error("Error while multiplying matrices", e);
     }
 
-    LOG.info("Finished multiplying matrices");
     return result;
   }
 
