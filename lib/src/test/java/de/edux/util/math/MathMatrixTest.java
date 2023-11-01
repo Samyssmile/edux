@@ -109,7 +109,6 @@ class MathMatrixTest {
       executor.shutdown();
     }
 
-    LOG.info("Generated matrix with size: " + size);
     return matrix;
   }
 }
