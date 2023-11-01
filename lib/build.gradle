@@ -48,7 +48,8 @@ task sourceJar(type: Jar) {
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set('javadoc')
-    javadoc.destinationDir = file("${rootProject.projectDir}/docs/javadocs") // Definiert das Ausgabeverzeichnis für die generierten JavaDocs.
+    javadoc.destinationDir = file("${rootProject.projectDir}/docs/javadocs")
+    // Definiert das Ausgabeverzeichnis für die generierten JavaDocs.
     from javadoc.destinationDir
 }
 
