@@ -2,6 +2,7 @@ package de.edux.math.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import de.edux.math.Matrix;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

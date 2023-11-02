@@ -50,7 +50,7 @@ public class MultilayerNeuralNetworkExampleOnIrisDataset {
     // - 2 Hidden Layer with 12 and 6 Neurons
     // - 3 Output Neurons
     // - Learning Rate of 0.1
-    // - 1000 Epochs
+    // - 300 Epochs
     // - Leaky ReLU as Activation Function for Hidden Layers
     // - Softmax as Activation Function for Output Layer
     // - Categorical Cross Entropy as Loss Function
@@ -61,7 +61,7 @@ public class MultilayerNeuralNetworkExampleOnIrisDataset {
             trainFeatures[0].length,
             List.of(128, 256, 512),
             3,
-            0.01,
+            0.005,
             300,
             ActivationFunction.LEAKY_RELU,
             ActivationFunction.SOFTMAX,

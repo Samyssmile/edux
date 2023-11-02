@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'io.github.samyssmile'
-version = '1.0.5'
+version = '1.0.6'
 
 java {
     toolchain {
@@ -58,7 +58,7 @@ publishing {
         mavenJava(MavenPublication) {
             groupId = 'io.github.samyssmile'
             artifactId = 'edux'
-            version = '1.0.5'
+            version = '1.0.6'
             from components.java
             artifact sourceJar
             artifact javadocJar

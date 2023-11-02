@@ -2,7 +2,23 @@ package de.edux.functions.imputation;
 
 import java.util.*;
 
+/**
+ * Implements the {@code IImputationStrategy} interface to provide a mode value imputation. This
+ * strategy finds the most frequently occurring value, or mode, in a dataset column and substitutes
+ * missing values with this mode.
+ */
 public class ModeImputation implements IImputationStrategy {
+
+  /**
+   * Performs mode value imputation on the provided dataset column. Missing values are identified as
+   * blank strings and are replaced by the mode of the non-missing values. If multiple modes are
+   * found, the first encountered in the dataset is used.
+   *
+   * @param datasetColumn an array of {@code String} representing the column data with potential
+   *     missing values.
+   * @return an array of {@code String} where missing values have been imputed with the mode of
+   *     non-missing values.
+   */
   @Override
   public String[] performImputation(String[] datasetColumn) {
 
