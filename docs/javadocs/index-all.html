@@ -54,15 +54,16 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="de/edux/functions/activation/ActivationFunction.html" class="type-name-link" title="Enum-Klasse in de.edux.functions.activation">ActivationFunction</a> - Enum-Klasse in <a href="de/edux/functions/activation/package-summary.html">de.edux.functions.activation</a></dt>
 <dd>
-<div class="block">Enumerates common activation functions used in neural networks and similar machine learning architectures.</div>
+<div class="block">Enumerates common activation functions used in neural networks and similar machine learning
+ architectures.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Vector.html#add(double%5B%5D)" class="member-name-link">add(double[])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#add(double%5B%5D)" class="member-name-link">add(double[])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#add(double%5B%5D%5B%5D)" class="member-name-link">add(double[][])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#add(double%5B%5D%5B%5D)" class="member-name-link">add(double[][])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#add(de.edux.math.entity.Matrix)" class="member-name-link">add(Matrix)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#add(de.edux.math.Matrix)" class="member-name-link">add(Matrix)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#add(de.edux.math.entity.Vector)" class="member-name-link">add(Vector)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#add(de.edux.math.Vector)" class="member-name-link">add(Vector)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/math/Entity.html#add(T)" class="member-name-link">add(T)</a> - Methode in Schnittstelle de.edux.math.<a href="de/edux/math/Entity.html" title="Schnittstelle in de.edux.math">Entity</a></dt>
 <dd>&nbsp;</dd>
@@ -71,6 +72,15 @@ loadScripts(document, 'script');</script>
 <div class="block">Adds two matrices and returns the resulting matrix.</div>
 </dd>
 <dt><a href="de/edux/functions/imputation/ImputationStrategy.html#AVERAGE" class="member-name-link">AVERAGE</a> - Enum-Konstante in Enum-Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a></dt>
+<dd>
+<div class="block">Imputation strategy that replaces missing values with the average of the non-missing values in
+ the dataset column.</div>
+</dd>
+<dt><a href="de/edux/functions/imputation/AverageImputation.html" class="type-name-link" title="Klasse in de.edux.functions.imputation">AverageImputation</a> - Klasse in <a href="de/edux/functions/imputation/package-summary.html">de.edux.functions.imputation</a></dt>
+<dd>
+<div class="block">Implements the <code>IImputationStrategy</code> interface to provide an average value imputation.</div>
+</dd>
+<dt><a href="de/edux/functions/imputation/AverageImputation.html#%3Cinit%3E()" class="member-name-link">AverageImputation()</a> - Konstruktor für Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/AverageImputation.html" title="Klasse in de.edux.functions.imputation">AverageImputation</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:B">B</h2>
@@ -100,7 +110,7 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Provides a common interface for machine learning classifiers within the Edux API.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Matrix.html#columns()" class="member-name-link">columns()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#columns()" class="member-name-link">columns()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/util/math/ConcurrentMatrixMultiplication.html" class="type-name-link" title="Schnittstelle in de.edux.util.math">ConcurrentMatrixMultiplication</a> - Schnittstelle in <a href="de/edux/util/math/package-summary.html">de.edux.util.math</a></dt>
 <dd>&nbsp;</dd>
@@ -113,14 +123,18 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:D">D</h2>
 <dl class="index">
-<dt><a href="de/edux/data/provider/DataloaderV2.html" class="type-name-link" title="Schnittstelle in de.edux.data.provider">DataloaderV2</a> - Schnittstelle in <a href="de/edux/data/provider/package-summary.html">de.edux.data.provider</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/Dataloader.html" class="type-name-link" title="Schnittstelle in de.edux.data.provider">Dataloader</a> - Schnittstelle in <a href="de/edux/data/provider/package-summary.html">de.edux.data.provider</a></dt>
+<dd>
+<div class="block">The <code>Dataloader</code> interface defines a method for loading datasets from CSV files.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataNormalizer.html" class="type-name-link" title="Klasse in de.edux.data.provider">DataNormalizer</a> - Klasse in <a href="de/edux/data/provider/package-summary.html">de.edux.data.provider</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataNormalizer.html#%3Cinit%3E()" class="member-name-link">DataNormalizer()</a> - Konstruktor für Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataNormalizer.html" title="Klasse in de.edux.data.provider">DataNormalizer</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataPostProcessor.html" class="type-name-link" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a> - Schnittstelle in <a href="de/edux/data/provider/package-summary.html">de.edux.data.provider</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">The <code>DataPostProcessor</code> interface defines a set of methods for post-processing data.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html" class="type-name-link" title="Klasse in de.edux.data.provider">DataProcessor</a> - Klasse in <a href="de/edux/data/provider/package-summary.html">de.edux.data.provider</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#%3Cinit%3E(de.edux.data.reader.IDataReader)" class="member-name-link">DataProcessor(IDataReader)</a> - Konstruktor für Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
@@ -150,9 +164,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="de/edux/functions/loss/package-summary.html">de.edux.functions.loss</a> - Package de.edux.functions.loss</dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/math/package-summary.html">de.edux.math</a> - Package de.edux.math</dt>
-<dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/package-summary.html">de.edux.math.entity</a> - Package de.edux.math.entity</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Provides the classes necessary for mathematical operations and data manipulation within the Edux
+ framework.</div>
+</dd>
 <dt><a href="de/edux/ml/decisiontree/package-summary.html">de.edux.ml.decisiontree</a> - Package de.edux.ml.decisiontree</dt>
 <dd>
 <div class="block">Decision tree implementation.</div>
@@ -160,7 +175,9 @@ loadScripts(document, 'script');</script>
 <dt><a href="de/edux/ml/knn/package-summary.html">de.edux.ml.knn</a> - Package de.edux.ml.knn</dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/nn/config/package-summary.html">de.edux.ml.nn.config</a> - Package de.edux.ml.nn.config</dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Classes for the configuration of the neural network.</div>
+</dd>
 <dt><a href="de/edux/ml/nn/network/package-summary.html">de.edux.ml.nn.network</a> - Package de.edux.ml.nn.network</dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/nn/network/api/package-summary.html">de.edux.ml.nn.network.api</a> - Package de.edux.ml.nn.network.api</dt>
@@ -187,11 +204,9 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Calculates and returns the determinant of the given matrix.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Vector.html#dot(double%5B%5D)" class="member-name-link">dot(double[])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#dot(double%5B%5D)" class="member-name-link">dot(double[])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#dot(de.edux.math.entity.Vector)" class="member-name-link">dot(Vector)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="de/edux/functions/imputation/ImputationStrategy.html#DUMMY" class="member-name-link">DUMMY</a> - Enum-Konstante in Enum-Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a></dt>
+<dt><a href="de/edux/math/Vector.html#dot(de.edux.math.Vector)" class="member-name-link">dot(Vector)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:E">E</h2>
@@ -202,9 +217,9 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gibt den Wert für die Datensatzkomponente <code>epochs</code> zurück.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Matrix.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/nn/config/NetworkConfiguration.html#equals(java.lang.Object)" class="member-name-link">equals(Object)</a> - Methode in Datensatzklasse de.edux.ml.nn.config.<a href="de/edux/ml/nn/config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config">NetworkConfiguration</a></dt>
 <dd>
@@ -250,8 +265,18 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/Dataset.html#getClassMap()" class="member-name-link">getClassMap()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/Dataset.html" title="Schnittstelle in de.edux.data.provider">Dataset</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/data/provider/DataPostProcessor.html#getDataset()" class="member-name-link">getDataset()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
+<dt><a href="de/edux/data/provider/DataProcessor.html#getColumnDataOf(java.lang.String)" class="member-name-link">getColumnDataOf(String)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/Dataset.html#getColumnDataOf(java.lang.String)" class="member-name-link">getColumnDataOf(String)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/Dataset.html" title="Schnittstelle in de.edux.data.provider">Dataset</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/DataProcessor.html#getColumnNames()" class="member-name-link">getColumnNames()</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/Dataset.html#getColumnNames()" class="member-name-link">getColumnNames()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/Dataset.html" title="Schnittstelle in de.edux.data.provider">Dataset</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/DataPostProcessor.html#getDataset()" class="member-name-link">getDataset()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
+<dd>
+<div class="block">Retrieves the processed dataset as a list of string arrays.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#getDataset()" class="member-name-link">getDataset()</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/decisiontree/IDecisionTree.html#getFeatureImportance()" class="member-name-link">getFeatureImportance()</a> - Methode in Schnittstelle de.edux.ml.decisiontree.<a href="de/edux/ml/decisiontree/IDecisionTree.html" title="Schnittstelle in de.edux.ml.decisiontree">IDecisionTree</a></dt>
@@ -259,6 +284,15 @@ loadScripts(document, 'script');</script>
 <div class="block">Returns the feature importance of the decision tree.</div>
 </dd>
 <dt><a href="de/edux/ml/decisiontree/DecisionTree.html#getFeatureImportances()" class="member-name-link">getFeatureImportances()</a> - Methode in Klasse de.edux.ml.decisiontree.<a href="de/edux/ml/decisiontree/DecisionTree.html" title="Klasse in de.edux.ml.decisiontree">DecisionTree</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="de/edux/functions/imputation/ImputationStrategy.html#getImputation()" class="member-name-link">getImputation()</a> - Methode in Enum-Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a></dt>
+<dd>
+<div class="block">Retrieves the <code>IImputationStrategy</code> implementation associated with the imputation
+ strategy.</div>
+</dd>
+<dt><a href="de/edux/data/provider/DataProcessor.html#getIndexOfColumn(java.lang.String)" class="member-name-link">getIndexOfColumn(String)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/Dataset.html#getIndexOfColumn(java.lang.String)" class="member-name-link">getIndexOfColumn(String)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/Dataset.html" title="Schnittstelle in de.edux.data.provider">Dataset</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#getInputs(java.util.List,int%5B%5D)" class="member-name-link">getInputs(List&lt;String[]&gt;, int[])</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
@@ -299,12 +333,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gibt einen Hashcodewert für diese Objekt zurück.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Matrix.MatrixIterator.html#hasNext()" class="member-name-link">hasNext()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.MatrixIterator.html" title="Klasse in de.edux.math.entity">Matrix.MatrixIterator</a></dt>
+<dt><a href="de/edux/math/Matrix.MatrixIterator.html#hasNext()" class="member-name-link">hasNext()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.MatrixIterator.html" title="Klasse in de.edux.math">Matrix.MatrixIterator</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.VectorIterator.html#hasNext()" class="member-name-link">hasNext()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.VectorIterator.html" title="Klasse in de.edux.math.entity">Vector.VectorIterator</a></dt>
+<dt><a href="de/edux/math/Vector.VectorIterator.html#hasNext()" class="member-name-link">hasNext()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.VectorIterator.html" title="Klasse in de.edux.math">Vector.VectorIterator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/initialization/Initialization.html#HE" class="member-name-link">HE</a> - Enum-Konstante in Enum-Klasse de.edux.functions.initialization.<a href="de/edux/functions/initialization/Initialization.html" title="Enum-Klasse in de.edux.functions.initialization">Initialization</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">He initialization strategy for weights.</div>
+</dd>
 <dt><a href="de/edux/ml/nn/config/NetworkConfiguration.html#hiddenLayerActivationFunction()" class="member-name-link">hiddenLayerActivationFunction()</a> - Methode in Datensatzklasse de.edux.ml.nn.config.<a href="de/edux/ml/nn/config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config">NetworkConfiguration</a></dt>
 <dd>
 <div class="block">Gibt den Wert für die Datensatzkomponente <code>hiddenLayerActivationFunction</code> zurück.</div>
@@ -326,16 +362,28 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/decisiontree/IDecisionTree.html" class="type-name-link" title="Schnittstelle in de.edux.ml.decisiontree">IDecisionTree</a> - Schnittstelle in <a href="de/edux/ml/decisiontree/package-summary.html">de.edux.ml.decisiontree</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="de/edux/functions/imputation/IImputationStrategy.html" class="type-name-link" title="Schnittstelle in de.edux.functions.imputation">IImputationStrategy</a> - Schnittstelle in <a href="de/edux/functions/imputation/package-summary.html">de.edux.functions.imputation</a></dt>
+<dd>
+<div class="block">Defines a strategy interface for imputing missing values within a column of data.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataPostProcessor.html#imputation(int,de.edux.functions.imputation.ImputationStrategy)" class="member-name-link">imputation(int, ImputationStrategy)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Performs imputation on missing values in a specified column index using the provided imputation
+ strategy.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#imputation(int,de.edux.functions.imputation.ImputationStrategy)" class="member-name-link">imputation(int, ImputationStrategy)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataPostProcessor.html#imputation(java.lang.String,de.edux.functions.imputation.ImputationStrategy)" class="member-name-link">imputation(String, ImputationStrategy)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Performs imputation on missing values in a specified column using the provided imputation
+ strategy.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#imputation(java.lang.String,de.edux.functions.imputation.ImputationStrategy)" class="member-name-link">imputation(String, ImputationStrategy)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/imputation/ImputationStrategy.html" class="type-name-link" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a> - Enum-Klasse in <a href="de/edux/functions/imputation/package-summary.html">de.edux.functions.imputation</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Enumerates the available imputation strategies for handling missing values in datasets.</div>
+</dd>
 <dt><a href="de/edux/util/math/IncompatibleDimensionsException.html" class="type-name-link" title="Klasse in de.edux.util.math">IncompatibleDimensionsException</a> - Ausnahmeklasse in <a href="de/edux/util/math/package-summary.html">de.edux.util.math</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/util/math/IncompatibleDimensionsException.html#%3Cinit%3E(java.lang.String)" class="member-name-link">IncompatibleDimensionsException(String)</a> - Konstruktor für Ausnahmeklasse de.edux.util.math.<a href="de/edux/util/math/IncompatibleDimensionsException.html" title="Klasse in de.edux.util.math">IncompatibleDimensionsException</a></dt>
@@ -343,7 +391,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="de/edux/ml/nn/network/api/INeuron.html" class="type-name-link" title="Schnittstelle in de.edux.ml.nn.network.api">INeuron</a> - Schnittstelle in <a href="de/edux/ml/nn/network/api/package-summary.html">de.edux.ml.nn.network.api</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/initialization/Initialization.html" class="type-name-link" title="Enum-Klasse in de.edux.functions.initialization">Initialization</a> - Enum-Klasse in <a href="de/edux/functions/initialization/package-summary.html">de.edux.functions.initialization</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Enumerates strategies for initializing weights in neural network layers, providing methods to
+ apply these strategies to given weight arrays.</div>
+</dd>
 <dt><a href="de/edux/ml/nn/config/NetworkConfiguration.html#inputSize()" class="member-name-link">inputSize()</a> - Methode in Datensatzklasse de.edux.ml.nn.config.<a href="de/edux/ml/nn/config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config">NetworkConfiguration</a></dt>
 <dd>
 <div class="block">Gibt den Wert für die Datensatzkomponente <code>inputSize</code> zurück.</div>
@@ -354,20 +405,21 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="de/edux/ml/nn/network/api/IPerceptron.html" class="type-name-link" title="Schnittstelle in de.edux.ml.nn.network.api">IPerceptron</a> - Schnittstelle in <a href="de/edux/ml/nn/network/api/package-summary.html">de.edux.ml.nn.network.api</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#isSquare()" class="member-name-link">isSquare()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#isSquare()" class="member-name-link">isSquare()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/svm/ISupportVectorMachine.html" class="type-name-link" title="Schnittstelle in de.edux.ml.svm">ISupportVectorMachine</a> - Schnittstelle in <a href="de/edux/ml/svm/package-summary.html">de.edux.ml.svm</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#iterator()" class="member-name-link">iterator()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#iterator()" class="member-name-link">iterator()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#iterator()" class="member-name-link">iterator()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#iterator()" class="member-name-link">iterator()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:K">K</h2>
 <dl class="index">
 <dt><a href="de/edux/ml/knn/KnnClassifier.html" class="type-name-link" title="Klasse in de.edux.ml.knn">KnnClassifier</a> - Klasse in <a href="de/edux/ml/knn/package-summary.html">de.edux.ml.knn</a></dt>
 <dd>
-<div class="block">The <code>KnnClassifier</code> class provides an implementation of the k-Nearest Neighbors algorithm for classification tasks.</div>
+<div class="block">The <code>KnnClassifier</code> class provides an implementation of the k-Nearest Neighbors algorithm
+ for classification tasks.</div>
 </dd>
 <dt><a href="de/edux/ml/knn/KnnClassifier.html#%3Cinit%3E(int)" class="member-name-link">KnnClassifier(int)</a> - Konstruktor für Klasse de.edux.ml.knn.<a href="de/edux/ml/knn/KnnClassifier.html" title="Klasse in de.edux.ml.knn">KnnClassifier</a></dt>
 <dd>
@@ -390,12 +442,15 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gibt den Wert für die Datensatzkomponente <code>learningRate</code> zurück.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Vector.html#length()" class="member-name-link">length()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#length()" class="member-name-link">length()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/svm/SVMKernel.html#LINEAR" class="member-name-link">LINEAR</a> - Enum-Konstante in Enum-Klasse de.edux.ml.svm.<a href="de/edux/ml/svm/SVMKernel.html" title="Enum-Klasse in de.edux.ml.svm">SVMKernel</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/data/provider/DataloaderV2.html#loadDataSetFromCSV(java.io.File,char,boolean,int%5B%5D,int)" class="member-name-link">loadDataSetFromCSV(File, char, boolean, int[], int)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataloaderV2.html" title="Schnittstelle in de.edux.data.provider">DataloaderV2</a></dt>
-<dd>&nbsp;</dd>
+<dt><a href="de/edux/data/provider/Dataloader.html#loadDataSetFromCSV(java.io.File,char,boolean,int%5B%5D,int)" class="member-name-link">loadDataSetFromCSV(File, char, boolean, int[], int)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/Dataloader.html" title="Schnittstelle in de.edux.data.provider">Dataloader</a></dt>
+<dd>
+<div class="block">Loads a dataset from the specified CSV file, processes it, and returns a <code>DataProcessor</code>
+ that is ready to be used for further operations such as data manipulation or analysis.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#loadDataSetFromCSV(java.io.File,char,boolean,int%5B%5D,int)" class="member-name-link">loadDataSetFromCSV(File, char, boolean, int[], int)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/nn/config/NetworkConfiguration.html#lossFunction()" class="member-name-link">lossFunction()</a> - Methode in Datensatzklasse de.edux.ml.nn.config.<a href="de/edux/ml/nn/config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config">NetworkConfiguration</a></dt>
@@ -415,38 +470,45 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/math/MathUtil.html#%3Cinit%3E()" class="member-name-link">MathUtil()</a> - Konstruktor für Klasse de.edux.math.<a href="de/edux/math/MathUtil.html" title="Klasse in de.edux.math">MathUtil</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html" class="type-name-link" title="Klasse in de.edux.math.entity">Matrix</a> - Klasse in <a href="de/edux/math/entity/package-summary.html">de.edux.math.entity</a></dt>
+<dt><a href="de/edux/math/Matrix.html" class="type-name-link" title="Klasse in de.edux.math">Matrix</a> - Klasse in <a href="de/edux/math/package-summary.html">de.edux.math</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#%3Cinit%3E(double%5B%5D%5B%5D)" class="member-name-link">Matrix(double[][])</a> - Konstruktor für Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#%3Cinit%3E(double%5B%5D%5B%5D)" class="member-name-link">Matrix(double[][])</a> - Konstruktor für Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.MatrixIterator.html" class="type-name-link" title="Klasse in de.edux.math.entity">Matrix.MatrixIterator</a> - Klasse in <a href="de/edux/math/entity/package-summary.html">de.edux.math.entity</a></dt>
+<dt><a href="de/edux/math/Matrix.MatrixIterator.html" class="type-name-link" title="Klasse in de.edux.math">Matrix.MatrixIterator</a> - Klasse in <a href="de/edux/math/package-summary.html">de.edux.math</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.MatrixIterator.html#%3Cinit%3E(double%5B%5D%5B%5D)" class="member-name-link">MatrixIterator(double[][])</a> - Konstruktor für Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.MatrixIterator.html" title="Klasse in de.edux.math.entity">Matrix.MatrixIterator</a></dt>
+<dt><a href="de/edux/math/Matrix.MatrixIterator.html#%3Cinit%3E(double%5B%5D%5B%5D)" class="member-name-link">MatrixIterator(double[][])</a> - Konstruktor für Klasse de.edux.math.<a href="de/edux/math/Matrix.MatrixIterator.html" title="Klasse in de.edux.math">Matrix.MatrixIterator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/util/math/MatrixOperations.html" class="type-name-link" title="Schnittstelle in de.edux.util.math">MatrixOperations</a> - Schnittstelle in <a href="de/edux/util/math/package-summary.html">de.edux.util.math</a></dt>
-<dd>&nbsp;</dd>
-<dt><a href="de/edux/functions/imputation/ImputationStrategy.html#MEAN" class="member-name-link">MEAN</a> - Enum-Konstante in Enum-Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/loss/LossFunction.html#MEAN_ABSOLUTE_ERROR" class="member-name-link">MEAN_ABSOLUTE_ERROR</a> - Enum-Konstante in Enum-Klasse de.edux.functions.loss.<a href="de/edux/functions/loss/LossFunction.html" title="Enum-Klasse in de.edux.functions.loss">LossFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/loss/LossFunction.html#MEAN_SQUARED_ERROR" class="member-name-link">MEAN_SQUARED_ERROR</a> - Enum-Konstante in Enum-Klasse de.edux.functions.loss.<a href="de/edux/functions/loss/LossFunction.html" title="Enum-Klasse in de.edux.functions.loss">LossFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/imputation/ImputationStrategy.html#MODE" class="member-name-link">MODE</a> - Enum-Konstante in Enum-Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ImputationStrategy.html" title="Enum-Klasse in de.edux.functions.imputation">ImputationStrategy</a></dt>
+<dd>
+<div class="block">Imputation strategy that replaces missing values with the most frequently occurring value
+ (mode) in the dataset column.</div>
+</dd>
+<dt><a href="de/edux/functions/imputation/ModeImputation.html" class="type-name-link" title="Klasse in de.edux.functions.imputation">ModeImputation</a> - Klasse in <a href="de/edux/functions/imputation/package-summary.html">de.edux.functions.imputation</a></dt>
+<dd>
+<div class="block">Implements the <code>IImputationStrategy</code> interface to provide a mode value imputation.</div>
+</dd>
+<dt><a href="de/edux/functions/imputation/ModeImputation.html#%3Cinit%3E()" class="member-name-link">ModeImputation()</a> - Konstruktor für Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ModeImputation.html" title="Klasse in de.edux.functions.imputation">ModeImputation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/nn/network/MultilayerPerceptron.html" class="type-name-link" title="Klasse in de.edux.ml.nn.network">MultilayerPerceptron</a> - Klasse in <a href="de/edux/ml/nn/network/package-summary.html">de.edux.ml.nn.network</a></dt>
 <dd>
-<div class="block">The <code>MultilayerPerceptron</code> class represents a simple feedforward neural network,
- which consists of input, hidden, and output layers.</div>
+<div class="block">The <code>MultilayerPerceptron</code> class represents a simple feedforward neural network, which
+ consists of input, hidden, and output layers.</div>
 </dd>
 <dt><a href="de/edux/ml/nn/network/MultilayerPerceptron.html#%3Cinit%3E(de.edux.ml.nn.config.NetworkConfiguration,double%5B%5D%5B%5D,double%5B%5D%5B%5D)" class="member-name-link">MultilayerPerceptron(NetworkConfiguration, double[][], double[][])</a> - Konstruktor für Klasse de.edux.ml.nn.network.<a href="de/edux/ml/nn/network/MultilayerPerceptron.html" title="Klasse in de.edux.ml.nn.network">MultilayerPerceptron</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#multiply(double%5B%5D)" class="member-name-link">multiply(double[])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#multiply(double%5B%5D)" class="member-name-link">multiply(double[])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#multiply(double%5B%5D%5B%5D)" class="member-name-link">multiply(double[][])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#multiply(double%5B%5D%5B%5D)" class="member-name-link">multiply(double[][])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#multiply(de.edux.math.entity.Matrix)" class="member-name-link">multiply(Matrix)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#multiply(de.edux.math.Matrix)" class="member-name-link">multiply(Matrix)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#multiply(de.edux.math.entity.Vector)" class="member-name-link">multiply(Vector)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#multiply(de.edux.math.Vector)" class="member-name-link">multiply(Vector)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/math/Entity.html#multiply(T)" class="member-name-link">multiply(T)</a> - Methode in Schnittstelle de.edux.math.<a href="de/edux/math/Entity.html" title="Schnittstelle in de.edux.math">Entity</a></dt>
 <dd>&nbsp;</dd>
@@ -465,12 +527,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Erstellt eine Instanz einer Datensatzklasse <code>NetworkConfiguration</code>.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Matrix.MatrixIterator.html#next()" class="member-name-link">next()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.MatrixIterator.html" title="Klasse in de.edux.math.entity">Matrix.MatrixIterator</a></dt>
+<dt><a href="de/edux/math/Matrix.MatrixIterator.html#next()" class="member-name-link">next()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.MatrixIterator.html" title="Klasse in de.edux.math">Matrix.MatrixIterator</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.VectorIterator.html#next()" class="member-name-link">next()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.VectorIterator.html" title="Klasse in de.edux.math.entity">Vector.VectorIterator</a></dt>
+<dt><a href="de/edux/math/Vector.VectorIterator.html#next()" class="member-name-link">next()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.VectorIterator.html" title="Klasse in de.edux.math">Vector.VectorIterator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataPostProcessor.html#normalize()" class="member-name-link">normalize()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Normalizes the dataset.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#normalize()" class="member-name-link">normalize()</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataNormalizer.html#normalize(java.util.List)" class="member-name-link">normalize(List&lt;String[]&gt;)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataNormalizer.html" title="Klasse in de.edux.data.provider">DataNormalizer</a></dt>
@@ -497,6 +561,24 @@ loadScripts(document, 'script');</script>
 </dl>
 <h2 class="title" id="I:P">P</h2>
 <dl class="index">
+<dt><a href="de/edux/functions/imputation/AverageImputation.html#performImputation(java.lang.String%5B%5D)" class="member-name-link">performImputation(String[])</a> - Methode in Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/AverageImputation.html" title="Klasse in de.edux.functions.imputation">AverageImputation</a></dt>
+<dd>
+<div class="block">Performs average value imputation on the provided dataset column.</div>
+</dd>
+<dt><a href="de/edux/functions/imputation/IImputationStrategy.html#performImputation(java.lang.String%5B%5D)" class="member-name-link">performImputation(String[])</a> - Methode in Schnittstelle de.edux.functions.imputation.<a href="de/edux/functions/imputation/IImputationStrategy.html" title="Schnittstelle in de.edux.functions.imputation">IImputationStrategy</a></dt>
+<dd>
+<div class="block">Performs imputation on the provided column data array.</div>
+</dd>
+<dt><a href="de/edux/functions/imputation/ModeImputation.html#performImputation(java.lang.String%5B%5D)" class="member-name-link">performImputation(String[])</a> - Methode in Klasse de.edux.functions.imputation.<a href="de/edux/functions/imputation/ModeImputation.html" title="Klasse in de.edux.functions.imputation">ModeImputation</a></dt>
+<dd>
+<div class="block">Performs mode value imputation on the provided dataset column.</div>
+</dd>
+<dt><a href="de/edux/data/provider/DataPostProcessor.html#performListWiseDeletion()" class="member-name-link">performListWiseDeletion()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
+<dd>
+<div class="block">Performs list-wise deletion on the dataset.</div>
+</dd>
+<dt><a href="de/edux/data/provider/DataProcessor.html#performListWiseDeletion()" class="member-name-link">performListWiseDeletion()</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="de/edux/api/Classifier.html#predict(double%5B%5D)" class="member-name-link">predict(double[])</a> - Methode in Schnittstelle de.edux.api.<a href="de/edux/api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></dt>
 <dd>
 <div class="block">Predicts the output for a single set of input values.</div>
@@ -522,16 +604,15 @@ loadScripts(document, 'script');</script>
 <dl class="index">
 <dt><a href="de/edux/ml/randomforest/RandomForest.html" class="type-name-link" title="Klasse in de.edux.ml.randomforest">RandomForest</a> - Klasse in <a href="de/edux/ml/randomforest/package-summary.html">de.edux.ml.randomforest</a></dt>
 <dd>
-<div class="block">RandomForest Classifier
- RandomForest is an ensemble learning method, which constructs a multitude of decision trees
- at training time and outputs the class that is the mode of the classes output by
- individual trees, or a mean prediction of the individual trees (regression).</div>
+<div class="block">RandomForest Classifier RandomForest is an ensemble learning method, which constructs a multitude
+ of decision trees at training time and outputs the class that is the mode of the classes output
+ by individual trees, or a mean prediction of the individual trees (regression).</div>
 </dd>
 <dt><a href="de/edux/ml/randomforest/RandomForest.html#%3Cinit%3E(int,int,int,int,int,int)" class="member-name-link">RandomForest(int, int, int, int, int, int)</a> - Konstruktor für Klasse de.edux.ml.randomforest.<a href="de/edux/ml/randomforest/RandomForest.html" title="Klasse in de.edux.ml.randomforest">RandomForest</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#raw()" class="member-name-link">raw()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#raw()" class="member-name-link">raw()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#raw()" class="member-name-link">raw()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#raw()" class="member-name-link">raw()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/reader/CSVIDataReader.html#readFile(java.io.File,char)" class="member-name-link">readFile(File, char)</a> - Methode in Klasse de.edux.data.reader.<a href="de/edux/data/reader/CSVIDataReader.html" title="Klasse in de.edux.data.reader">CSVIDataReader</a></dt>
 <dd>&nbsp;</dd>
@@ -539,7 +620,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/activation/ActivationFunction.html#RELU" class="member-name-link">RELU</a> - Enum-Konstante in Enum-Klasse de.edux.functions.activation.<a href="de/edux/functions/activation/ActivationFunction.html" title="Enum-Klasse in de.edux.functions.activation">ActivationFunction</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#rows()" class="member-name-link">rows()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#rows()" class="member-name-link">rows()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:S">S</h2>
@@ -550,14 +631,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Erstellt eine Instanz einer Datensatzklasse <code>Sample</code>.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Matrix.html#scalarMultiply(double)" class="member-name-link">scalarMultiply(double)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
-<dd>&nbsp;</dd>
 <dt><a href="de/edux/math/Entity.html#scalarMultiply(double)" class="member-name-link">scalarMultiply(double)</a> - Methode in Schnittstelle de.edux.math.<a href="de/edux/math/Entity.html" title="Schnittstelle in de.edux.math">Entity</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#scalarMultiply(double)" class="member-name-link">scalarMultiply(double)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Matrix.html#scalarMultiply(double)" class="member-name-link">scalarMultiply(double)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="de/edux/math/Vector.html#scalarMultiply(double)" class="member-name-link">scalarMultiply(double)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataPostProcessor.html#shuffle()" class="member-name-link">shuffle()</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Shuffles the dataset randomly.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#shuffle()" class="member-name-link">shuffle()</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/activation/ActivationFunction.html#SIGMOID" class="member-name-link">SIGMOID</a> - Enum-Konstante in Enum-Klasse de.edux.functions.activation.<a href="de/edux/functions/activation/ActivationFunction.html" title="Enum-Klasse in de.edux.functions.activation">ActivationFunction</a></dt>
@@ -569,18 +652,20 @@ loadScripts(document, 'script');</script>
 <dt><a href="de/edux/functions/activation/ActivationFunction.html#SOFTMAX" class="member-name-link">SOFTMAX</a> - Enum-Konstante in Enum-Klasse de.edux.functions.activation.<a href="de/edux/functions/activation/ActivationFunction.html" title="Enum-Klasse in de.edux.functions.activation">ActivationFunction</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/data/provider/DataPostProcessor.html#split(double)" class="member-name-link">split(double)</a> - Methode in Schnittstelle de.edux.data.provider.<a href="de/edux/data/provider/DataPostProcessor.html" title="Schnittstelle in de.edux.data.provider">DataPostProcessor</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Splits the dataset into two separate datasets according to the specified split ratio.</div>
+</dd>
 <dt><a href="de/edux/data/provider/DataProcessor.html#split(double)" class="member-name-link">split(double)</a> - Methode in Klasse de.edux.data.provider.<a href="de/edux/data/provider/DataProcessor.html" title="Klasse in de.edux.data.provider">DataProcessor</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/functions/loss/LossFunction.html#SQUARED_HINGE_LOSS" class="member-name-link">SQUARED_HINGE_LOSS</a> - Enum-Konstante in Enum-Klasse de.edux.functions.loss.<a href="de/edux/functions/loss/LossFunction.html" title="Enum-Klasse in de.edux.functions.loss">LossFunction</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#subtract(double%5B%5D)" class="member-name-link">subtract(double[])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#subtract(double%5B%5D)" class="member-name-link">subtract(double[])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#subtract(double%5B%5D%5B%5D)" class="member-name-link">subtract(double[][])</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#subtract(double%5B%5D%5B%5D)" class="member-name-link">subtract(double[][])</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Matrix.html#subtract(de.edux.math.entity.Matrix)" class="member-name-link">subtract(Matrix)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#subtract(de.edux.math.Matrix)" class="member-name-link">subtract(Matrix)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#subtract(de.edux.math.entity.Vector)" class="member-name-link">subtract(Vector)</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#subtract(de.edux.math.Vector)" class="member-name-link">subtract(Vector)</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/math/Entity.html#subtract(T)" class="member-name-link">subtract(T)</a> - Methode in Schnittstelle de.edux.math.<a href="de/edux/math/Entity.html" title="Schnittstelle in de.edux.math">Entity</a></dt>
 <dd>&nbsp;</dd>
@@ -590,10 +675,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="de/edux/ml/svm/SupportVectorMachine.html" class="type-name-link" title="Klasse in de.edux.ml.svm">SupportVectorMachine</a> - Klasse in <a href="de/edux/ml/svm/package-summary.html">de.edux.ml.svm</a></dt>
 <dd>
-<div class="block">The <code>SupportVectorMachine</code> class is an implementation of a Support Vector Machine (SVM) classifier, utilizing the one-vs-one strategy for multi-class classification.</div>
+<div class="block">The <code>SupportVectorMachine</code> class is an implementation of a Support Vector Machine (SVM)
+ classifier, utilizing the one-vs-one strategy for multi-class classification.</div>
 </dd>
 <dt><a href="de/edux/ml/svm/SupportVectorMachine.html#%3Cinit%3E(de.edux.ml.svm.SVMKernel,double)" class="member-name-link">SupportVectorMachine(SVMKernel, double)</a> - Konstruktor für Klasse de.edux.ml.svm.<a href="de/edux/ml/svm/SupportVectorMachine.html" title="Klasse in de.edux.ml.svm">SupportVectorMachine</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Constructs a new instance of SupportVectorMachine with a specified kernel and regularization
+ parameter.</div>
+</dd>
 <dt><a href="de/edux/ml/svm/SVMKernel.html" class="type-name-link" title="Enum-Klasse in de.edux.ml.svm">SVMKernel</a> - Enum-Klasse in <a href="de/edux/ml/svm/package-summary.html">de.edux.ml.svm</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/svm/SVMModel.html" class="type-name-link" title="Klasse in de.edux.ml.svm">SVMModel</a> - Klasse in <a href="de/edux/ml/svm/package-summary.html">de.edux.ml.svm</a></dt>
@@ -609,9 +698,9 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Gibt den Wert für die Datensatzkomponente <code>testData</code> zurück.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Matrix.html#toString()" class="member-name-link">toString()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Matrix.html" title="Klasse in de.edux.math.entity">Matrix</a></dt>
+<dt><a href="de/edux/math/Matrix.html#toString()" class="member-name-link">toString()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Matrix.html" title="Klasse in de.edux.math">Matrix</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#toString()" class="member-name-link">toString()</a> - Methode in Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#toString()" class="member-name-link">toString()</a> - Methode in Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="de/edux/ml/nn/config/NetworkConfiguration.html#toString()" class="member-name-link">toString()</a> - Methode in Datensatzklasse de.edux.ml.nn.config.<a href="de/edux/ml/nn/config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config">NetworkConfiguration</a></dt>
 <dd>
@@ -712,13 +801,13 @@ der Reihenfolge ihrer Deklaration zurück.</div>
 <div class="block">Gibt ein Array mit den Konstanten dieser Enum-Klasse in
 der Reihenfolge ihrer Deklaration zurück.</div>
 </dd>
-<dt><a href="de/edux/math/entity/Vector.html" class="type-name-link" title="Klasse in de.edux.math.entity">Vector</a> - Klasse in <a href="de/edux/math/entity/package-summary.html">de.edux.math.entity</a></dt>
+<dt><a href="de/edux/math/Vector.html" class="type-name-link" title="Klasse in de.edux.math">Vector</a> - Klasse in <a href="de/edux/math/package-summary.html">de.edux.math</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.html#%3Cinit%3E(double%5B%5D)" class="member-name-link">Vector(double[])</a> - Konstruktor für Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.html" title="Klasse in de.edux.math.entity">Vector</a></dt>
+<dt><a href="de/edux/math/Vector.html#%3Cinit%3E(double%5B%5D)" class="member-name-link">Vector(double[])</a> - Konstruktor für Klasse de.edux.math.<a href="de/edux/math/Vector.html" title="Klasse in de.edux.math">Vector</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.VectorIterator.html" class="type-name-link" title="Klasse in de.edux.math.entity">Vector.VectorIterator</a> - Klasse in <a href="de/edux/math/entity/package-summary.html">de.edux.math.entity</a></dt>
+<dt><a href="de/edux/math/Vector.VectorIterator.html" class="type-name-link" title="Klasse in de.edux.math">Vector.VectorIterator</a> - Klasse in <a href="de/edux/math/package-summary.html">de.edux.math</a></dt>
 <dd>&nbsp;</dd>
-<dt><a href="de/edux/math/entity/Vector.VectorIterator.html#%3Cinit%3E(double%5B%5D)" class="member-name-link">VectorIterator(double[])</a> - Konstruktor für Klasse de.edux.math.entity.<a href="de/edux/math/entity/Vector.VectorIterator.html" title="Klasse in de.edux.math.entity">Vector.VectorIterator</a></dt>
+<dt><a href="de/edux/math/Vector.VectorIterator.html#%3Cinit%3E(double%5B%5D)" class="member-name-link">VectorIterator(double[])</a> - Konstruktor für Klasse de.edux.math.<a href="de/edux/math/Vector.VectorIterator.html" title="Klasse in de.edux.math">Vector.VectorIterator</a></dt>
 <dd>&nbsp;</dd>
 </dl>
 <h2 class="title" id="I:W">W</h2>
@@ -729,7 +818,10 @@ der Reihenfolge ihrer Deklaration zurück.</div>
 <h2 class="title" id="I:X">X</h2>
 <dl class="index">
 <dt><a href="de/edux/functions/initialization/Initialization.html#XAVIER" class="member-name-link">XAVIER</a> - Enum-Konstante in Enum-Klasse de.edux.functions.initialization.<a href="de/edux/functions/initialization/Initialization.html" title="Enum-Klasse in de.edux.functions.initialization">Initialization</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Enumerates strategies for initializing weights in neural network layers, providing methods to
+ apply these strategies to given weight arrays.</div>
+</dd>
 </dl>
 <a href="#I:A">A</a>&nbsp;<a href="#I:B">B</a>&nbsp;<a href="#I:C">C</a>&nbsp;<a href="#I:D">D</a>&nbsp;<a href="#I:E">E</a>&nbsp;<a href="#I:F">F</a>&nbsp;<a href="#I:G">G</a>&nbsp;<a href="#I:H">H</a>&nbsp;<a href="#I:I">I</a>&nbsp;<a href="#I:K">K</a>&nbsp;<a href="#I:L">L</a>&nbsp;<a href="#I:M">M</a>&nbsp;<a href="#I:N">N</a>&nbsp;<a href="#I:O">O</a>&nbsp;<a href="#I:P">P</a>&nbsp;<a href="#I:R">R</a>&nbsp;<a href="#I:S">S</a>&nbsp;<a href="#I:T">T</a>&nbsp;<a href="#I:U">U</a>&nbsp;<a href="#I:V">V</a>&nbsp;<a href="#I:W">W</a>&nbsp;<a href="#I:X">X</a>&nbsp;<br><a href="allclasses-index.html">Alle&nbsp;Klassen&nbsp;und&nbsp;Schnittstellen</a><span class="vertical-separator">|</span><a href="allpackages-index.html">Alle&nbsp;Packages</a><span class="vertical-separator">|</span><a href="serialized-form.html">Serialisierte&nbsp;Form</a></main>
 </div>

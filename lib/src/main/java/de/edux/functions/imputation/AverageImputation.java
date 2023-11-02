@@ -3,7 +3,27 @@ package de.edux.functions.imputation;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Implements the {@code IImputationStrategy} interface to provide an average value imputation. This
+ * strategy calculates the average of the non-missing numeric values in a column and substitutes the
+ * missing values with this average.
+ *
+ * <p>It is important to note that this strategy is only applicable to columns with numeric data.
+ * Attempting to use this strategy on categorical data will result in a {@code RuntimeException}.
+ */
 public class AverageImputation implements IImputationStrategy {
+  /**
+   * Performs average value imputation on the provided dataset column. Missing values are identified
+   * as blank strings and are replaced by the average of the non-missing values. If the column
+   * contains categorical data, a runtime exception is thrown.
+   *
+   * @param datasetColumn an array of {@code String} representing the column data with potential
+   *     missing values.
+   * @return an array of {@code String} where missing values have been imputed with the average of
+   *     non-missing values.
+   * @throws RuntimeException if the column data contains categorical values which cannot be
+   *     averaged.
+   */
   @Override
   public String[] performImputation(String[] datasetColumn) {
     checkIfColumnContainsCategoricalValues(datasetColumn);

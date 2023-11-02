@@ -96,34 +96,32 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">RandomForest</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">Object</a>
 implements <a href="../../api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></span></div>
-<div class="block">RandomForest Classifier
- RandomForest is an ensemble learning method, which constructs a multitude of decision trees
- at training time and outputs the class that is the mode of the classes output by
- individual trees, or a mean prediction of the individual trees (regression).
- <p>
- <b>Note:</b> Training and prediction are performed in a parallel manner using thread pooling.
+<div class="block">RandomForest Classifier RandomForest is an ensemble learning method, which constructs a multitude
+ of decision trees at training time and outputs the class that is the mode of the classes output
+ by individual trees, or a mean prediction of the individual trees (regression).
+
+ <p><b>Note:</b> Training and prediction are performed in a parallel manner using thread pooling.
  RandomForest handles the training of individual decision trees and their predictions, and
- determines the final prediction by voting (classification) or averaging (regression) the
- outputs of all the decision trees in the forest. RandomForest is particularly well suited
- for multiclass classification and regression on datasets with complex structures.
- <p>
- Usage example:
- <pre>
- <code>
+ determines the final prediction by voting (classification) or averaging (regression) the outputs
+ of all the decision trees in the forest. RandomForest is particularly well suited for multiclass
+ classification and regression on datasets with complex structures.
+
+ <p>Usage example:
+
+ <pre><code>
  RandomForest forest = new RandomForest();
  forest.train(numTrees, features, labels, maxDepth, minSamplesSplit, minSamplesLeaf,
               maxLeafNodes, numberOfFeatures);
  double prediction = forest.predict(sampleFeatures);
  double accuracy = forest.evaluate(testFeatures, testLabels);
- </code>
- </pre>
- <p>
- <b>Thread Safety:</b> This class uses concurrent features but may not be entirely thread-safe
+ </code></pre>
+
+ <p><b>Thread Safety:</b> This class uses concurrent features but may not be entirely thread-safe
  and should be used with caution in a multithreaded environment.
- <p>
- Use <a href="#train(double%5B%5D%5B%5D,double%5B%5D%5B%5D)"><code>train(double[][], double[][])</code></a> to train the forest,
- <a href="#predict(double%5B%5D)"><code>predict(double[])</code></a> to predict a single sample, and <a href="#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)"><code>evaluate(double[][], double[][])</code></a>
- to evaluate accuracy against a test set.</div>
+
+ <p>Use <a href="#train(double%5B%5D%5B%5D,double%5B%5D%5B%5D)"><code>train(double[][], double[][])</code></a> to train the forest, <a href="#predict(double%5B%5D)"><code>predict(double[])</code></a> to
+ predict a single sample, and <a href="#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)"><code>evaluate(double[][], double[][])</code></a> to evaluate accuracy
+ against a test set.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -239,8 +237,7 @@ implements <a href="../../api/Classifier.html" title="Schnittstelle in de.edux.a
 <dt>Parameter:</dt>
 <dd><code>feature</code> - a single set of input values to be evaluated by the model.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double array representing the predicted output values for the
-         provided input values.</dd>
+<dd>a double array representing the predicted output values for the provided input values.</dd>
 </dl>
 </section>
 </li>
@@ -252,25 +249,23 @@ implements <a href="../../api/Classifier.html" title="Schnittstelle in de.edux.a
 <div class="block"><span class="description-from-type-label">Beschreibung aus Schnittstelle kopiert:&nbsp;<code><a href="../../api/Classifier.html#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)">Classifier</a></code></span></div>
 <div class="block">Evaluates the model's performance against the provided test inputs and targets.
 
- This method takes a set of test inputs and their corresponding expected targets,
- applies the model to predict the outputs for the inputs, and then compares
- the predicted outputs to the expected targets to evaluate the performance
- of the model. The nature and metric of the evaluation (e.g., accuracy, MSE, etc.)
- are dependent on the specific implementation within the method.</div>
+ <p>This method takes a set of test inputs and their corresponding expected targets, applies the
+ model to predict the outputs for the inputs, and then compares the predicted outputs to the
+ expected targets to evaluate the performance of the model. The nature and metric of the
+ evaluation (e.g., accuracy, MSE, etc.) are dependent on the specific implementation within the
+ method.</div>
 <dl class="notes">
 <dt>Angegeben von:</dt>
 <dd><code><a href="../../api/Classifier.html#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)">evaluate</a></code>&nbsp;in Schnittstelle&nbsp;<code><a href="../../api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></code></dd>
 <dt>Parameter:</dt>
-<dd><code>features</code> - 2D array of double, where each inner array represents
-                   a single set of input values to be evaluated by the model.</dd>
-<dd><code>labels</code> - 2D array of double, where each inner array represents
-                    the expected output or target for the corresponding set
-                    of inputs in <code>testInputs</code>.</dd>
+<dd><code>features</code> - 2D array of double, where each inner array represents a single set of input
+     values to be evaluated by the model.</dd>
+<dd><code>labels</code> - 2D array of double, where each inner array represents the expected output or
+     target for the corresponding set of inputs in <code>testInputs</code>.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double value representing the performance of the model when evaluated
-         against the provided test inputs and targets. The interpretation of this
-         value (e.g., higher is better, lower is better, etc.) depends on the
-         specific evaluation metric being used.</dd>
+<dd>a double value representing the performance of the model when evaluated against the
+     provided test inputs and targets. The interpretation of this value (e.g., higher is better,
+     lower is better, etc.) depends on the specific evaluation metric being used.</dd>
 </dl>
 </section>
 </li>

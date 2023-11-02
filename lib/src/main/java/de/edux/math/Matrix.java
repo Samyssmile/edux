@@ -1,8 +1,5 @@
-package de.edux.math.entity;
+package de.edux.math;
 
-import de.edux.math.Entity;
-import de.edux.math.MathUtil;
-import de.edux.math.Validations;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 

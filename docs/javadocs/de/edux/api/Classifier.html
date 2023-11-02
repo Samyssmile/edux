@@ -93,25 +93,29 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public interface </span><span class="element-name type-name-label">Classifier</span></div>
 <div class="block">Provides a common interface for machine learning classifiers within the Edux API.
 
- <p>The <code>Classifier</code> interface is designed to encapsulate a variety of machine learning models, offering
- a consistent approach to training, evaluating, and utilizing classifiers. Implementations are expected to handle
- specifics related to different types of classification algorithms, such as neural networks, decision trees,
- support vector machines, etc.</p>
+ <p>The <code>Classifier</code> interface is designed to encapsulate a variety of machine learning
+ models, offering a consistent approach to training, evaluating, and utilizing classifiers.
+ Implementations are expected to handle specifics related to different types of classification
+ algorithms, such as neural networks, decision trees, support vector machines, etc.
 
- <p>Each classifier must implement methods for training the model on a dataset, evaluating its performance,
- and making predictions on new, unseen data. This design allows for interchangeability of models and promotes
- a clean separation of concerns between the data processing and model training phases.</p>
+ <p>Each classifier must implement methods for training the model on a dataset, evaluating its
+ performance, and making predictions on new, unseen data. This design allows for
+ interchangeability of models and promotes a clean separation of concerns between the data
+ processing and model training phases.
 
- <p>Typical usage involves:</p>
+ <p>Typical usage involves:
+
  <ul>
-   <li>Creating an instance of a class that implements <code>Classifier</code>.</li>
-   <li>Training the classifier with known data via the <code>train</code> method.</li>
-   <li>Evaluating the classifier's performance with test data via the <code>evaluate</code> method.</li>
-   <li>Applying the trained classifier to new data to make predictions via the <code>predict</code> method.</li>
+   <li>Creating an instance of a class that implements <code>Classifier</code>.
+   <li>Training the classifier with known data via the <code>train</code> method.
+   <li>Evaluating the classifier's performance with test data via the <code>evaluate</code> method.
+   <li>Applying the trained classifier to new data to make predictions via the <code>predict</code>
+       method.
  </ul>
 
  <p>Implementing classes should ensure that proper validation is performed on the input data and
- any necessary pre-processing or feature scaling is applied consistent with the model's requirements.</p></div>
+ any necessary pre-processing or feature scaling is applied consistent with the model's
+ requirements.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -179,27 +183,24 @@ loadScripts(document, 'script');</script>
  double[][]&nbsp;testTargets)</span></div>
 <div class="block">Evaluates the model's performance against the provided test inputs and targets.
 
- This method takes a set of test inputs and their corresponding expected targets,
- applies the model to predict the outputs for the inputs, and then compares
- the predicted outputs to the expected targets to evaluate the performance
- of the model. The nature and metric of the evaluation (e.g., accuracy, MSE, etc.)
- are dependent on the specific implementation within the method.</div>
+ <p>This method takes a set of test inputs and their corresponding expected targets, applies the
+ model to predict the outputs for the inputs, and then compares the predicted outputs to the
+ expected targets to evaluate the performance of the model. The nature and metric of the
+ evaluation (e.g., accuracy, MSE, etc.) are dependent on the specific implementation within the
+ method.</div>
 <dl class="notes">
 <dt>Parameter:</dt>
-<dd><code>testInputs</code> - 2D array of double, where each inner array represents
-                   a single set of input values to be evaluated by the model.</dd>
-<dd><code>testTargets</code> - 2D array of double, where each inner array represents
-                    the expected output or target for the corresponding set
-                    of inputs in <code>testInputs</code>.</dd>
+<dd><code>testInputs</code> - 2D array of double, where each inner array represents a single set of input
+     values to be evaluated by the model.</dd>
+<dd><code>testTargets</code> - 2D array of double, where each inner array represents the expected output or
+     target for the corresponding set of inputs in <code>testInputs</code>.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double value representing the performance of the model when evaluated
-         against the provided test inputs and targets. The interpretation of this
-         value (e.g., higher is better, lower is better, etc.) depends on the
-         specific evaluation metric being used.</dd>
+<dd>a double value representing the performance of the model when evaluated against the
+     provided test inputs and targets. The interpretation of this value (e.g., higher is better,
+     lower is better, etc.) depends on the specific evaluation metric being used.</dd>
 <dt>Löst aus:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">IllegalArgumentException</a></code> - if the lengths of <code>testInputs</code> and
-                                  <code>testTargets</code> do not match, or if
-                                  they are empty.</dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">IllegalArgumentException</a></code> - if the lengths of <code>testInputs</code> and <code>testTargets</code>
+     do not match, or if they are empty.</dd>
 </dl>
 </section>
 </li>
@@ -212,8 +213,7 @@ loadScripts(document, 'script');</script>
 <dt>Parameter:</dt>
 <dd><code>feature</code> - a single set of input values to be evaluated by the model.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double array representing the predicted output values for the
-         provided input values.</dd>
+<dd>a double array representing the predicted output values for the provided input values.</dd>
 <dt>Löst aus:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/IllegalArgumentException.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">IllegalArgumentException</a></code> - if <code>feature</code> is empty.</dd>
 </dl>

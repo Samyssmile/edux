@@ -96,23 +96,23 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MultilayerPerceptron</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">Object</a>
 implements <a href="../../../api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></span></div>
-<div class="block">The <code>MultilayerPerceptron</code> class represents a simple feedforward neural network,
- which consists of input, hidden, and output layers. It implements the <code>Classifier</code>
- interface, facilitating both the training and prediction processes on a given dataset.
+<div class="block">The <code>MultilayerPerceptron</code> class represents a simple feedforward neural network, which
+ consists of input, hidden, and output layers. It implements the <code>Classifier</code> interface,
+ facilitating both the training and prediction processes on a given dataset.
 
- <p>This implementation utilizes a backpropagation algorithm for training the neural network
- to adjust weights and biases, considering a set configuration defined by <a href="../config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config"><code>NetworkConfiguration</code></a>.
- The network's architecture is multi-layered, comprising one or more hidden layers in addition
- to the input and output layers. Neurons within these layers utilize activation functions defined
- per layer through the configuration.</p>
+ <p>This implementation utilizes a backpropagation algorithm for training the neural network to
+ adjust weights and biases, considering a set configuration defined by <a href="../config/NetworkConfiguration.html" title="Klasse in de.edux.ml.nn.config"><code>NetworkConfiguration</code></a>. The network's architecture is multi-layered, comprising one or more hidden
+ layers in addition to the input and output layers. Neurons within these layers utilize activation
+ functions defined per layer through the configuration.
 
- <p>The training process adjusts the weights and biases of neurons within the network based on
- the error between predicted and expected outputs. Additionally, the implementation provides functionality
- to save and restore the best model achieved during training based on accuracy. Early stopping is applied
- during training to prevent overfitting and unnecessary computational expense by monitoring the performance
- improvement across epochs.</p>
+ <p>The training process adjusts the weights and biases of neurons within the network based on the
+ error between predicted and expected outputs. Additionally, the implementation provides
+ functionality to save and restore the best model achieved during training based on accuracy.
+ Early stopping is applied during training to prevent overfitting and unnecessary computational
+ expense by monitoring the performance improvement across epochs.
 
- <p>Usage example:</p>
+ <p>Usage example:
+
  <pre>
     NetworkConfiguration config = ... ;
     double[][] testFeatures = ... ;
@@ -125,7 +125,8 @@ implements <a href="../../../api/Classifier.html" title="Schnittstelle in de.edu
     double[] prediction = mlp.predict(singleInput);
  </pre>
 
- <p>Note: This implementation logs informative messages, such as accuracy per epoch, using SLF4J logging.</p></div>
+ <p>Note: This implementation logs informative messages, such as accuracy per epoch, using SLF4J
+ logging.</div>
 <dl class="notes">
 <dt>Siehe auch:</dt>
 <dd>
@@ -242,25 +243,23 @@ implements <a href="../../../api/Classifier.html" title="Schnittstelle in de.edu
 <div class="block"><span class="description-from-type-label">Beschreibung aus Schnittstelle kopiert:&nbsp;<code><a href="../../../api/Classifier.html#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)">Classifier</a></code></span></div>
 <div class="block">Evaluates the model's performance against the provided test inputs and targets.
 
- This method takes a set of test inputs and their corresponding expected targets,
- applies the model to predict the outputs for the inputs, and then compares
- the predicted outputs to the expected targets to evaluate the performance
- of the model. The nature and metric of the evaluation (e.g., accuracy, MSE, etc.)
- are dependent on the specific implementation within the method.</div>
+ <p>This method takes a set of test inputs and their corresponding expected targets, applies the
+ model to predict the outputs for the inputs, and then compares the predicted outputs to the
+ expected targets to evaluate the performance of the model. The nature and metric of the
+ evaluation (e.g., accuracy, MSE, etc.) are dependent on the specific implementation within the
+ method.</div>
 <dl class="notes">
 <dt>Angegeben von:</dt>
 <dd><code><a href="../../../api/Classifier.html#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)">evaluate</a></code>&nbsp;in Schnittstelle&nbsp;<code><a href="../../../api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></code></dd>
 <dt>Parameter:</dt>
-<dd><code>testInputs</code> - 2D array of double, where each inner array represents
-                   a single set of input values to be evaluated by the model.</dd>
-<dd><code>testTargets</code> - 2D array of double, where each inner array represents
-                    the expected output or target for the corresponding set
-                    of inputs in <code>testInputs</code>.</dd>
+<dd><code>testInputs</code> - 2D array of double, where each inner array represents a single set of input
+     values to be evaluated by the model.</dd>
+<dd><code>testTargets</code> - 2D array of double, where each inner array represents the expected output or
+     target for the corresponding set of inputs in <code>testInputs</code>.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double value representing the performance of the model when evaluated
-         against the provided test inputs and targets. The interpretation of this
-         value (e.g., higher is better, lower is better, etc.) depends on the
-         specific evaluation metric being used.</dd>
+<dd>a double value representing the performance of the model when evaluated against the
+     provided test inputs and targets. The interpretation of this value (e.g., higher is better,
+     lower is better, etc.) depends on the specific evaluation metric being used.</dd>
 </dl>
 </section>
 </li>
@@ -276,8 +275,7 @@ implements <a href="../../../api/Classifier.html" title="Schnittstelle in de.edu
 <dt>Parameter:</dt>
 <dd><code>input</code> - a single set of input values to be evaluated by the model.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double array representing the predicted output values for the
-         provided input values.</dd>
+<dd>a double array representing the predicted output values for the provided input values.</dd>
 </dl>
 </section>
 </li>

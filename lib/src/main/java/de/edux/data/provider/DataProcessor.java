@@ -7,7 +7,7 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DataProcessor implements DataPostProcessor, Dataset, DataloaderV2 {
+public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
   private static final Logger LOG = LoggerFactory.getLogger(DataProcessor.class);
   private final IDataReader dataReader;
   private final Normalizer normalizer;

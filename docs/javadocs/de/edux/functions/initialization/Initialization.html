@@ -97,6 +97,8 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public enum </span><span class="element-name type-name-label">Initialization</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html" title="Klasse oder Schnittstelle in java.lang" class="external-link">Enum</a>&lt;<a href="Initialization.html" title="Enum-Klasse in de.edux.functions.initialization">Initialization</a>&gt;</span></div>
+<div class="block">Enumerates strategies for initializing weights in neural network layers, providing methods to
+ apply these strategies to given weight arrays.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -118,9 +120,14 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Enum-Konstante</div>
 <div class="table-header col-last">Beschreibung</div>
 <div class="col-first even-row-color"><code><a href="#HE" class="member-name-link">HE</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">He initialization strategy for weights.</div>
+</div>
 <div class="col-first odd-row-color"><code><a href="#XAVIER" class="member-name-link">XAVIER</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-last odd-row-color">
+<div class="block">Enumerates strategies for initializing weights in neural network layers, providing methods to
+ apply these strategies to given weight arrays.</div>
+</div>
 </div>
 </section>
 </li>
@@ -174,12 +181,17 @@ der Reihenfolge ihrer Deklaration zurück.</div>
 <section class="detail" id="XAVIER">
 <h3>XAVIER</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Initialization.html" title="Enum-Klasse in de.edux.functions.initialization">Initialization</a></span>&nbsp;<span class="element-name">XAVIER</span></div>
+<div class="block">Enumerates strategies for initializing weights in neural network layers, providing methods to
+ apply these strategies to given weight arrays.</div>
 </section>
 </li>
 <li>
 <section class="detail" id="HE">
 <h3>HE</h3>
 <div class="member-signature"><span class="modifiers">public static final</span>&nbsp;<span class="return-type"><a href="Initialization.html" title="Enum-Klasse in de.edux.functions.initialization">Initialization</a></span>&nbsp;<span class="element-name">HE</span></div>
+<div class="block">He initialization strategy for weights. This strategy is designed for layers with ReLU
+ activation, initializing the weights with variance scaled by the size of the previous layer,
+ aiming to reduce the vanishing gradient problem.</div>
 </section>
 </li>
 </ul>

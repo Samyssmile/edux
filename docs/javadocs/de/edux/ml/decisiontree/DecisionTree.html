@@ -98,36 +98,39 @@ loadScripts(document, 'script');</script>
 implements <a href="../../api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></span></div>
 <div class="block">A Decision Tree classifier for predictive modeling.
 
- <p>The <code>DecisionTree</code> class is a binary tree where each node represents a decision
- on a particular feature from the input feature vector, effectively partitioning the
- input space into regions with similar output labels. The tree is built recursively
- by selecting splits that minimize the Gini impurity of the resultant partitions.
+ <p>The <code>DecisionTree</code> class is a binary tree where each node represents a decision on a
+ particular feature from the input feature vector, effectively partitioning the input space into
+ regions with similar output labels. The tree is built recursively by selecting splits that
+ minimize the Gini impurity of the resultant partitions.
 
  <p>Features:
+
  <ul>
-     <li>Supports binary classification problems.</li>
-     <li>Utilizes the Gini impurity to determine optimal feature splits.</li>
-     <li>Enables control over tree depth and complexity through various hyperparameters.</li>
+   <li>Supports binary classification problems.
+   <li>Utilizes the Gini impurity to determine optimal feature splits.
+   <li>Enables control over tree depth and complexity through various hyperparameters.
  </ul>
 
  <p>Hyperparameters include:
+
  <ul>
-     <li><code>maxDepth</code>: The maximum depth of the tree.</li>
-     <li><code>minSamplesSplit</code>: The minimum number of samples required to split an internal node.</li>
-     <li><code>minSamplesLeaf</code>: The minimum number of samples required to be at a leaf node.</li>
-     <li><code>maxLeafNodes</code>: The maximum number of leaf nodes in the tree.</li>
+   <li><code>maxDepth</code>: The maximum depth of the tree.
+   <li><code>minSamplesSplit</code>: The minimum number of samples required to split an internal node.
+   <li><code>minSamplesLeaf</code>: The minimum number of samples required to be at a leaf node.
+   <li><code>maxLeafNodes</code>: The maximum number of leaf nodes in the tree.
  </ul>
 
  <p>Usage example:
+
  <pre><code>
  DecisionTree classifier = new DecisionTree(10, 2, 1, 50);
  classifier.train(trainingFeatures, trainingLabels);
  double accuracy = classifier.evaluate(testFeatures, testLabels);
  </code></pre>
 
- <p>Note: This class requires a thorough validation of input data and parameters, ensuring
- they are never <code>null</code>, have appropriate dimensions, and adhere to any other
- prerequisites or assumptions, to guarantee robustness and avoid runtime exceptions.</div>
+ <p>Note: This class requires a thorough validation of input data and parameters, ensuring they
+ are never <code>null</code>, have appropriate dimensions, and adhere to any other prerequisites or
+ assumptions, to guarantee robustness and avoid runtime exceptions.</div>
 <dl class="notes">
 <dt>Siehe auch:</dt>
 <dd>
@@ -252,25 +255,23 @@ implements <a href="../../api/Classifier.html" title="Schnittstelle in de.edux.a
 <div class="block"><span class="description-from-type-label">Beschreibung aus Schnittstelle kopiert:&nbsp;<code><a href="../../api/Classifier.html#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)">Classifier</a></code></span></div>
 <div class="block">Evaluates the model's performance against the provided test inputs and targets.
 
- This method takes a set of test inputs and their corresponding expected targets,
- applies the model to predict the outputs for the inputs, and then compares
- the predicted outputs to the expected targets to evaluate the performance
- of the model. The nature and metric of the evaluation (e.g., accuracy, MSE, etc.)
- are dependent on the specific implementation within the method.</div>
+ <p>This method takes a set of test inputs and their corresponding expected targets, applies the
+ model to predict the outputs for the inputs, and then compares the predicted outputs to the
+ expected targets to evaluate the performance of the model. The nature and metric of the
+ evaluation (e.g., accuracy, MSE, etc.) are dependent on the specific implementation within the
+ method.</div>
 <dl class="notes">
 <dt>Angegeben von:</dt>
 <dd><code><a href="../../api/Classifier.html#evaluate(double%5B%5D%5B%5D,double%5B%5D%5B%5D)">evaluate</a></code>&nbsp;in Schnittstelle&nbsp;<code><a href="../../api/Classifier.html" title="Schnittstelle in de.edux.api">Classifier</a></code></dd>
 <dt>Parameter:</dt>
-<dd><code>testInputs</code> - 2D array of double, where each inner array represents
-                   a single set of input values to be evaluated by the model.</dd>
-<dd><code>testTargets</code> - 2D array of double, where each inner array represents
-                    the expected output or target for the corresponding set
-                    of inputs in <code>testInputs</code>.</dd>
+<dd><code>testInputs</code> - 2D array of double, where each inner array represents a single set of input
+     values to be evaluated by the model.</dd>
+<dd><code>testTargets</code> - 2D array of double, where each inner array represents the expected output or
+     target for the corresponding set of inputs in <code>testInputs</code>.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double value representing the performance of the model when evaluated
-         against the provided test inputs and targets. The interpretation of this
-         value (e.g., higher is better, lower is better, etc.) depends on the
-         specific evaluation metric being used.</dd>
+<dd>a double value representing the performance of the model when evaluated against the
+     provided test inputs and targets. The interpretation of this value (e.g., higher is better,
+     lower is better, etc.) depends on the specific evaluation metric being used.</dd>
 </dl>
 </section>
 </li>
@@ -286,8 +287,7 @@ implements <a href="../../api/Classifier.html" title="Schnittstelle in de.edux.a
 <dt>Parameter:</dt>
 <dd><code>feature</code> - a single set of input values to be evaluated by the model.</dd>
 <dt>Gibt zurück:</dt>
-<dd>a double array representing the predicted output values for the
-         provided input values.</dd>
+<dd>a double array representing the predicted output values for the provided input values.</dd>
 </dl>
 </section>
 </li>
