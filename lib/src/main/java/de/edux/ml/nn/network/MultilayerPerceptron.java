@@ -75,6 +75,12 @@ public class MultilayerPerceptron implements Classifier {
     int inputSizeForCurrentLayer = config.inputSize();
     for (int layerSize : config.hiddenLayersSize()) {
       Neuron[] hiddenLayer = new Neuron[layerSize];
+      System.out.println(
+          "Create hidden layer with size: "
+              + layerSize
+              + " and input size: "
+              + inputSizeForCurrentLayer
+              + "");
       for (int i = 0; i < layerSize; i++) {
         hiddenLayer[i] =
             new Neuron(

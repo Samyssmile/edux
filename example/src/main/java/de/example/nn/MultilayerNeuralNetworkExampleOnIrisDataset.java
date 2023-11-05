@@ -61,7 +61,7 @@ public class MultilayerNeuralNetworkExampleOnIrisDataset {
             trainFeatures[0].length,
             List.of(128, 256, 512),
             3,
-            0.005,
+            0.01,
             300,
             ActivationFunction.LEAKY_RELU,
             ActivationFunction.SOFTMAX,
