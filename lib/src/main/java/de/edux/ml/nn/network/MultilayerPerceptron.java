@@ -98,14 +98,14 @@ public class MultilayerPerceptron implements Classifier {
 
   private double[] feedforward(double[] input) {
 
-    double[] currentInput = passInputTroughAllHiddenLayers(input);
+    double[] currentInput = passInputThroughAllHiddenLayers(input);
 
     double[] output = passInputTroughOutputLayer(currentInput);
 
     return outputLayerActivationFunction.calculateActivation(output);
   }
 
-  private double[] passInputTroughAllHiddenLayers(double[] input) {
+  private double[] passInputThroughAllHiddenLayers(double[] input) {
     double[] currentInput = input;
     for (Neuron[] layer : hiddenLayers) {
       double[] hiddenOutputs = new double[layer.length];
