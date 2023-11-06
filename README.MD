@@ -56,6 +56,15 @@ Include the library as a dependency in your Java project file.
  </dependency>
 ```
 
+### Hardware Acceleration (preview feature)
+
+EDUX supports Nvidia GPU acceleration.
+
+#### Requirements
+
+- Nvidia GPU with CUDA support
+- CUDA Toolkit 11.8
+
 ## Getting started tutorial
 
 This section guides you through using EDUX to process your dataset, configure a multilayer perceptron (Multilayer Neural

@@ -17,28 +17,46 @@ repositories {
     mavenCentral()
 }
 
+configurations.all {
+    resolutionStrategy {
+        cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
 dependencies {
-    implementation 'org.ejml:ejml-core:0.43.1'
-    implementation 'org.ejml:ejml-ddense:0.43.1'
-    implementation 'org.ejml:ejml-simple:0.43.1'
+    String osString = getOsString()
+    String archString = getArchString()
+    String classifier = "${osString}-${archString}"
+    String jCudaVersion = '11.8.0'
+
+    // JCuda dependencies
+    ['jcuda', 'jcublas', 'jcufft', 'jcusparse', 'jcurand', 'jcusolver', 'jcudnn'].each { lib ->
+        implementation(group: 'org.jcuda', name: "${lib}", version: jCudaVersion) {
+            transitive = false
+        }
+        implementation(group: 'org.jcuda', name: "${lib}-natives", classifier: classifier, version: jCudaVersion)
+    }
+
+    // EJML dependencies
+    ['ejml-core', 'ejml-ddense', 'ejml-simple'].each { lib ->
+        implementation "org.ejml:${lib}:0.43.1"
+    }
+
+    // Other dependencies
     implementation 'com.opencsv:opencsv:5.8'
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.20.0'
-    api 'org.apache.commons:commons-math3:3.6.1'
 
+    // Test dependencies
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testImplementation 'org.mockito:mockito-core:5.5.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'org.mockito:mockito-core:5.7.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
-testing {
-    suites {
-        test {
-            useJUnitJupiter('5.10.0')
-        }
-    }
+tasks.withType(Test) {
+    useJUnitPlatform()
 }
 
 task sourceJar(type: Jar) {
@@ -46,30 +64,19 @@ task sourceJar(type: Jar) {
     archiveClassifier.set('sources')
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+task javadocJar(type: Jar) {
+    dependsOn javadoc
     archiveClassifier.set('javadoc')
-    javadoc.destinationDir = file("${rootProject.projectDir}/docs/javadocs")
-    // Definiert das Ausgabeverzeichnis für die generierten JavaDocs.
     from javadoc.destinationDir
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'io.github.samyssmile'
-            artifactId = 'edux'
-            version = '1.0.6'
             from components.java
             artifact sourceJar
             artifact javadocJar
-            versionMapping {
-                usage('java-api') {
-                    fromResolutionOf('runtimeClasspath')
-                }
-                usage('java-runtime') {
-                    fromResolutionResult()
-                }
-            }
+
             pom {
                 name = 'Edux'
                 description = 'Educational library for machine learning challenges'
@@ -98,8 +105,7 @@ publishing {
     repositories {
         maven {
             name = "sonatype"
-            url = version.endsWith('SNAPSHOT') ? 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
-                    : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            url = version.endsWith('SNAPSHOT') ? 'https://s01.oss.sonatype.org/content/repositories/snapshots/' : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
             credentials {
                 username = System.getenv("OSSRH_USERNAME")
                 password = System.getenv("OSSRH_PASSWORD")
@@ -113,7 +119,54 @@ signing {
 }
 
 javadoc {
-    if (JavaVersion.current().isJava9Compatible()) {
+    if (JavaVersion.current().isJava9()) {
         options.addBooleanOption('html5', true)
     }
+}
+
+static String getOsString() {
+    String vendor = System.getProperty("java.vendor");
+    if ("The Android Project" == vendor) {
+        return "android";
+    } else {
+        String osName = System.getProperty("os.name");
+        osName = osName.toLowerCase(Locale.ENGLISH);
+        if (osName.startsWith("windows")) {
+            return "windows";
+        } else if (osName.startsWith("mac os")) {
+            return "apple";
+        } else if (osName.startsWith("linux")) {
+            return "linux";
+        } else if (osName.startsWith("sun")) {
+            return "sun"
+        }
+        return "unknown"
+    }
+}
+
+static String getArchString() {
+    String osArch = System.getProperty("os.arch");
+    osArch = osArch.toLowerCase(Locale.ENGLISH);
+    if ("i386" == osArch || "x86" == osArch || "i686" == osArch) {
+        return "x86";
+    } else if (osArch.startsWith("amd64") || osArch.startsWith("x86_64")) {
+        return "x86_64";
+    } else if (osArch.startsWith("arm64")) {
+        return "arm64";
+    } else if (osArch.startsWith("arm")) {
+        return "arm";
+    } else if ("ppc" == osArch || "powerpc" == osArch) {
+        return "ppc";
+    } else if (osArch.startsWith("ppc")) {
+        return "ppc_64";
+    } else if (osArch.startsWith("sparc")) {
+        return "sparc";
+    } else if (osArch.startsWith("mips64")) {
+        return "mips64";
+    } else if (osArch.startsWith("mips")) {
+        return "mips";
+    } else if (osArch.contains("risc")) {
+        return "risc";
+    }
+    return "unknown";
 }
