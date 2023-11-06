@@ -103,7 +103,7 @@ public class StrassenParallel implements IMatrixArithmetic {
     protected double[][] compute() {
       int n = A.length;
 
-      if (n <= 64) {
+      if (n <= 512) {
         return conventionalMultiply(A, B);
       } else {
         int newSize = n / 2;
