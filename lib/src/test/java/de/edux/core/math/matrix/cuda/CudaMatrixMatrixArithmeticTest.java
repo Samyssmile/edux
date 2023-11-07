@@ -1,33 +1,22 @@
 package de.edux.core.math.matrix.cuda;
 
-import static jcuda.driver.JCudaDriver.cuModuleLoad;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.edux.core.math.IMatrixArithmetic;
-import java.io.File;
-import jcuda.driver.CUmodule;
-import jcuda.driver.CUresult;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-@Disabled
 class CudaMatrixMatrixArithmeticTest {
+
+  private static CudaMatrixArithmetic cudaArithmetic;
 
   @BeforeAll
   static void setUp() {
-    String ptxFileName = "cuda_kernels" + File.separator + "matrixMultiplicationKernel.ptx";
-    CUmodule module = new CUmodule();
-    int result = cuModuleLoad(module, ptxFileName);
-    if (result != CUresult.CUDA_SUCCESS) {
-      System.out.println("Could not load module: " + result);
-    } else {
-      System.out.println("CUDA Module loaded successfully");
-    }
+    cudaArithmetic = new CudaMatrixArithmetic();
   }
 
   @Test
-  void multiply() {
+  void shouldMultiplyMatrices() {
     int matrixSize = 2048;
     double[][] matrixA = new double[matrixSize][matrixSize];
     double[][] matrixB = new double[matrixSize][matrixSize];
@@ -39,9 +28,7 @@ class CudaMatrixMatrixArithmeticTest {
       }
     }
 
-    IMatrixArithmetic cudaMatrix = new CudaMatrixArithmetic();
-
-    double[][] resultMatrix = cudaMatrix.multiply(matrixA, matrixB);
+    double[][] resultMatrix = cudaArithmetic.multiply(matrixA, matrixB);
 
     for (int i = 0; i < matrixSize; i++) {
       for (int j = 0; j < matrixSize; j++) {
@@ -84,8 +71,7 @@ class CudaMatrixMatrixArithmeticTest {
       {22, 18, 14, 10, 22, 18, 14, 10}
     };
 
-    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
-    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
+    double[][] result = cudaArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(
         expected, result, "The 8x8 matrix multiplication did not yield the correct result.");
@@ -113,7 +99,7 @@ class CudaMatrixMatrixArithmeticTest {
   }
 
   @Test
-  public void shouldMultiplyWithIdentityMatrix() {
+  public void shouldMultiplyMatrixWithIdentityMatrix() {
     double[][] matrixA = {
       {1, 0},
       {0, 1}
@@ -123,8 +109,7 @@ class CudaMatrixMatrixArithmeticTest {
       {7, 8}
     };
 
-    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
-    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
+    double[][] result = cudaArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(matrixB, result);
   }
@@ -144,9 +129,58 @@ class CudaMatrixMatrixArithmeticTest {
       {10, 8}
     };
 
-    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
-    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
+    double[][] result = cudaArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(expected, result);
+  }
+
+  @Test
+  void shouldSolveMatrixVectorProduct() {
+    int matrixSize = 2048;
+    double[][] matrixA = new double[matrixSize][matrixSize];
+    double[] vector = new double[matrixSize];
+
+    for (int i = 0; i < matrixSize; i++) {
+      for (int j = 0; j < matrixSize; j++) {
+        matrixA[i][j] = 1;
+        vector[i] = 1;
+      }
+    }
+
+    double[] resultVector = cudaArithmetic.multiply(matrixA, vector);
+
+    for (int i = 0; i < matrixSize; i++) {
+      assertEquals(matrixSize, resultVector[i], "Result on [" + i + "][" + i + "] not correct.");
+    }
+  }
+
+  @Test
+  void shouldHandleEmptyMatrix() {
+    double[][] matrix = new double[0][0];
+    double[] vector = new double[0];
+    assertThrows(IllegalArgumentException.class, () -> cudaArithmetic.multiply(matrix, vector));
+  }
+
+  @Test
+  void shouldHandleMismatchedSizes() {
+    double[][] matrix = {{1, 2, 3}, {4, 5, 6}};
+    double[] vector = {1, 2};
+    assertThrows(IllegalArgumentException.class, () -> cudaArithmetic.multiply(matrix, vector));
+  }
+
+  @Test
+  void shouldHandleNullMatrix() {
+    double[] vector = {1, 2, 3};
+    assertThrows(NullPointerException.class, () -> cudaArithmetic.multiply(null, vector));
+  }
+
+  @Test
+  void shouldMultiplyVectorWithIdentityMatrix() {
+    double[][] matrix = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    double[] vector = {1, 2, 3};
+    double[] expected = {1, 2, 3};
+    double[] result = cudaArithmetic.multiply(matrix, vector);
+    assertArrayEquals(
+        expected, result, "Multiplying with identity matrix should return the original vector.");
   }
 }
