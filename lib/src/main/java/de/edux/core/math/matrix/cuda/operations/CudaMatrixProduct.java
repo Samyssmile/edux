@@ -4,13 +4,14 @@ import static jcuda.driver.JCudaDriver.*;
 import static jcuda.driver.JCudaDriver.cuMemFree;
 
 import de.edux.core.math.IMatrixProduct;
+import de.edux.core.math.matrix.cuda.CUDAKernelUser;
 import java.io.File;
 import java.util.List;
 import jcuda.Pointer;
 import jcuda.Sizeof;
 import jcuda.driver.*;
 
-public class CudaMatrixProduct implements IMatrixProduct {
+public class CudaMatrixProduct implements IMatrixProduct, CUDAKernelUser {
 
   static {
     JCudaDriver.setExceptionsEnabled(true);
@@ -31,12 +32,7 @@ public class CudaMatrixProduct implements IMatrixProduct {
       throw new IllegalArgumentException("Inner dimensions do not match.");
     }
 
-    String ptxFileName = preparePtxFile();
-
-    CUmodule module = new CUmodule();
-    cuModuleLoad(module, ptxFileName);
-    CUfunction function = new CUfunction();
-    cuModuleGetFunction(function, module, "matrixMultiply");
+    CUfunction function = loadKernel();
 
     double[] hostInputA = flatten(matrixA);
     double[] hostInputB = flatten(matrixB);
@@ -113,7 +109,14 @@ public class CudaMatrixProduct implements IMatrixProduct {
     return flat;
   }
 
-  private String preparePtxFile() {
-    return "cuda_kernels" + File.separator + "matrixMultiplicationKernel.ptx";
+  // CUDAKernelUser
+  @Override
+  public CUfunction loadKernel() {
+    String ptxFileName = "cuda_kernels" + File.separator + "matrixMultiplicationKernel.ptx";
+    CUmodule module = new CUmodule();
+    cuModuleLoad(module, ptxFileName);
+    CUfunction function = new CUfunction();
+    cuModuleGetFunction(function, module, "matrixMultiply");
+    return function;
   }
 }
