@@ -1,15 +1,34 @@
-package de.edux.core.math.matrix.strassen;
+package de.edux.core.math.matrix.cuda;
 
+import static jcuda.driver.JCudaDriver.cuModuleLoad;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.edux.core.math.IMatrixArithmetic;
+import java.io.File;
+import jcuda.driver.CUmodule;
+import jcuda.driver.CUresult;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-class StrassenTest {
+@Disabled
+class CudaMatrixMatrixArithmeticTest {
+
+  @BeforeAll
+  static void setUp() {
+    String ptxFileName = "cuda_kernels" + File.separator + "matrixMultiplicationKernel.ptx";
+    CUmodule module = new CUmodule();
+    int result = cuModuleLoad(module, ptxFileName);
+    if (result != CUresult.CUDA_SUCCESS) {
+      System.out.println("Could not load module: " + result);
+    } else {
+      System.out.println("CUDA Module loaded successfully");
+    }
+  }
 
   @Test
-  public void shouldMultiplyWithParallelStrassen() {
-    int matrixSize = 128;
+  void multiply() {
+    int matrixSize = 2048;
     double[][] matrixA = new double[matrixSize][matrixSize];
     double[][] matrixB = new double[matrixSize][matrixSize];
 
@@ -20,13 +39,14 @@ class StrassenTest {
       }
     }
 
-    IMatrixArithmetic strassen = new Strassen();
+    IMatrixArithmetic cudaMatrix = new CudaMatrixArithmetic();
 
-    double[][] result = strassen.multiply(matrixA, matrixB);
+    double[][] resultMatrix = cudaMatrix.multiply(matrixA, matrixB);
 
     for (int i = 0; i < matrixSize; i++) {
       for (int j = 0; j < matrixSize; j++) {
-        assertEquals(matrixSize, result[i][j], "Result on [" + i + "][" + j + "] not correct.");
+        assertEquals(
+            matrixSize, resultMatrix[i][j], "Result on [" + i + "][" + j + "] not correct.");
       }
     }
   }
@@ -64,8 +84,8 @@ class StrassenTest {
       {22, 18, 14, 10, 22, 18, 14, 10}
     };
 
-    IMatrixArithmetic strassen = new Strassen();
-    double[][] result = strassen.multiply(matrixA, matrixB);
+    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
+    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
 
     assertArrayEquals(
         expected, result, "The 8x8 matrix multiplication did not yield the correct result.");
@@ -86,8 +106,8 @@ class StrassenTest {
       {0, 0}
     };
 
-    IMatrixArithmetic strassen = new Strassen();
-    double[][] result = strassen.multiply(matrixA, matrixB);
+    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
+    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
 
     assertArrayEquals(expected, result);
   }
@@ -103,8 +123,8 @@ class StrassenTest {
       {7, 8}
     };
 
-    IMatrixArithmetic strassen = new Strassen();
-    double[][] result = strassen.multiply(matrixA, matrixB);
+    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
+    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
 
     assertArrayEquals(matrixB, result);
   }
@@ -124,8 +144,8 @@ class StrassenTest {
       {10, 8}
     };
 
-    IMatrixArithmetic strassen = new Strassen();
-    double[][] result = strassen.multiply(matrixA, matrixB);
+    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
+    double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
 
     assertArrayEquals(expected, result);
   }

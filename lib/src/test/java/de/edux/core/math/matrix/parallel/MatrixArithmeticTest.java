@@ -1,15 +1,15 @@
-package de.edux.core.math.matrix.strassen;
+package de.edux.core.math.matrix.parallel;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.edux.core.math.IMatrixArithmetic;
 import org.junit.jupiter.api.Test;
 
-class StrassenParallelTest {
+class MatrixArithmeticTest {
 
   @Test
-  public void shouldMultiplyWithParallelStrassen() {
-    int matrixSize = 2048;
+  public void testLargeMatrixMultiplication() {
+    int matrixSize = 200;
     double[][] matrixA = new double[matrixSize][matrixSize];
     double[][] matrixB = new double[matrixSize][matrixSize];
 
@@ -19,16 +19,41 @@ class StrassenParallelTest {
         matrixB[i][j] = 1;
       }
     }
-
-    IMatrixArithmetic strassenParallel = new StrassenParallel();
-
-    double[][] result = strassenParallel.multiply(matrixA, matrixB);
-
+    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
+    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
     for (int i = 0; i < matrixSize; i++) {
       for (int j = 0; j < matrixSize; j++) {
         assertEquals(matrixSize, result[i][j], "Result on [" + i + "][" + j + "] not correct.");
       }
     }
+  }
+
+  @Test
+  public void shouldThrowRuntimeExceptionForMatricesWithIncompatibleSizes() {
+    double[][] matrixA = {
+      {3, -5, 1},
+      {-2, 0, 4},
+      {-1, 6, 5},
+    };
+    double[][] matrixB = {
+      {7, 2, 4},
+      {0, 1, -5},
+    };
+    double[][] matrixC = {
+      {3, -5},
+      {-2, 0},
+      {-1, 6},
+    };
+
+    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
+
+    assertAll(
+        () ->
+            assertThrows(
+                RuntimeException.class, () -> matrixParallelArithmetic.multiply(matrixA, matrixB)),
+        () ->
+            assertThrows(
+                RuntimeException.class, () -> matrixParallelArithmetic.multiply(matrixC, matrixA)));
   }
 
   @Test
@@ -64,8 +89,8 @@ class StrassenParallelTest {
       {22, 18, 14, 10, 22, 18, 14, 10}
     };
 
-    IMatrixArithmetic strassenParallel = new StrassenParallel();
-    double[][] result = strassenParallel.multiply(matrixA, matrixB);
+    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
+    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(
         expected, result, "The 8x8 matrix multiplication did not yield the correct result.");
@@ -86,8 +111,8 @@ class StrassenParallelTest {
       {0, 0}
     };
 
-    IMatrixArithmetic strassenParallel = new StrassenParallel();
-    double[][] result = strassenParallel.multiply(matrixA, matrixB);
+    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
+    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(expected, result);
   }
@@ -103,8 +128,8 @@ class StrassenParallelTest {
       {7, 8}
     };
 
-    IMatrixArithmetic strassenParallel = new StrassenParallel();
-    double[][] result = strassenParallel.multiply(matrixA, matrixB);
+    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
+    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(matrixB, result);
   }
@@ -124,8 +149,8 @@ class StrassenParallelTest {
       {10, 8}
     };
 
-    IMatrixArithmetic strassenParallel = new StrassenParallel();
-    double[][] result = strassenParallel.multiply(matrixA, matrixB);
+    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
+    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
 
     assertArrayEquals(expected, result);
   }

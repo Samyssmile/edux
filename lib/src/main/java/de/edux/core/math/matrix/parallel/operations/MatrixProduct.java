@@ -1,9 +1,10 @@
-package de.edux.core.math.matrix.classic;
+package de.edux.core.math.matrix.parallel.operations;
 
-import de.edux.core.math.IMatrixArithmetic;
+import de.edux.core.math.IMatrixProduct;
+
 import java.util.stream.IntStream;
 
-public class MatrixArithmetic implements IMatrixArithmetic {
+public class MatrixProduct implements IMatrixProduct {
 
   private void checkSizeForMultiplication(double[][] matrixA, double[][] matrixB) {
     int m = matrixB.length;
@@ -25,6 +26,7 @@ public class MatrixArithmetic implements IMatrixArithmetic {
     double[][] result = new double[aRows][bColumns];
 
     IntStream.range(0, aRows)
+        .parallel()
         .forEach(
             row -> {
               for (int col = 0; col < bColumns; col++) {
