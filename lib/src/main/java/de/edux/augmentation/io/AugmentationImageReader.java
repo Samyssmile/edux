@@ -20,6 +20,7 @@ public class AugmentationImageReader implements IAugmentationImageReader {
               } catch (IOException e) {
                 throw new RuntimeException(e);
               }
-            });
+            })
+        .limit(batchSize);
   }
 }

@@ -129,11 +129,6 @@ javadoc {
     }
 }
 
-jmh {
-    // Correct configuration parameters go here
-    includes = ['.*AugmentatioIOBenchmark.java'] // This is the corrected regex pattern
-}
-
 
 static String getOsString() {
     String vendor = System.getProperty("java.vendor");
