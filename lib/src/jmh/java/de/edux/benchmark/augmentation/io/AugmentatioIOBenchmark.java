@@ -2,12 +2,10 @@ package de.edux.benchmark.augmentation.io;
 
 import de.edux.augmentation.io.AugmentationImageReader;
 import de.edux.augmentation.io.IAugmentationImageReader;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 import org.openjdk.jmh.annotations.*;
 
 @State(Scope.Benchmark)
@@ -18,9 +16,7 @@ public class AugmentatioIOBenchmark {
 
   IAugmentationImageReader reader;
 
-  public AugmentatioIOBenchmark() {
-    reader = new AugmentationImageReader();
-  }
+  public AugmentatioIOBenchmark() {}
 
   public static void main(String[] args) throws Exception {
 
@@ -38,8 +34,8 @@ public class AugmentatioIOBenchmark {
                 + "benchmark-data"
                 + File.separator
                 + "augmentation-benchmark-images");
-    Stream<BufferedImage> imageStream = reader.readBatchOfImages(benchmarkDataDir, 1000);
+    reader = new AugmentationImageReader();
 
-    imageStream.forEach(bufferedImage -> bufferedImage.getColorModel());
+    var imageStream = reader.readBatchOfImages(benchmarkDataDir.toString(), 100, 100);
   }
 }
