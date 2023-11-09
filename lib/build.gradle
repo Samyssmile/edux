@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'signing'
+    id "me.champeau.jmh" version "0.7.2"
 }
 
 group = 'io.github.samyssmile'
@@ -41,6 +42,10 @@ dependencies {
     ['ejml-core', 'ejml-ddense', 'ejml-simple'].each { lib ->
         implementation "org.ejml:${lib}:0.43.1"
     }
+
+    // JMH dependencies
+    implementation 'org.openjdk.jmh:jmh-core:1.37'
+    implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
 
     // Other dependencies
     implementation 'com.opencsv:opencsv:5.8'
@@ -124,6 +129,7 @@ javadoc {
     }
 }
 
+
 static String getOsString() {
     String vendor = System.getProperty("java.vendor");
     if ("The Android Project" == vendor) {
@@ -170,3 +176,4 @@ static String getArchString() {
     }
     return "unknown";
 }
+

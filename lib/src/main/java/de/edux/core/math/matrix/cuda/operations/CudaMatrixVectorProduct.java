@@ -6,7 +6,10 @@ import static jcuda.driver.JCudaDriver.cuMemFree;
 import de.edux.core.math.IMatrixVectorProduct;
 import de.edux.core.math.matrix.cuda.CUDAKernelUser;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import jcuda.Pointer;
 import jcuda.Sizeof;
 import jcuda.driver.*;
@@ -39,15 +42,15 @@ public class CudaMatrixVectorProduct implements IMatrixVectorProduct, CUDAKernel
     double[] hostOutput = new double[numRows];
 
     CUdeviceptr deviceMatrix = new CUdeviceptr();
-    cuMemAlloc(deviceMatrix, hostMatrix.length * Sizeof.DOUBLE);
-    cuMemcpyHtoD(deviceMatrix, Pointer.to(hostMatrix), hostMatrix.length * Sizeof.DOUBLE);
+    cuMemAlloc(deviceMatrix, (long) hostMatrix.length * Sizeof.DOUBLE);
+    cuMemcpyHtoD(deviceMatrix, Pointer.to(hostMatrix), (long) hostMatrix.length * Sizeof.DOUBLE);
 
     CUdeviceptr deviceVector = new CUdeviceptr();
-    cuMemAlloc(deviceVector, hostVector.length * Sizeof.DOUBLE);
-    cuMemcpyHtoD(deviceVector, Pointer.to(hostVector), hostVector.length * Sizeof.DOUBLE);
+    cuMemAlloc(deviceVector, (long) hostVector.length * Sizeof.DOUBLE);
+    cuMemcpyHtoD(deviceVector, Pointer.to(hostVector), (long) hostVector.length * Sizeof.DOUBLE);
 
     CUdeviceptr deviceOutput = new CUdeviceptr();
-    cuMemAlloc(deviceOutput, hostOutput.length * Sizeof.DOUBLE);
+    cuMemAlloc(deviceOutput, (long) hostOutput.length * Sizeof.DOUBLE);
 
     Pointer kernelParameters =
         Pointer.to(
@@ -74,7 +77,7 @@ public class CudaMatrixVectorProduct implements IMatrixVectorProduct, CUDAKernel
         );
     cuCtxSynchronize();
 
-    cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, hostOutput.length * Sizeof.DOUBLE);
+    cuMemcpyDtoH(Pointer.to(hostOutput), deviceOutput, (long) hostOutput.length * Sizeof.DOUBLE);
 
     List<CUdeviceptr> list = List.of(deviceMatrix, deviceVector, deviceOutput);
     cleanUp(list);
@@ -101,8 +104,18 @@ public class CudaMatrixVectorProduct implements IMatrixVectorProduct, CUDAKernel
   @Override
   public CUfunction loadKernel() {
     String ptxFileName = "cuda_kernels" + File.separator + "matrixVectorMultiplicationKernel.ptx";
+
+    URI ptxURI;
+    try {
+      ptxURI = Objects.requireNonNull(getClass().getClassLoader().getResource(ptxFileName)).toURI();
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+
+    File ptxFile = new File(ptxURI);
+
     CUmodule module = new CUmodule();
-    cuModuleLoad(module, ptxFileName);
+    cuModuleLoad(module, ptxFile.getAbsolutePath());
     CUfunction function = new CUfunction();
     cuModuleGetFunction(function, module, "matrixVectorMultiplicationKernel");
     return function;

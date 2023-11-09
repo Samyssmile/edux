@@ -29,6 +29,7 @@ public class CudaMatrixArithmetic implements IMatrixArithmetic {
   }
 
   private boolean isCudaAvailable() {
+    LOG.info("Checking for CUDA availability.");
     try {
       int[] count = new int[1];
       JCuda.cudaGetDeviceCount(count);

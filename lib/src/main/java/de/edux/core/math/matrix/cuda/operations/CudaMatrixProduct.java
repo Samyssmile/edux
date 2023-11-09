@@ -6,7 +6,10 @@ import static jcuda.driver.JCudaDriver.cuMemFree;
 import de.edux.core.math.IMatrixProduct;
 import de.edux.core.math.matrix.cuda.CUDAKernelUser;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import jcuda.Pointer;
 import jcuda.Sizeof;
 import jcuda.driver.*;
@@ -109,12 +112,19 @@ public class CudaMatrixProduct implements IMatrixProduct, CUDAKernelUser {
     return flat;
   }
 
-  // CUDAKernelUser
   @Override
   public CUfunction loadKernel() {
     String ptxFileName = "cuda_kernels" + File.separator + "matrixMultiplicationKernel.ptx";
+    URI ptxURI;
+    try {
+      ptxURI = Objects.requireNonNull(getClass().getClassLoader().getResource(ptxFileName)).toURI();
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(e);
+    }
+    File ptxFile = new File(ptxURI);
+
     CUmodule module = new CUmodule();
-    cuModuleLoad(module, ptxFileName);
+    cuModuleLoad(module, ptxFile.getAbsolutePath());
     CUfunction function = new CUfunction();
     cuModuleGetFunction(function, module, "matrixMultiply");
     return function;
