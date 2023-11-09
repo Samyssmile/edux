@@ -2,10 +2,17 @@ package de.edux.core.math.matrix.parallel;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.edux.core.math.IMatrixArithmetic;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class MatrixArithmeticTest {
+
+  private static MatrixArithmetic matrixArithmetic;
+
+  @BeforeAll
+  static void setUp() {
+    matrixArithmetic = new MatrixArithmetic();
+  }
 
   @Test
   public void testLargeMatrixMultiplication() {
@@ -19,8 +26,8 @@ class MatrixArithmeticTest {
         matrixB[i][j] = 1;
       }
     }
-    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
-    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
+
+    double[][] result = matrixArithmetic.multiply(matrixA, matrixB);
     for (int i = 0; i < matrixSize; i++) {
       for (int j = 0; j < matrixSize; j++) {
         assertEquals(matrixSize, result[i][j], "Result on [" + i + "][" + j + "] not correct.");
@@ -45,15 +52,13 @@ class MatrixArithmeticTest {
       {-1, 6},
     };
 
-    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
-
     assertAll(
         () ->
             assertThrows(
-                RuntimeException.class, () -> matrixParallelArithmetic.multiply(matrixA, matrixB)),
+                RuntimeException.class, () -> matrixArithmetic.multiply(matrixA, matrixB)),
         () ->
             assertThrows(
-                RuntimeException.class, () -> matrixParallelArithmetic.multiply(matrixC, matrixA)));
+                RuntimeException.class, () -> matrixArithmetic.multiply(matrixC, matrixA)));
   }
 
   @Test
@@ -89,9 +94,7 @@ class MatrixArithmeticTest {
       {22, 18, 14, 10, 22, 18, 14, 10}
     };
 
-    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
-    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
-
+    double[][] result = matrixArithmetic.multiply(matrixA, matrixB);
     assertArrayEquals(
         expected, result, "The 8x8 matrix multiplication did not yield the correct result.");
   }
@@ -111,9 +114,7 @@ class MatrixArithmeticTest {
       {0, 0}
     };
 
-    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
-    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
-
+    double[][] result = matrixArithmetic.multiply(matrixA, matrixB);
     assertArrayEquals(expected, result);
   }
 
@@ -128,9 +129,7 @@ class MatrixArithmeticTest {
       {7, 8}
     };
 
-    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
-    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
-
+    double[][] result = matrixArithmetic.multiply(matrixA, matrixB);
     assertArrayEquals(matrixB, result);
   }
 
@@ -149,9 +148,56 @@ class MatrixArithmeticTest {
       {10, 8}
     };
 
-    IMatrixArithmetic matrixParallelArithmetic = new MatrixArithmetic();
-    double[][] result = matrixParallelArithmetic.multiply(matrixA, matrixB);
-
+    double[][] result = matrixArithmetic.multiply(matrixA, matrixB);
     assertArrayEquals(expected, result);
+  }
+
+  @Test
+  void shouldSolveMatrixVectorProduct() {
+    int matrixSize = 2048;
+    double[][] matrixA = new double[matrixSize][matrixSize];
+    double[] vector = new double[matrixSize];
+
+    for (int i = 0; i < matrixSize; i++) {
+      for (int j = 0; j < matrixSize; j++) {
+        matrixA[i][j] = 1;
+        vector[i] = 1;
+      }
+    }
+
+    double[] resultVector = matrixArithmetic.multiply(matrixA, vector);
+    for (int i = 0; i < matrixSize; i++) {
+      assertEquals(matrixSize, resultVector[i], "Result on [" + i + "][" + i + "] not correct.");
+    }
+  }
+
+  @Test
+  void shouldHandleEmptyMatrix() {
+    double[][] matrix = new double[0][0];
+    double[] vector = new double[0];
+    assertThrows(IllegalArgumentException.class, () -> matrixArithmetic.multiply(matrix, vector));
+  }
+
+  @Test
+  void shouldHandleMismatchedSizes() {
+    double[][] matrix = {{1, 2, 3}, {4, 5, 6}};
+    double[] vector = {1, 2};
+    assertThrows(IllegalArgumentException.class, () -> matrixArithmetic.multiply(matrix, vector));
+  }
+
+  @Test
+  void shouldHandleNullMatrix() {
+    double[] vector = {1, 2, 3};
+    assertThrows(NullPointerException.class, () -> matrixArithmetic.multiply(null, vector));
+  }
+
+  @Test
+  void shouldMultiplyVectorWithIdentityMatrix() {
+    double[][] matrix = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    double[] vector = {1, 2, 3};
+    double[] expected = {1, 2, 3};
+    double[] result = matrixArithmetic.multiply(matrix, vector);
+    assertArrayEquals(
+      expected, result, "Multiplying with identity matrix should return the original vector.");
   }
 }

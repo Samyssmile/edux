@@ -1,30 +1,17 @@
 package de.edux.core.math.matrix.parallel.operations;
 
 import de.edux.core.math.IMatrixProduct;
-
 import java.util.stream.IntStream;
 
 public class MatrixProduct implements IMatrixProduct {
 
-  private void checkSizeForMultiplication(double[][] matrixA, double[][] matrixB) {
-    int m = matrixB.length;
-    int n = matrixA[0].length;
-    if (m != n) {
-      throw new RuntimeException(
-          "\"The number of columns in the first matrix must be equal to the number of rows in the second matrix.\"");
-    }
-  }
-
   @Override
   public double[][] multiply(double[][] matrixA, double[][] matrixB) {
-    checkSizeForMultiplication(matrixA, matrixB);
-
     int aRows = matrixA.length;
     int aColumns = matrixA[0].length;
     int bColumns = matrixB[0].length;
 
     double[][] result = new double[aRows][bColumns];
-
     IntStream.range(0, aRows)
         .parallel()
         .forEach(

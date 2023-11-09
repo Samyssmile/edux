@@ -18,7 +18,7 @@ public class DecisionTreeExampleOnPenguinsDatasetNoHead {
               + "seaborn-penguins"
               + File.separator
               + "penguins-no-head.csv");
-  private static final boolean SKIP_HEAD = true;
+  private static final boolean SKIP_HEAD = false;
   private static final ImputationStrategy averageImputation = ImputationStrategy.AVERAGE;
   private static final ImputationStrategy modeImputation = ImputationStrategy.MODE;
 
