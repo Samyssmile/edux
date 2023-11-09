@@ -126,17 +126,13 @@ public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
     return Optional.empty();
   }
 
-  public String[] getColumnDataOf(String columnName) {
-    Optional<Integer> index = getIndexOfColumn(columnName);
-    if (index.isEmpty()) {
-      throw new IllegalArgumentException("Column name not found");
-    }
-    int columnIndex = index.get();
-    String[] columnData = new String[dataset.size()];
-    for (int i = 0; i < dataset.size(); i++) {
-      columnData[i] = dataset.get(i)[columnIndex];
-    }
-    return columnData;
+  public String[] getColumnDataOf(int columnIndex) {
+     
+      String[] columnData = new String[dataset.size()];
+      for (int i = 0; i < dataset.size(); i++) {
+          columnData[i] = dataset.get(i)[columnIndex];
+      }
+      return columnData;
   }
 
   @Override
@@ -145,7 +141,7 @@ public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
   }
 
   public DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy) {
-    String[] columnDataToUpdate = getColumnDataOf(columnName);
+    String[] columnDataToUpdate = getColumnDataOf(Integer.parseInt(columnName));
     String[] updatedColumnData =
         imputationStrategy.getImputation().performImputation(columnDataToUpdate);
     int columnIndex = getIndexOfColumn(columnName).get();

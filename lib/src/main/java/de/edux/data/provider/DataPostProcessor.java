@@ -36,7 +36,7 @@ public interface DataPostProcessor {
    * @param imputationStrategy the strategy to use for imputing missing values
    * @return the {@code DataPostProcessor} instance with imputed data for method chaining
    */
-  DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
+   DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
 
   /**
    * Performs imputation on missing values in a specified column index using the provided imputation

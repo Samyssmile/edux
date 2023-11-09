@@ -20,9 +20,9 @@ public interface Dataset {
 
   double[][] getTestFeatures(int[] inputColumns);
 
-  Optional<Integer> getIndexOfColumn(String columnName);
+   Optional<Integer> getIndexOfColumn(String columnName);
 
-  String[] getColumnDataOf(String columnName);
+  String[] getColumnDataOf(int columnName);
 
   String[] getColumnNames();
 }
