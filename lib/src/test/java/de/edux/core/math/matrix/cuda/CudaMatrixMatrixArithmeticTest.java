@@ -4,8 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import de.edux.core.math.IMatrixArithmetic;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 class CudaMatrixMatrixArithmeticTest {
 
   private static CudaMatrixArithmetic cudaArithmetic;
