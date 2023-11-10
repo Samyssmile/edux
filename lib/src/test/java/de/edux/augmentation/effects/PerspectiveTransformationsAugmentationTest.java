@@ -5,19 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.edux.augmentation.AugmentationBuilder;
 import de.edux.augmentation.AugmentationSequence;
+import de.edux.augmentation.AugmentationTestUtils;
+import de.edux.augmentation.effects.geomentry.Perspective;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class PerspectiveTransformationsAugmentationTest {
-  private static final boolean OPEN_IMAGES_IN_PREVIEW = false;
 
   private AugmentationBuilder augmentationBuilder;
   private Path benchmarkDataDir;
@@ -27,9 +27,8 @@ public class PerspectiveTransformationsAugmentationTest {
 
   @Test
   void shouldApplyAugmentationSequenceOnSingleImage() throws IOException, InterruptedException {
-    var image = loadTestImage("augmentation/edux-original_3.png");
+    var image = AugmentationTestUtils.loadTestImage("augmentation/edux-original_3.png");
 
-    // Ein Fall, in dem das Bild um einen bestimmten Winkel gedreht wird
     double cosAngle = Math.cos(Math.toRadians(30)); // 30 Grad Rotation
     double sinAngle = Math.sin(Math.toRadians(30));
     double[] coefficients2 = {cosAngle, -sinAngle, 0, sinAngle, cosAngle};
@@ -37,7 +36,8 @@ public class PerspectiveTransformationsAugmentationTest {
     AugmentationSequence augmentationSequence =
         new AugmentationBuilder()
             .addAugmentation(new ResizeAugmentation(3840, 2160, ResizeQuality.QUALITY))
-            .addAugmentation(new PerspectiveTransformationsAugmentation(coefficients2))
+            .addAugmentation(
+                new PerspectiveTransformationsAugmentation(Perspective.SQUEEZE_VERTICAL))
             .build();
 
     BufferedImage augmentedImage = augmentationSequence.applyTo(image);
@@ -57,34 +57,7 @@ public class PerspectiveTransformationsAugmentationTest {
     assertTrue(Files.exists(outputPath), "Output image file should exist.");
     assertTrue(Files.size(outputPath) > 0, "Output image file should not be empty.");
 
-    // comment this to disable opening the image in the default image viewer
-    openImageInPreview(image);
-    openImageInPreview(augmentedImage);
-  }
-
-  private void openImageInPreview(BufferedImage augmentedImage) throws InterruptedException {
-    if (OPEN_IMAGES_IN_PREVIEW) {
-      Path tempFile = null;
-      try {
-
-        if (Desktop.isDesktopSupported()) {
-          tempFile = Files.createTempFile(UUID.randomUUID().toString(), ".png");
-          ImageIO.write(augmentedImage, "png", tempFile.toFile());
-
-          Desktop.getDesktop().open(tempFile.toFile());
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  private BufferedImage loadTestImage(String path) throws IOException {
-    var resourcePath = path;
-    var imageStream = this.getClass().getClassLoader().getResourceAsStream(resourcePath);
-    if (imageStream == null) {
-      throw new IOException("Cannot find resource: " + resourcePath);
-    }
-    return ImageIO.read(imageStream);
+    AugmentationTestUtils.openImageInPreview(image);
+    AugmentationTestUtils.openImageInPreview(augmentedImage);
   }
 }
