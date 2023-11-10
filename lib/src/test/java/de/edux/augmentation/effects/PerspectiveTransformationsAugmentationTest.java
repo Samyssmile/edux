@@ -8,6 +8,7 @@ import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
 import de.edux.augmentation.effects.geomentry.Perspective;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,7 +27,9 @@ public class PerspectiveTransformationsAugmentationTest {
 
   @Test
   void shouldApplyAugmentationSequenceOnSingleImage() throws IOException, InterruptedException {
-    var image = AugmentationTestUtils.loadTestImage("augmentation/edux-original_3.png");
+    var image =
+        AugmentationTestUtils.loadTestImage(
+            "augmentation" + File.separator + "edux-original_3.png");
 
     double cosAngle = Math.cos(Math.toRadians(30)); // 30 Grad Rotation
     double sinAngle = Math.sin(Math.toRadians(30));

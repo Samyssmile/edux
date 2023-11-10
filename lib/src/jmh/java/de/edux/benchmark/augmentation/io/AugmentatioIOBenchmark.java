@@ -36,6 +36,6 @@ public class AugmentatioIOBenchmark {
                 + "augmentation-benchmark-images");
     reader = new AugmentationImageReader();
 
-    var imageStream = reader.readBatchOfImages(benchmarkDataDir.toString(), 100, 100);
+    var imageStream = reader.readImagePathsAsStream(benchmarkDataDir.toString());
   }
 }

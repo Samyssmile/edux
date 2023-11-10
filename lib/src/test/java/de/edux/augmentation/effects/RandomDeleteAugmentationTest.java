@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +20,7 @@ class RandomDeleteAugmentationTest {
 
   @Test
   void shouldRandomDelete() throws IOException, InterruptedException {
-    var image = loadTestImage("augmentation/neo-tokyo.png");
+    var image = loadTestImage("augmentation" + File.separator + "neo-tokyo.png");
     int originalWidth = image.getWidth();
     int originalHeight = image.getHeight();
 
