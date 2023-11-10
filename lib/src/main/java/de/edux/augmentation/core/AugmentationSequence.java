@@ -1,4 +1,4 @@
-package de.edux.augmentation;
+package de.edux.augmentation.core;
 
 import java.awt.image.BufferedImage;
 

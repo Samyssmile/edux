@@ -1,6 +1,6 @@
 package de.edux.augmentation.effects;
 
-import de.edux.augmentation.AbstractAugmentation;
+import de.edux.augmentation.core.AbstractAugmentation;
 import java.awt.image.BufferedImage;
 
 /** This class provides an augmentation that crops an image based on a specified factor. */

@@ -3,7 +3,6 @@ package de.edux.augmentation.effects;
 import static de.edux.augmentation.AugmentationTestUtils.loadTestImage;
 import static de.edux.augmentation.AugmentationTestUtils.openImageInPreview;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
@@ -12,31 +11,48 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 
-public class ElasticTransformationTest {
+class RandomDeleteAugmentationTest {
 
   @Test
-  void shouldApplyAugmentationSequenceOnSingleImage() throws IOException, InterruptedException {
-    var image = loadTestImage("augmentation/edux-original_3.png");
+  void shouldRandomDelete() throws IOException, InterruptedException {
+    var image = loadTestImage("augmentation/neo-tokyo.png");
+    int originalWidth = image.getWidth();
+    int originalHeight = image.getHeight();
 
     AugmentationSequence augmentationSequence =
-        new AugmentationBuilder()
-            .addAugmentation(new ResizeAugmentation(3840, 2160, ResizeQuality.QUALITY))
-            .addAugmentation(new ElasticTransformationAugmentation(5, 2))
-            .build();
+        new AugmentationBuilder().addAugmentation(new RandomDeleteAugmentation(5, 80, 150)).build();
 
     BufferedImage augmentedImage = augmentationSequence.applyTo(image);
+
+    int[] originalPixels =
+        image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
+    int[] augmentedPixels =
+        augmentedImage.getRGB(
+            0,
+            0,
+            augmentedImage.getWidth(),
+            augmentedImage.getHeight(),
+            null,
+            0,
+            augmentedImage.getWidth());
 
     assertNotNull(augmentedImage, "Augmented image should not be null.");
 
     assertEquals(
-        3840, augmentedImage.getWidth(), "Augmented image width should match the specified width.");
+        originalWidth,
+        augmentedImage.getWidth(),
+        "Augmented image width should match the specified width.");
     assertEquals(
-        2160,
+        originalHeight,
         augmentedImage.getHeight(),
         "Augmented image height should match the specified height.");
+    assertFalse(
+        Arrays.equals(originalPixels, augmentedPixels),
+        "The augmented image should differ from the original.");
 
     Path outputPath = Paths.get("augmented.png");
     ImageIO.write(augmentedImage, "png", outputPath.toFile());

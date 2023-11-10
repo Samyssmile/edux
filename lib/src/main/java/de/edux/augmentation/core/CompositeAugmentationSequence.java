@@ -1,11 +1,7 @@
-package de.edux.augmentation.composite;
+package de.edux.augmentation.core;
 
-import de.edux.augmentation.AbstractAugmentation;
-import de.edux.augmentation.AugmentationSequence;
 import java.awt.image.BufferedImage;
-import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Stream;
 
 /** Composite augmentation that applies a sequence of augmentations. */
 public class CompositeAugmentationSequence implements AugmentationSequence {

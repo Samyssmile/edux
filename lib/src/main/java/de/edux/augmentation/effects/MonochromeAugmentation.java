@@ -1,6 +1,6 @@
 package de.edux.augmentation.effects;
 
-import de.edux.augmentation.AbstractAugmentation;
+import de.edux.augmentation.core.AbstractAugmentation;
 import java.awt.image.BufferedImage;
 
 /** Applies a monochrome filter to the image, converting it to grayscale. */

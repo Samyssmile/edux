@@ -1,6 +1,6 @@
 package de.edux.augmentation.effects;
 
-import de.edux.augmentation.AbstractAugmentation;
+import de.edux.augmentation.core.AbstractAugmentation;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 

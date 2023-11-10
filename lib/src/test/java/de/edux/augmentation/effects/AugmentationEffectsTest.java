@@ -1,23 +1,21 @@
 package de.edux.augmentation.effects;
 
+import static de.edux.augmentation.AugmentationTestUtils.loadTestImage;
+import static de.edux.augmentation.AugmentationTestUtils.openImageInPreview;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import de.edux.augmentation.AugmentationBuilder;
-import de.edux.augmentation.AugmentationSequence;
-import java.awt.*;
+import de.edux.augmentation.core.AugmentationBuilder;
+import de.edux.augmentation.core.AugmentationSequence;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 
 public class AugmentationEffectsTest {
-
-  private static final boolean OPEN_IMAGES_IN_PREVIEW = false;
 
   private AugmentationBuilder augmentationBuilder;
   private Path benchmarkDataDir;
@@ -119,7 +117,6 @@ public class AugmentationEffectsTest {
     assertTrue(Files.exists(outputPath), "Output originalImage file should exist.");
     assertTrue(Files.size(outputPath) > 0, "Output originalImage file should not be empty.");
 
-    // comment this to disable opening the originalImage in the default originalImage viewer
     openImageInPreview(originalImage);
     openImageInPreview(augmentedImage);
   }
@@ -153,57 +150,6 @@ public class AugmentationEffectsTest {
     assertTrue(Files.exists(outputPath), "Output image file should exist.");
     assertTrue(Files.size(outputPath) > 0, "Output image file should not be empty.");
 
-    // comment this to disable opening the image in the default image viewer
     openImageInPreview(augmentedImage);
-  }
-
-  private void openImageInPreview(BufferedImage augmentedImage) throws InterruptedException {
-    if (OPEN_IMAGES_IN_PREVIEW) {
-      Path tempFile = null;
-      try {
-
-        if (Desktop.isDesktopSupported()) {
-          tempFile = Files.createTempFile(UUID.randomUUID().toString(), ".png");
-          ImageIO.write(augmentedImage, "png", tempFile.toFile());
-
-          Desktop.getDesktop().open(tempFile.toFile());
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  private BufferedImage loadTestImage(String path) throws IOException {
-    var resourcePath = path;
-    var imageStream = this.getClass().getClassLoader().getResourceAsStream(resourcePath);
-    if (imageStream == null) {
-      throw new IOException("Cannot find resource: " + resourcePath);
-    }
-    return ImageIO.read(imageStream);
-  }
-
-  private BufferedImage createImageWithGreenCross(int width, int height) {
-    BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = image.createGraphics();
-    graphics.setPaint(Color.WHITE);
-    graphics.fillRect(0, 0, image.getWidth(), image.getHeight());
-
-    graphics.setPaint(Color.GREEN);
-
-    int crossThickness = 60;
-
-    int centerX = width / 2;
-    int centerY = height / 2;
-
-    graphics.fillRect(
-        centerX - crossThickness / 2, centerY - crossThickness / 2, crossThickness, height);
-
-    graphics.fillRect(
-        centerX - crossThickness / 2, centerY - crossThickness / 2, width, crossThickness);
-
-    graphics.dispose();
-
-    return image;
   }
 }
