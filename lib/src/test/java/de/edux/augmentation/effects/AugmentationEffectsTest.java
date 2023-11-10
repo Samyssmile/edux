@@ -5,8 +5,8 @@ import static de.edux.augmentation.AugmentationTestUtils.openImageInPreview;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import de.edux.augmentation.AugmentationBuilder;
-import de.edux.augmentation.AugmentationSequence;
+import de.edux.augmentation.core.AugmentationBuilder;
+import de.edux.augmentation.core.AugmentationSequence;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;

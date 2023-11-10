@@ -3,11 +3,10 @@ package de.edux.augmentation.effects;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import de.edux.augmentation.AugmentationBuilder;
-import de.edux.augmentation.AugmentationSequence;
 import de.edux.augmentation.AugmentationTestUtils;
+import de.edux.augmentation.core.AugmentationBuilder;
+import de.edux.augmentation.core.AugmentationSequence;
 import de.edux.augmentation.effects.geomentry.Perspective;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -35,9 +34,7 @@ public class PerspectiveTransformationsAugmentationTest {
 
     AugmentationSequence augmentationSequence =
         new AugmentationBuilder()
-            .addAugmentation(new ResizeAugmentation(3840, 2160, ResizeQuality.QUALITY))
-            .addAugmentation(
-                new PerspectiveTransformationsAugmentation(Perspective.SQUEEZE_VERTICAL))
+            .addAugmentation(new PerspectiveTransformationsAugmentation(Perspective.RIGHT_TILT))
             .build();
 
     BufferedImage augmentedImage = augmentationSequence.applyTo(image);

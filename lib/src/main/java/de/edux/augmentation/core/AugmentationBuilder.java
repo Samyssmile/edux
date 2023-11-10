@@ -1,6 +1,5 @@
-package de.edux.augmentation;
+package de.edux.augmentation.core;
 
-import de.edux.augmentation.composite.CompositeAugmentationSequence;
 import java.util.ArrayList;
 import java.util.List;
 

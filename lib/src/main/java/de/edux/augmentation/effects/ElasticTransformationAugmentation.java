@@ -1,6 +1,6 @@
 package de.edux.augmentation.effects;
 
-import de.edux.augmentation.AbstractAugmentation;
+import de.edux.augmentation.core.AbstractAugmentation;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -13,8 +13,8 @@ public class ElasticTransformationAugmentation extends AbstractAugmentation {
   /**
    * Constructs an ElasticTransformationAugmentation instance with the given parameters.
    *
-   * @param alpha The intensity of the transformation.
-   * @param sigma The elasticity coefficient.
+   * @param alpha The intensity of the transformation. Typically between 1 and 10.
+   * @param sigma The elasticity coefficient. Typically between 0.1 and 0.5.
    */
   public ElasticTransformationAugmentation(double alpha, double sigma) {
     this.alpha = alpha;

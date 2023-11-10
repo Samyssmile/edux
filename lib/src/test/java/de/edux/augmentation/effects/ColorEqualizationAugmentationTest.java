@@ -15,16 +15,16 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 
-class RandomDeleteAugmentationTest {
+class ColorEqualizationAugmentationTest {
 
   @Test
-  void shouldRandomDelete() throws IOException, InterruptedException {
-    var image = loadTestImage("augmentation/neo-tokyo.png");
+  void apply() throws IOException, InterruptedException {
+    var image = loadTestImage("augmentation/national-park.png");
     int originalWidth = image.getWidth();
     int originalHeight = image.getHeight();
 
     AugmentationSequence augmentationSequence =
-        new AugmentationBuilder().addAugmentation(new RandomDeleteAugmentation(5, 80, 150)).build();
+        new AugmentationBuilder().addAugmentation(new ColorEqualizationAugmentation()).build();
 
     BufferedImage augmentedImage = augmentationSequence.applyTo(image);
 

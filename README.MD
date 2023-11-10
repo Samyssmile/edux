@@ -16,6 +16,32 @@ EDUX supports a variety of machine learning algorithms including:
 - **Support Vector Machine:** Effective for binary classification, and can be adapted for multi-class problems.
 - **RandomForest:** An ensemble method providing high accuracy through building multiple decision trees.
 
+### Augmentations
+
+Edux supports a variety of image augmentations, which can be used to increase the performance of your model.
+
+### Few examples:
+
+#### Color Equalization
+
+<figure>
+  <img src="https://github.com/Samyssmile/edux/assets/6922428/01d5a67c-0a62-4884-a2cc-7b0be1ee4601" width="300" alt="Original Image">
+</figure>
+
+<figure>
+  <img src="https://github.com/Samyssmile/edux/assets/6922428/a3b04e8a-85c7-4bf3-8f76-9f8ce330e304" width="300" alt="Color Equalized Image">
+</figure>
+
+#### Monochrome + Noise
+
+<figure>
+  <img src="https://github.com/Samyssmile/edux/assets/6922428/56c4f7a4-93dc-483c-b5da-c8a15989b313" width="300" alt="Original Image">
+</figure>
+
+<figure>
+  <img src="https://github.com/Samyssmile/edux/assets/6922428/25a8b2e5-0373-4781-8001-114e699fc2fe" width="300" alt="Monochrome + Noise Image">
+</figure>
+
 ### Battle Royale - Which algorithm is the best?
 
 We run all algorithms on the same dataset and compare the results.
