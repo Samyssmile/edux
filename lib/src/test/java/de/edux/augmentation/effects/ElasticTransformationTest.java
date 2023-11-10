@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +20,7 @@ public class ElasticTransformationTest {
 
   @Test
   void shouldApplyAugmentationSequenceOnSingleImage() throws IOException, InterruptedException {
-    var image = loadTestImage("augmentation/edux-original_3.png");
+    var image = loadTestImage("augmentation" + File.separator + "edux-original_3.png");
 
     AugmentationSequence augmentationSequence =
         new AugmentationBuilder()

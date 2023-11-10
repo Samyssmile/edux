@@ -9,6 +9,7 @@ import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
 import de.edux.augmentation.effects.geomentry.Perspective;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,7 +22,8 @@ public class AllAugmentations {
 
   @Test
   void shouldApplyAllAugmentations() throws InterruptedException, IOException {
-    var originalImage = loadTestImage("augmentation/national-park.png");
+    var originalImage = loadTestImage("augmentation" + File.separator + "national-park.png");
+
     int width = originalImage.getWidth();
     int height = originalImage.getHeight();
 
