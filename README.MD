@@ -44,21 +44,29 @@ Edux supports a variety of image augmentations, which can be used to increase th
 
 #### Code Example
 
+#### Single Image
+
+````java
+    AugmentationSequence augmentationSequence=
+        new AugmentationBuilder()
+        .addAugmentation(new ResizeAugmentation(250,250))
+        .addAugmentation(new ColorEqualizationAugmentation())
+        .build();
+
+        BufferedImage augmentedImage=augmentationSequence.applyTo(image);
+````
+
+#### Run for all images in a directory
+
 ```java
     AugmentationSequence augmentationSequence=
         new AugmentationBuilder()
-        .addAugmentation(new ResizeAugmentation(width*2,height*2,ResizeQuality.QUALITY))
-        .addAugmentation(new ContrastAugmentation(0.6f))
-        .addAugmentation(new BlurAugmentation(5))
-        .addAugmentation(new NoiseInjectionAugmentation(40))
-        .addAugmentation(new MonochromeAugmentation())
-        .addAugmentation(new FlippingAugmentation())
+        .addAugmentation(new ResizeAugmentation(250,250))
         .addAugmentation(new ColorEqualizationAugmentation())
-        .addAugmentation(new CroppingAugmentation(0.2f))
-        .addAugmentation(new ElasticTransformationAugmentation(5,0.5))
-        .addAugmentation(new PerspectiveTransformationsAugmentation(Perspective.RIGHT_TILT))
-        .addAugmentation(new RandomDeleteAugmentation(5,20,20))
-        .build();
+        .addAugmentation(new BlurAugmentation(25))
+        .addAugmentation(new RandomDeleteAugmentation(10,20,20))
+        .build()
+        .run(trainImagesDir,numberOfWorkers,outputDir);
 ```
 
 ### Battle Royale - Which algorithm is the best?
