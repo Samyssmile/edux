@@ -34,7 +34,9 @@ public class PerspectiveTransformationsAugmentationTest {
 
     AugmentationSequence augmentationSequence =
         new AugmentationBuilder()
-            .addAugmentation(new PerspectiveTransformationsAugmentation(Perspective.RIGHT_TILT))
+            .addAugmentation(new ResizeAugmentation(3840, 2160, ResizeQuality.QUALITY))
+            .addAugmentation(
+                new PerspectiveTransformationsAugmentation(Perspective.SQUEEZE_VERTICAL))
             .build();
 
     BufferedImage augmentedImage = augmentationSequence.applyTo(image);

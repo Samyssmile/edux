@@ -42,6 +42,25 @@ Edux supports a variety of image augmentations, which can be used to increase th
   <img src="https://github.com/Samyssmile/edux/assets/6922428/25a8b2e5-0373-4781-8001-114e699fc2fe" width="300" alt="Monochrome + Noise Image">
 </figure>
 
+#### Code Example
+
+```java
+    AugmentationSequence augmentationSequence=
+        new AugmentationBuilder()
+        .addAugmentation(new ResizeAugmentation(width*2,height*2,ResizeQuality.QUALITY))
+        .addAugmentation(new ContrastAugmentation(0.6f))
+        .addAugmentation(new BlurAugmentation(5))
+        .addAugmentation(new NoiseInjectionAugmentation(40))
+        .addAugmentation(new MonochromeAugmentation())
+        .addAugmentation(new FlippingAugmentation())
+        .addAugmentation(new ColorEqualizationAugmentation())
+        .addAugmentation(new CroppingAugmentation(0.2f))
+        .addAugmentation(new ElasticTransformationAugmentation(5,0.5))
+        .addAugmentation(new PerspectiveTransformationsAugmentation(Perspective.RIGHT_TILT))
+        .addAugmentation(new RandomDeleteAugmentation(5,20,20))
+        .build();
+```
+
 ### Battle Royale - Which algorithm is the best?
 
 We run all algorithms on the same dataset and compare the results.
