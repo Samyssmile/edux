@@ -2,7 +2,6 @@ package de.edux.augmentation.effects;
 
 import de.edux.augmentation.core.AbstractAugmentation;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 
@@ -32,7 +31,7 @@ public class BrightnessAugmentation extends AbstractAugmentation {
     /**
      * Loop through each image pixel and multiply the pixel value by the brightness value
 
-     * @param image The image to augment.
+     * @param image the image to augment.
      * @return the image with brightness augmentation applied to it
      */
     @Override
@@ -41,15 +40,19 @@ public class BrightnessAugmentation extends AbstractAugmentation {
                 new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
         for (int y = 0; y < image.getHeight(); y++){
-            for (int x = 0; x< image.getWidth(); x++){
+            for (int x = 0; x < image.getWidth(); x++){
                 int rgb = image.getRGB(x,y);
-                Color color = new Color(rgb);
-                int newR = clip((int) (color.getRed()   + 255f * brightnessFactor));
-                int newG = clip((int) (color.getGreen() + 255f * brightnessFactor));
-                int newB = clip((int) (color.getBlue()  + 255f * brightnessFactor));
 
-                Color newColor = new Color(newR,newG,newB);
-                augmentedImage.setRGB(x,y,newColor.getRGB());
+                int red   = (rgb >> 16) & 0xFF;
+                int green = (rgb >> 8) & 0xFF;
+                int blue  = rgb & 0xFF;
+                int alpha = (rgb >> 24) & 0xff;
+
+                int newR = clip((int) (red   + 255f * brightnessFactor));
+                int newG = clip((int) (green + 255f * brightnessFactor));
+                int newB = clip((int) (blue  + 255f * brightnessFactor));
+                int newRgb = (alpha << 24) | (newR << 16) | (newG << 8) | newB;
+                augmentedImage.setRGB(x,y,newRgb);
             }
         }
 
@@ -58,15 +61,12 @@ public class BrightnessAugmentation extends AbstractAugmentation {
 
 
     /**
-     * limits the pixel value to a number between 0 and 255
+     * Limits the pixel value to a number between 0 and 255
      * if pixelValue is less than 0, returns 0
      * if pixelValue is greater than 255, returns 255
      * else returns the original pixelValue
-     *
-     * @param pixelValue the value to be bound
-     * @return int
      */
     private int clip(int pixelValue){
-       return Math.min(255,Math.max(0,pixelValue));
+        return Math.min(255,Math.max(0,pixelValue));
     }
 }

@@ -58,15 +58,12 @@ public class BrightnessAugmentationTest {
     }
     @Test
     public void shouldIncreaseBrightness() throws IOException, InterruptedException {
-        // load test image
-        originalImage = loadTestImage("augmentation" + File.separator + "human-realistic.png");
+        originalImage = loadTestImage("augmentation" + File.separator + "fireworks.png");
 
-        // random double between 0 and 1
-        double rand = Math.random();
-        BrightnessAugmentation augmentation = new BrightnessAugmentation(rand);
+        double testValue = 0.5;
+        BrightnessAugmentation augmentation = new BrightnessAugmentation(testValue);
         augmentedImage = augmentation.apply(originalImage);
 
-        // check for each pixel if augmentedImage value is greater than original image value
         for (int y = 0; y < originalImage.getHeight(); y++){
             for (int x = 0; x < originalImage.getWidth(); x++){
                 assertTrue(originalImage.getRGB(x,y) <= augmentedImage.getRGB(x,y));
@@ -76,16 +73,15 @@ public class BrightnessAugmentationTest {
         openImageInPreview(originalImage);
         openImageInPreview(augmentedImage);
     }
+
     @Test
     public void shouldDecreaseBrightness() throws IOException, InterruptedException {
-        // load test image
         originalImage = loadTestImage("augmentation" + File.separator + "national-park.png");
 
-        // random double between -1 and 0
-        double rand = Math.random() -1;
-        BrightnessAugmentation augmentation = new BrightnessAugmentation(rand);
+        double testValue= -0.5;
+        BrightnessAugmentation augmentation = new BrightnessAugmentation(testValue);
         augmentedImage = augmentation.apply(originalImage);
-        // check for each pixel if augmentedImage value is lower than original image value
+
         for (int y = 0; y < originalImage.getHeight(); y++){
             for (int x = 0; x < originalImage.getWidth(); x++){
                 assertTrue(originalImage.getRGB(x,y) >= augmentedImage.getRGB(x,y));
@@ -95,8 +91,4 @@ public class BrightnessAugmentationTest {
         openImageInPreview(originalImage);
         openImageInPreview(augmentedImage);
     }
-
-
-
-
 }
