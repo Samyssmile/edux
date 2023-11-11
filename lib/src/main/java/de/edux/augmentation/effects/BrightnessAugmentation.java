@@ -39,20 +39,23 @@ public class BrightnessAugmentation extends AbstractAugmentation {
         BufferedImage augmentedImage =
                 new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
-        for (int y = 0; y < image.getHeight(); y++){
-            for (int x = 0; x < image.getWidth(); x++){
-                int rgb = image.getRGB(x,y);
+        boolean hasAlphaChannel = image.getColorModel().hasAlpha();
 
-                int red   = (rgb >> 16) & 0xFF;
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int rgb = image.getRGB(x, y);
+
+                int alpha = hasAlphaChannel ? (rgb >> 24) & 0xff : 0xff;
+                int red = (rgb >> 16) & 0xFF;
                 int green = (rgb >> 8) & 0xFF;
-                int blue  = rgb & 0xFF;
-                int alpha = (rgb >> 24) & 0xff;
+                int blue = rgb & 0xFF;
 
-                int newR = clip((int) (red   + 255f * brightnessFactor));
-                int newG = clip((int) (green + 255f * brightnessFactor));
-                int newB = clip((int) (blue  + 255f * brightnessFactor));
+                int newR = clip((int) (red * (1 + brightnessFactor)));
+                int newG = clip((int) (green * (1 + brightnessFactor)));
+                int newB = clip((int) (blue * (1 + brightnessFactor)));
+
                 int newRgb = (alpha << 24) | (newR << 16) | (newG << 8) | newB;
-                augmentedImage.setRGB(x,y,newRgb);
+                augmentedImage.setRGB(x, y, newRgb);
             }
         }
 
@@ -60,12 +63,6 @@ public class BrightnessAugmentation extends AbstractAugmentation {
     }
 
 
-    /**
-     * Limits the pixel value to a number between 0 and 255
-     * if pixelValue is less than 0, returns 0
-     * if pixelValue is greater than 255, returns 255
-     * else returns the original pixelValue
-     */
     private int clip(int pixelValue){
         return Math.min(255,Math.max(0,pixelValue));
     }
