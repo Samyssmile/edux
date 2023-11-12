@@ -9,17 +9,17 @@ public class CrossEntropyLoss {
    *
    * @param predicted Die vorhergesagten Wahrscheinlichkeiten, normalerweise die Ausgabe des
    *     Netzwerks.
-   * @param actual Die tatsächlichen Klassen (normalerweise in One-Hot-Encoding).
+   * @param labels Die tatsächlichen Klassen (normalerweise in One-Hot-Encoding).
    * @return Den Cross-Entropy-Verlust.
    */
-  public static double computeLoss(Matrix predicted, Matrix actual) {
-    int m = actual.getRows();
+  public double computeLoss(Matrix predicted, Matrix labels) {
+    int m = labels.getRows();
     double sum = 0.0;
 
     for (int i = 0; i < m; i++) {
-      for (int j = 0; j < actual.getCols(); j++) {
+      for (int j = 0; j < labels.getCols(); j++) {
         double p = predicted.getData()[i][j];
-        double y = actual.getData()[i][j];
+        double y = labels.getData()[i][j];
         sum += y * Math.log(p);
       }
     }
@@ -32,10 +32,10 @@ public class CrossEntropyLoss {
    *
    * @param predicted Die vorhergesagten Wahrscheinlichkeiten, normalerweise die Ausgabe des
    *     Netzwerks.
-   * @param actual Die tatsächlichen Klassen (normalerweise in One-Hot-Encoding).
+   * @param labels Die tatsächlichen Klassen (normalerweise in One-Hot-Encoding).
    * @return Den Gradienten des Verlustes.
    */
-  public static Matrix computeGradient(Matrix predicted, Matrix actual) {
-    return predicted.subtract(actual).multiply(1.0 / actual.getRows());
+  public Matrix computeGradient(Matrix predicted, Matrix labels) {
+    return predicted.subtract(labels).multiply(1.0 / labels.getRows());
   }
 }

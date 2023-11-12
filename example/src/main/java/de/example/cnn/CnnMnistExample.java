@@ -27,10 +27,10 @@ public class CnnMnistExample {
 
     // Initialize the CNN model
     CNNModel model = new CNNModel(0.1);
-    model.addLayer(new ConvolutionalLayer(8, 3));
+    model.addLayer(new ConvolutionalLayer(24, 3));
     model.addLayer(new ReLULayer());
     model.addLayer(new MaxPoolingLayer(2, 2));
-    model.addLayer(new ConvolutionalLayer(16, 3));
+    model.addLayer(new ConvolutionalLayer(48, 3));
     model.addLayer(new ReLULayer());
     model.addLayer(new MaxPoolingLayer(2, 2));
     model.addLayer(new FlattenLayer());

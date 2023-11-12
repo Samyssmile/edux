@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CNNModel {
+  private final CrossEntropyLoss lossFunction;
   private List<Layer> layers;
   private double learningRate;
 
   public CNNModel(double learningRate) {
     this.layers = new ArrayList<>();
     this.learningRate = learningRate;
+    this.lossFunction = new CrossEntropyLoss();
   }
 
   public void addLayer(Layer layer) {
@@ -47,9 +49,9 @@ public class CNNModel {
         Matrix output = forward(inputs.get(i));
         Matrix target = convertTargetToOneHot(targets.get(i), targets.get(0).getRows());
         // Compute loss and gradient
-        loss = CrossEntropyLoss.computeLoss(output, target);
+        loss = this.lossFunction.computeLoss(output, target);
 
-        Matrix gradient = CrossEntropyLoss.computeGradient(output, target);
+        Matrix gradient = this.lossFunction.computeGradient(output, target);
 
         // Backward pass and update weights
         backward(gradient);
