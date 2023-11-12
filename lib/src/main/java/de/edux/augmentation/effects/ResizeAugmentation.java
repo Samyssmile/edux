@@ -11,8 +11,10 @@ import java.awt.image.BufferedImage;
  */
 public class ResizeAugmentation extends AbstractAugmentation {
 
-  private final int targetHeight;
-  private final int targetWidth;
+  private int targetHeight;
+  private int targetWidth;
+  private double scaleFactor;
+  private final boolean useScaleFactor;
   private final ResizeQuality resizeQuality;
 
   /**
@@ -26,6 +28,7 @@ public class ResizeAugmentation extends AbstractAugmentation {
     this.targetWidth = targetWidth;
     this.targetHeight = targetHeight;
     this.resizeQuality = ResizeQuality.BALANCED;
+    this.useScaleFactor = false;
   }
 
   /**
@@ -40,20 +43,59 @@ public class ResizeAugmentation extends AbstractAugmentation {
     this.targetWidth = targetWidth;
     this.targetHeight = targetHeight;
     this.resizeQuality = resizeQuality;
+    this.useScaleFactor = false;
   }
 
   /**
-   * Resizes the given image to the target width and height specified during the instantiation. This
-   * method applies rendering hints based on the selected resize quality for the output image.
+   * Creates a ResizeAugmentation instance with a specified scale factor which ensures that the
+   * image maintains its aspect ratio after the transformation. A scaleFactor between 0 and 1 will
+   * decrease the image size whereas a value greater than 1 will increase the image size.
+   *
+   * @param scaleFactor The multiplier for the width and height of the image.
+   * @throws IllegalArgumentException if scaleFactor is a negative number
+   */
+  public ResizeAugmentation(double scaleFactor) throws IllegalArgumentException {
+    this(scaleFactor, ResizeQuality.BALANCED);
+  }
+
+  /**
+   * Creates a ResizeAugmentation instance with the specified scaleFactor and resizing quality. A
+   * value between 0 and 1 will decrease the image size whereas a value greater than 1 will increase
+   * the image size.
+   *
+   * @param scaleFactor The multiplier for the width and height of the image.
+   * @param resizeQuality The quality of the resize process.
+   * @throws IllegalArgumentException if scaleFActor is a negative number
+   */
+  public ResizeAugmentation(double scaleFactor, ResizeQuality resizeQuality)
+      throws IllegalArgumentException {
+    if (scaleFactor <= 0)
+      throw new IllegalArgumentException("Scale factor must be a positive number.");
+    this.scaleFactor = scaleFactor;
+    this.useScaleFactor = true;
+    this.resizeQuality = resizeQuality;
+  }
+
+  /**
+   * Resizes the given image to the target width and height which are either specified during the
+   * instantiation or computed based on the scaleFactor. This method applies rendering hints based
+   * on the selected resize quality for the output image.
    *
    * @param image The BufferedImage to resize.
    * @return A new BufferedImage object of the specified target width and height.
    */
   @Override
   public synchronized BufferedImage apply(BufferedImage image) {
+    if (useScaleFactor) {
+      targetHeight = (int) (image.getHeight() * scaleFactor);
+      targetWidth = (int) (image.getWidth() * scaleFactor);
+    }
+    return resize(image);
+  }
+
+  protected BufferedImage resize(BufferedImage image) {
     BufferedImage result = new BufferedImage(targetWidth, targetHeight, image.getType());
     Graphics2D graphics2D = result.createGraphics();
-
     // Apply rendering hints based on the chosen quality of resizing
     switch (resizeQuality) {
       case QUALITY -> graphics2D.setRenderingHint(
