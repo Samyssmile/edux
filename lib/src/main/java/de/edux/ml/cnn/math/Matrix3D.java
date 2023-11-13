@@ -391,7 +391,12 @@ public class Matrix3D implements IMatrix3D {
   @Override
   public double get(int depth, int row, int col) {
 
-    return this.data[depth][row][col];
+    try {
+      return this.data[depth][row][col];
+    } catch (ArrayIndexOutOfBoundsException e) {
+      System.out.println("depth: " + depth + " row: " + row + " col: " + col);
+    }
+    return 0;
   }
 
   @Override
@@ -416,5 +421,65 @@ public class Matrix3D implements IMatrix3D {
 
   public double[][][] getData() {
     return data;
+  }
+
+  public Matrix3D sum(int axis) {
+    switch (axis) {
+      case 0:
+        return sumOverDepth();
+      case 1:
+        return sumOverRows();
+      case 2:
+        return sumOverCols();
+      default:
+        throw new IllegalArgumentException("Ungültiger Achsenwert: " + axis);
+    }
+  }
+
+  private Matrix3D sumOverDepth() {
+    Matrix3D result = new Matrix3D(1, this.rows, this.cols);
+    for (int i = 0; i < this.rows; i++) {
+      for (int j = 0; j < this.cols; j++) {
+        double sum = 0;
+        for (int k = 0; k < this.depth; k++) {
+          sum += this.data[k][i][j];
+        }
+        result.data[0][i][j] = sum;
+      }
+    }
+    return result;
+  }
+
+  private Matrix3D sumOverRows() {
+    Matrix3D result = new Matrix3D(this.depth, 1, this.cols);
+    for (int k = 0; k < this.depth; k++) {
+      for (int j = 0; j < this.cols; j++) {
+        double sum = 0;
+        for (int i = 0; i < this.rows; i++) {
+          sum += this.data[k][i][j];
+        }
+        result.data[k][0][j] = sum;
+      }
+    }
+    return result;
+  }
+
+  private Matrix3D sumOverCols() {
+    Matrix3D result = new Matrix3D(this.depth, this.rows, 1);
+    for (int k = 0; k < this.depth; k++) {
+      for (int i = 0; i < this.rows; i++) {
+        double sum = 0;
+        for (int j = 0; j < this.cols; j++) {
+          sum += this.data[k][i][j];
+        }
+        result.data[k][i][0] = sum;
+      }
+    }
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "Matrix3D{depth=" + depth + ", rows=" + rows + ", cols=" + cols + '}';
   }
 }

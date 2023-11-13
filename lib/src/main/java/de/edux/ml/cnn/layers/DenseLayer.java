@@ -9,7 +9,6 @@ public class DenseLayer implements Layer {
   private Matrix3D outputGradient;
 
   public DenseLayer(int inputSize, int outputSize) {
-    // Gewichte mit Dimensionen 1, outputSize, inputSize initialisieren
     this.weights = Matrix3D.random(1, outputSize, inputSize); // Gewichte
     this.biases = new Matrix3D(1, 1, outputSize); // Biases
   }
@@ -23,15 +22,21 @@ public class DenseLayer implements Layer {
 
   @Override
   public Matrix3D backward(Matrix3D outputGradient, double learningRate) {
-    this.outputGradient = outputGradient;
+    // Berechnung des Gradienten für die Gewichte
+    Matrix3D weightGradient = this.input.transpose().dot(outputGradient);
 
-    Matrix3D weightGradient = outputGradient.dot(this.input);
-    // Gradient bezüglich der Eingabe
-    Matrix3D inputGradient = this.weights.dot(outputGradient);
+    // Transponieren des Gewichtsgradienten, um die Dimensionen anzupassen
+    Matrix3D transposedWeightGradient = weightGradient.transpose();
 
-    // Aktualisieren der Gewichte und Biases
-    this.weights = this.weights.subtract(weightGradient.multiply(learningRate));
-    this.biases = this.biases.subtract(outputGradient.sumColumns().multiply(learningRate));
+    // Berechnung des Gradienten für die Biases
+    Matrix3D biasGradient = outputGradient.sum(0);
+
+    // Aktualisierung der Gewichte und Biases
+    this.weights = this.weights.subtract(transposedWeightGradient.multiply(learningRate));
+    this.biases = this.biases.subtract(biasGradient.multiply(learningRate));
+
+    // Berechnung des Eingangsgradienten für die vorherige Schicht
+    Matrix3D inputGradient = outputGradient.dot(this.weights);
 
     return inputGradient;
   }
