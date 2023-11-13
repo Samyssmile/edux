@@ -50,22 +50,40 @@ public class MaxPoolingLayer implements Layer {
 
   @Override
   public Matrix3D backward(Matrix3D outputGradient, double learningRate) {
+    // Initialisieren des Eingangsgradienten
     Matrix3D inputGradient =
-        new Matrix3D(this.lastInput.getDepth(), this.lastInput.getRows(), this.lastInput.getCols());
+        new Matrix3D(lastInput.getDepth(), lastInput.getRows(), lastInput.getCols());
 
-    for (int d = 0; d < inputGradient.getDepth(); d++) {
-      for (int i = 0; i < maxIndices[d].length; i++) {
-        int index = maxIndices[d][i];
-        int row = index / this.lastInput.getCols();
-        int col = index % this.lastInput.getCols();
-        inputGradient.set(
-            d,
-            row,
-            col,
-            outputGradient.get(d, i / outputGradient.getCols(), i % outputGradient.getCols()));
+    // Rückwärtspropagation des Max Pooling Layers
+    for (int d = 0; d < lastInput.getDepth(); d++) {
+      for (int row = 0; row < lastInput.getRows(); row += stride) {
+        for (int col = 0; col < lastInput.getCols(); col += stride) {
+          // Finden des Maximums im Pooling-Fenster
+          double maxVal = Double.NEGATIVE_INFINITY;
+          int maxRow = -1, maxCol = -1;
+          for (int pRow = 0; pRow < poolSize; pRow++) {
+            for (int pCol = 0; pCol < poolSize; pCol++) {
+              int curRow = row + pRow;
+              int curCol = col + pCol;
+              if (curRow < lastInput.getRows() && curCol < lastInput.getCols()) {
+                double val = lastInput.get(d, curRow, curCol);
+                if (val > maxVal) {
+                  maxVal = val;
+                  maxRow = curRow;
+                  maxCol = curCol;
+                }
+              }
+            }
+          }
+          // Zuweisen des Gradienten nur zum Max-Element
+          if (maxRow != -1 && maxCol != -1) {
+            int outRow = row / stride;
+            int outCol = col / stride;
+            inputGradient.set(d, maxRow, maxCol, outputGradient.get(d, outRow, outCol));
+          }
+        }
       }
     }
-
     return inputGradient;
   }
 }

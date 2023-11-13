@@ -44,7 +44,6 @@ public class SoftmaxLayer implements Layer {
       for (int c = 0; c < input.getCols(); c++) {
         sum += softmaxOutput.get(d, 0, c);
       }
-      System.out.println("sum of all values of all columns: " + sum);
     }
     return softmaxOutput;
   }

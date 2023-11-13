@@ -11,14 +11,15 @@ public class SimpleCNN {
   public SimpleCNN() {
     this.layers =
         new Layer[] {
-          new ConvolutionalLayer(8, 3, 1, 1), // 8 Filter, 3x3 Größe, Stride 1, paddind 1
-          new ReLuLayer(),
-          new MaxPoolingLayer(2, 2), // 2x2 Größe, Stride 2
-          new ConvolutionalLayer(16, 3, 1, 1),
+          new ConvolutionalLayer(8, 3, 1, 1, 1), // inputDepth = 1 GrayScale Image
           new ReLuLayer(),
           new MaxPoolingLayer(2, 2),
+          /*          new ConvolutionalLayer(
+              16, 3, 1, 1, 8), // inputDepth = 8 from previous layer (numFilter = 8 was outputDepth)
+          new ReLuLayer(),
+          new MaxPoolingLayer(2, 2),*/
           new FlattenLayer(),
-          new DenseLayer(784, 10),
+          new DenseLayer(784 * 2, 10),
           new SoftmaxLayer()
         };
   }
@@ -64,29 +65,47 @@ public class SimpleCNN {
     return maxIndex;
   }
 
-  // Training des Netzwerks
   public void train(
-      List<Matrix3D> trainImages, List<Matrix3D> trainLabels, double learningRate, int epochs) {
+      List<Matrix3D> trainImages,
+      List<Matrix3D> trainLabels,
+      double learningRate,
+      int epochs,
+      List<Matrix3D> testImages,
+      List<Matrix3D> testLabels) {
+
+    CrossEntropyLossV2 lossFunction = new CrossEntropyLossV2();
+
     for (int epoch = 0; epoch < epochs; epoch++) {
       double totalLoss = 0.0;
 
+      // Durchgehen aller Trainingsdaten
       for (int i = 0; i < trainImages.size(); i++) {
         Matrix3D input = trainImages.get(i);
         Matrix3D trueOutput = trainLabels.get(i);
 
-        // Vorwärtspropagierung
+        // Forward Pass
         Matrix3D predictedOutput = forward(input);
 
-        // Berechnen des Verlustes (hier Cross-Entropy)
-        CrossEntropyLossV2 lossFunction = new CrossEntropyLossV2();
-        totalLoss += lossFunction.computeLoss(predictedOutput, trueOutput);
+        // Berechnung des Verlustes
+        double loss = lossFunction.computeLoss(predictedOutput, trueOutput);
+        totalLoss += loss;
 
-        // Rückwärtspropagierung
+        // Berechnung des Gradienten des Verlustes
         Matrix3D errorGradient = lossFunction.computeGradient(predictedOutput, trueOutput);
+
+        // Backward Pass
         backward(errorGradient, learningRate);
       }
 
-      System.out.println("Epoch " + (epoch + 1) + ", Loss: " + totalLoss / trainImages.size());
+      // Durchschnittlichen Verlust für diese Epoche berechnen
+      double averageLoss = totalLoss / trainImages.size();
+
+      // Evaluierung des Netzwerks auf den Testdaten
+      double accuracy = evaluate(testImages, testLabels);
+
+      // Ausgabe von Verlust und Genauigkeit
+      System.out.println(
+          "Epoch " + (epoch + 1) + ": Loss = " + averageLoss + ", Accuracy = " + accuracy + "%");
     }
   }
 

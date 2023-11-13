@@ -32,6 +32,7 @@ public class Matrix3D implements IMatrix3D {
     return matrix;
   }
 
+  @Override
   public Matrix3D dot(Matrix3D other) {
     if (this.cols != other.rows || this.depth != other.depth) {
       throw new IllegalArgumentException("Ungültige Matrixdimensionen für die Multiplikation");
@@ -139,6 +140,7 @@ public class Matrix3D implements IMatrix3D {
     return result;
   }
 
+  @Override
   public Matrix3D applyReLUBackward(Matrix3D outputGradient) {
     Matrix3D inputGradient = new Matrix3D(this.depth, this.rows, this.cols);
 
@@ -171,6 +173,7 @@ public class Matrix3D implements IMatrix3D {
     return result;
   }
 
+  @Override
   public Matrix3D flatten() {
     int totalSize = this.depth * this.rows * this.cols;
     Matrix3D flattened = new Matrix3D(1, 1, totalSize);
@@ -187,6 +190,7 @@ public class Matrix3D implements IMatrix3D {
     return flattened;
   }
 
+  @Override
   public Matrix3D reshapeBack(int originalDepth, int originalRows, int originalCols) {
     if (this.depth * this.rows * this.cols != originalDepth * originalRows * originalCols) {
       throw new IllegalArgumentException("Die Gesamtgröße der Matrix muss gleich bleiben");
@@ -244,6 +248,7 @@ public class Matrix3D implements IMatrix3D {
     return output.applyPadding(padding);
   }
 
+  @Override
   public Matrix3D applyPadding(int padding) {
     if (padding == 0) {
       return this;
@@ -289,7 +294,10 @@ public class Matrix3D implements IMatrix3D {
 
   @Override
   public Matrix3D subtract(Matrix3D other) {
+
     if (this.depth != other.depth || this.rows != other.rows || this.cols != other.cols) {
+      System.out.println("other: " + other);
+      System.out.println("this: " + this);
       throw new IllegalArgumentException("Matrix dimensions must match for subtraction.");
     }
 
@@ -335,6 +343,7 @@ public class Matrix3D implements IMatrix3D {
     }
   }
 
+  @Override
   public Matrix3D transpose() {
     Matrix3D transposed = new Matrix3D(this.depth, this.cols, this.rows);
     for (int d = 0; d < this.depth; d++) {
@@ -347,21 +356,7 @@ public class Matrix3D implements IMatrix3D {
     return transposed;
   }
 
-  public Matrix3D transposev2() {
-    // Erstellen einer neuen Matrix mit vertauschten Dimensionen
-    Matrix3D transposed = new Matrix3D(this.cols, this.rows, this.depth);
-
-    for (int d = 0; d < this.depth; d++) {
-      for (int r = 0; r < this.rows; r++) {
-        for (int c = 0; c < this.cols; c++) {
-          // Vertauschen der Zeilen und Spalten
-          transposed.data[c][r][d] = this.data[d][r][c];
-        }
-      }
-    }
-    return transposed;
-  }
-
+  @Override
   public Matrix3D multiply(double value) {
     Matrix3D result = new Matrix3D(this.depth, this.rows, this.cols);
     for (int d = 0; d < this.depth; d++) {
@@ -374,6 +369,7 @@ public class Matrix3D implements IMatrix3D {
     return result;
   }
 
+  @Override
   public Matrix3D sumColumns() {
     Matrix3D columnSums = new Matrix3D(this.depth, 1, this.cols);
     for (int d = 0; d < this.depth; d++) {
@@ -390,13 +386,7 @@ public class Matrix3D implements IMatrix3D {
 
   @Override
   public double get(int depth, int row, int col) {
-
-    try {
-      return this.data[depth][row][col];
-    } catch (ArrayIndexOutOfBoundsException e) {
-      System.out.println("depth: " + depth + " row: " + row + " col: " + col);
-    }
-    return 0;
+    return this.data[depth][row][col];
   }
 
   @Override
@@ -407,6 +397,10 @@ public class Matrix3D implements IMatrix3D {
   @Override
   public int getDepth() {
     return depth;
+  }
+
+  public void setDepth(int i) {
+    this.depth = i;
   }
 
   @Override
@@ -423,6 +417,7 @@ public class Matrix3D implements IMatrix3D {
     return data;
   }
 
+  @Override
   public Matrix3D sum(int axis) {
     switch (axis) {
       case 0:
@@ -436,7 +431,8 @@ public class Matrix3D implements IMatrix3D {
     }
   }
 
-  private Matrix3D sumOverDepth() {
+  @Override
+  public Matrix3D sumOverDepth() {
     Matrix3D result = new Matrix3D(1, this.rows, this.cols);
     for (int i = 0; i < this.rows; i++) {
       for (int j = 0; j < this.cols; j++) {
@@ -450,7 +446,8 @@ public class Matrix3D implements IMatrix3D {
     return result;
   }
 
-  private Matrix3D sumOverRows() {
+  @Override
+  public Matrix3D sumOverRows() {
     Matrix3D result = new Matrix3D(this.depth, 1, this.cols);
     for (int k = 0; k < this.depth; k++) {
       for (int j = 0; j < this.cols; j++) {
@@ -464,7 +461,8 @@ public class Matrix3D implements IMatrix3D {
     return result;
   }
 
-  private Matrix3D sumOverCols() {
+  @Override
+  public Matrix3D sumOverCols() {
     Matrix3D result = new Matrix3D(this.depth, this.rows, 1);
     for (int k = 0; k < this.depth; k++) {
       for (int i = 0; i < this.rows; i++) {

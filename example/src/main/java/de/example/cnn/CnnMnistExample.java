@@ -27,7 +27,9 @@ public class CnnMnistExample {
     List<Matrix3D> testLabels = loadLabels(testLabelsPath);
 
     SimpleCNN model = new SimpleCNN();
-    model.train(trainImages, trainLabels, 0.01, 1);
+    model.train(trainImages, trainLabels, 0.001, 10, testImages, testLabels);
+    double accuracy = model.evaluate(testImages, testLabels);
+    System.out.println("Accuracy: " + accuracy + "%");
   }
 
   private static List<Matrix3D> loadImages(String path) {

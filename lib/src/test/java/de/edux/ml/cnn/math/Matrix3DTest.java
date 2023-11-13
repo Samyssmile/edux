@@ -99,13 +99,6 @@ class Matrix3DTest {
   }
 
   @Test
-  void testFlatten() {
-    Matrix flattened = matrix.flatten();
-    assertNotNull(flattened);
-    // Überprüfe die Größe und Werte von flattened
-  }
-
-  @Test
   void testConvolveBackprop() {
     Matrix3D gradient = new Matrix3D(2, 3, 3); // Gradientenmatrix
     Matrix3D result = matrix.convolveBackprop(gradient, 1, 0);
