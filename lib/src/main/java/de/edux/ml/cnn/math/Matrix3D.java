@@ -401,6 +401,15 @@ public class Matrix3D implements IMatrix3D {
     this.data[depth][row][col] = value;
   }
 
+  public void addToValue(int depth, int row, int col, double value) {
+    if (depth >= 0 && depth < this.depth &&
+            row >= 0 && row < this.rows &&
+            col >= 0 && col < this.cols) {
+      this.data[depth][row][col] += value;
+    } else {
+      throw new IndexOutOfBoundsException("Index out of bounds for addToValue");
+    }
+  }
   @Override
   public int getDepth() {
     return depth;

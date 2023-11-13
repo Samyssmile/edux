@@ -13,11 +13,13 @@ import java.util.List;
 public class CnnMnistExample {
   public static void main(String[] args) {
     String trainImagesPath =
-        "E:\\projects\\edux\\example\\datasets\\mnist\\train-images.idx3-ubyte";
+        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\train-images.idx3-ubyte";
     String trainLabelsPath =
-        "E:\\projects\\edux\\example\\datasets\\mnist\\train-labels.idx1-ubyte";
-    String testImagesPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-images.idx3-ubyte";
-    String testLabelsPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-labels.idx1-ubyte";
+        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\train-labels.idx1-ubyte";
+    String testImagesPath =
+        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\t10k-images.idx3-ubyte";
+    String testLabelsPath =
+        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\t10k-labels.idx1-ubyte";
 
     // Load MNIST data
     List<Matrix3D> trainImages = loadImages(trainImagesPath);
@@ -37,6 +39,7 @@ public class CnnMnistExample {
         new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
       int magic = dis.readInt();
       int numImages = dis.readInt();
+      numImages = 3000;
       int numRows = dis.readInt();
       int numCols = dis.readInt();
 
@@ -63,6 +66,7 @@ public class CnnMnistExample {
         new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
       int magic = dis.readInt();
       int numLabels = dis.readInt();
+      numLabels = 3000; // Nur 10.000 Labels für das Beispiel verwenden
 
       List<Matrix3D> labels = new ArrayList<>();
 

@@ -12,13 +12,13 @@ Hier sind einige Gesetze für dich.
 
 2. Ich will das rechenintensive operationen nicht durch verschachtelte For schleifen passieren sondern durch Matrix Berechnungen/Operationen.
 
-3. Ich will ConvolutionalLayer, DenseLayer, FlattenLayer, MaxPoolingLayer, ReLuLayer, SoftmaxLayer.
+3. Ich will ConvolutionalLayer, DenseLayer, FlattenLayer, MaxPoolingLayer, ReLuLayer, SoftmaxLayer, ReLuLayer.
 
 - ConvolutionalLayer: muss folgende paramter haben int numFilters, int filterSize, int stride, int padding, int inputDepth.
 
 4. CrossEntropyLoss Klasse
 
-5. Matrix3D Klasse ist bereits vorhanden, du kannst vorrausetzen das diese Matrix3D klasse, alle operationen kann die du brauchst um die Layer umzusetzen.
+5. Matrix3D Klasse ist bereits vorhanden, du kannst vorrausetzen das diese Matrix3D klasse, alle operationen kann die du brauchst um die Layer umzusetzen. Verwende keine Matrix oder Vector Klassen nur die Matrix3D Klasse.
   /**
    * Create a new 3D matrix with the given dimensions.
    * @param depth depth
@@ -40,4 +40,12 @@ public interface Layer {
   Matrix3D backward(Matrix3D outputGradient, double learningRate);
 }
 
-Starte mit der implementation des ConvolutionalLayer.
+Starte mit der implementation des DenseLayer beginnen.
+DenseLayer soll nur die Matrix3D Klasse verwenden um die operationen zu implementieren.
+Der Konstruktor soll folgende parameter haben int inputSize, int outputSize, int depth.
+Beachte das vor meinem DenseLayer ein FlattenLayer kommt.
+Zusammenfassung:
+Gewichtsmatrix (weights): Matrix3D{depth=1, rows=10, cols=784}
+Eingabedaten (input): Matrix3D{depth=1, rows=1, cols=784}
+
+Achte das bei der dot() operation die Dimensionen der Matrixen passen.

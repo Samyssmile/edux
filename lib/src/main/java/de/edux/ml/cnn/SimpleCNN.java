@@ -3,6 +3,9 @@ package de.edux.ml.cnn;
 import de.edux.ml.cnn.layers.*;
 import de.edux.ml.cnn.loss.CrossEntropyLossV2;
 import de.edux.ml.cnn.math.Matrix3D;
+import de.edux.ml.cnnv2.ConvolutionalLayer;
+import de.edux.ml.cnnv2.DenseLayer;
+
 import java.util.List;
 
 public class SimpleCNN {
@@ -45,7 +48,7 @@ public class SimpleCNN {
         correctPredictions++;
       }
     }
-    return (double) correctPredictions / testImages.size();
+    return (double) correctPredictions / testImages.size()*100;
   }
 
   // Hilfsmethode zur Bestimmung des Indexes des größten Werts in der Ausgabe
