@@ -14,12 +14,8 @@ public class SimpleCNN {
           new ConvolutionalLayer(8, 3, 1, 1, 1), // inputDepth = 1 GrayScale Image
           new ReLuLayer(),
           new MaxPoolingLayer(2, 2),
-          /*          new ConvolutionalLayer(
-              16, 3, 1, 1, 8), // inputDepth = 8 from previous layer (numFilter = 8 was outputDepth)
-          new ReLuLayer(),
-          new MaxPoolingLayer(2, 2),*/
           new FlattenLayer(),
-          new DenseLayer(784 * 2, 10),
+          new DenseLayer(1568, 10, 1),
           new SoftmaxLayer()
         };
   }

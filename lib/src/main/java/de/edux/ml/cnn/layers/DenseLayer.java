@@ -8,9 +8,9 @@ public class DenseLayer implements Layer {
   private Matrix3D input;
   private Matrix3D outputGradient;
 
-  public DenseLayer(int inputSize, int outputSize) {
-    this.weights = Matrix3D.random(1, outputSize, inputSize); // Gewichte
-    this.biases = new Matrix3D(1, 1, outputSize); // Biases
+  public DenseLayer(int inputSize, int outputSize, int depth) {
+    this.weights = Matrix3D.random(depth, outputSize, inputSize); // Gewichte
+    this.biases = new Matrix3D(depth, 1, outputSize); // Biases
   }
 
   @Override

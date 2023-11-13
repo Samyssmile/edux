@@ -10,6 +10,13 @@ public class Matrix3D implements IMatrix3D {
   private int rows;
   private int cols;
 
+  /**
+   * Create a new 3D matrix with the given dimensions.
+   *
+   * @param depth depth
+   * @param rows rows
+   * @param cols cols
+   */
   public Matrix3D(int depth, int rows, int cols) {
     this.depth = depth;
     this.rows = rows;
