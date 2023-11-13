@@ -1,9 +1,9 @@
 package de.edux.ml.cnn.layers;
 
-import de.edux.ml.cnn.math.Matrix;
+import de.edux.ml.cnn.math.Matrix3D;
 
 public interface Layer {
-  Matrix forward(Matrix input);
+  Matrix3D forward(Matrix3D input);
 
-  Matrix backward(Matrix outputGradient, double learningRate);
+  Matrix3D backward(Matrix3D outputGradient, double learningRate);
 }

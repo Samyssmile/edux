@@ -7,10 +7,10 @@ public class Matrix {
   private final int rows;
   private final int cols;
 
-  public Matrix(double[][] data, int rows, int cols) {
+  public Matrix(double[][] data) {
     this.data = data;
-    this.rows = rows;
-    this.cols = cols;
+    this.rows = data.length;
+    this.cols = data[0].length;
   }
 
   public static Matrix random(int outputSize, int inputSize) {
@@ -21,7 +21,7 @@ public class Matrix {
         data[i][j] = random.nextDouble(); // Zufällige Werte zwischen 0.0 und 1.0
       }
     }
-    return new Matrix(data, outputSize, inputSize);
+    return new Matrix(data);
   }
 
   public static Matrix ones(int numFeatures, int i) {
@@ -31,7 +31,7 @@ public class Matrix {
         data[row][col] = 1.0;
       }
     }
-    return new Matrix(data, numFeatures, i);
+    return new Matrix(data);
   }
 
   public static Matrix randomBinary(int rows, int cols, double probability) {
@@ -42,27 +42,8 @@ public class Matrix {
         data[row][col] = random.nextDouble() < probability ? 1.0 : 0.0;
       }
     }
-    return new Matrix(data, rows, cols);
+    return new Matrix(data);
   }
-
-  public double[][] getData() {
-    return data;
-  }
-
-  public int getRows() {
-    return rows;
-  }
-
-  public int getCols() {
-    return cols;
-  }
-
-  /**
-   * Berechnet das Skalarprodukt zwischen dieser Matrix und einer anderen Matrix
-   *
-   * @param other
-   * @return
-   */
   public Matrix dot(Matrix other) {
     if (this.cols != other.rows) {
       throw new IllegalArgumentException(
@@ -79,7 +60,7 @@ public class Matrix {
         result[i][j] = sum;
       }
     }
-    return new Matrix(result, this.rows, other.cols);
+    return new Matrix(result);
   }
 
   public Matrix add(Matrix other) {
@@ -94,7 +75,7 @@ public class Matrix {
         result[i][j] = this.data[i][j] + otherValue;
       }
     }
-    return new Matrix(result, this.rows, this.cols);
+    return new Matrix(result);
   }
 
   public Matrix multiplyElementWise(Matrix other) {
@@ -104,7 +85,7 @@ public class Matrix {
         result[i][j] = this.data[i][j] * other.data[i][j];
       }
     }
-    return new Matrix(result, this.rows, this.cols);
+    return new Matrix(result);
   }
 
   public Matrix multiply(double v) {
@@ -114,7 +95,7 @@ public class Matrix {
         result[i][j] = this.data[i][j] * v;
       }
     }
-    return new Matrix(result, this.rows, this.cols);
+    return new Matrix(result);
   }
 
   public Matrix transpose() {
@@ -124,7 +105,7 @@ public class Matrix {
         result[i][j] = this.data[j][i];
       }
     }
-    return new Matrix(result, this.cols, this.rows);
+    return new Matrix(result);
   }
 
   public Matrix reshape(int newRows, int newCols) {
@@ -146,7 +127,7 @@ public class Matrix {
       }
     }
 
-    return new Matrix(newData, newRows, newCols);
+    return new Matrix(newData);
   }
 
   public Matrix flatten() {
@@ -159,7 +140,7 @@ public class Matrix {
       }
     }
 
-    return new Matrix(flattenedData, 1, this.rows * this.cols);
+    return new Matrix(flattenedData);
   }
 
   public Matrix subtract(Matrix other) {
@@ -174,6 +155,18 @@ public class Matrix {
       }
     }
 
-    return new Matrix(result, this.rows, this.cols);
+    return new Matrix(result);
+  }
+
+  public double[][] getData() {
+    return data;
+  }
+
+  public int getRows() {
+    return rows;
+  }
+
+  public int getCols() {
+    return cols;
   }
 }

@@ -1,12 +1,13 @@
 package de.example.cnn;
 
-import de.edux.ml.cnn.CNNModel;
+import de.edux.ml.cnn.SimpleCNN;
 import de.edux.ml.cnn.layers.*;
-import de.edux.ml.cnn.math.Matrix;
+import de.edux.ml.cnn.math.Matrix3D;
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CnnMnistExample {
@@ -19,133 +20,34 @@ public class CnnMnistExample {
     String testLabelsPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-labels.idx1-ubyte";
 
     // Load MNIST data
-    List<Matrix> trainImages = loadImages(trainImagesPath);
-    List<Matrix> trainLabels = loadLabels(trainLabelsPath);
+    List<Matrix3D> trainImages = loadImages(trainImagesPath);
+    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath);
 
-    List<Matrix> testImages = loadImages(testImagesPath);
-    List<Matrix> testLabels = loadLabels(testLabelsPath);
+    List<Matrix3D> testImages = loadImages(testImagesPath);
+    List<Matrix3D> testLabels = loadLabels(testLabelsPath);
 
-    // Initialize the CNN model
-    CNNModel model = new CNNModel(0.1);
-    model.addLayer(new ConvolutionalLayer(24, 3));
-    model.addLayer(new ReLULayer());
-    model.addLayer(new MaxPoolingLayer(2, 2));
-    model.addLayer(new ConvolutionalLayer(48, 3));
-    model.addLayer(new ReLULayer());
-    model.addLayer(new MaxPoolingLayer(2, 2));
-    model.addLayer(new FlattenLayer());
-    model.addLayer(new FullyConnectedLayer(25, 10));
-    model.addLayer(new SoftmaxLayer());
-
-    // Train the model
-    model.train(trainImages, trainLabels, testImages, testLabels, 20); // 5 epochs
-    model.evaluate(testImages, testLabels);
+    SimpleCNN model = new SimpleCNN();
+    model.train(trainImages, trainLabels, 0.01, 1);
   }
 
-  private static List<Matrix> loadImages(String path) {
-    try (FileInputStream fis = new FileInputStream(path);
-        FileChannel channel = fis.getChannel()) {
+  private static List<Matrix3D> loadImages(String path) {
+    try (DataInputStream dis =
+        new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
+      int magic = dis.readInt();
+      int numImages = dis.readInt();
+      int numRows = dis.readInt();
+      int numCols = dis.readInt();
 
-      // Lesen des Headers
-      ByteBuffer buffer = ByteBuffer.allocate(16);
-      channel.read(buffer);
-      buffer.flip();
-
-      // Ignorieren der Magic Number
-      buffer.getInt();
-
-      int numImages = buffer.getInt();
-      int numRows = buffer.getInt();
-      int numCols = buffer.getInt();
-
-      // Vorbereiten der Matrix-Array
-      Matrix[] images = new Matrix[numImages];
+      List<Matrix3D> images = new ArrayList<>();
 
       for (int i = 0; i < numImages; i++) {
-        buffer = ByteBuffer.allocate(numRows * numCols);
-        channel.read(buffer);
-        buffer.flip();
-
-        double[][] data = new double[numRows][numCols];
+        Matrix3D image = new Matrix3D(1, numRows, numCols); // Tiefe 1 für einfarbige Bilder
         for (int r = 0; r < numRows; r++) {
           for (int c = 0; c < numCols; c++) {
-            data[r][c] = (double) (buffer.get() & 0xFF) / 255.0; // Normalisierung der Pixelwerte
+            image.set(0, r, c, (dis.readUnsignedByte() / 255.0)); // Normalisierung der Pixelwerte
           }
         }
-        images[i] = new Matrix(data, numRows, numCols);
-      }
-      return List.of(images);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  private static List<Matrix> loadLabels(String path) {
-    try (FileInputStream fis = new FileInputStream(path);
-        FileChannel channel = fis.getChannel()) {
-
-      // Lesen des Headers
-      ByteBuffer buffer = ByteBuffer.allocate(8);
-      channel.read(buffer);
-      buffer.flip();
-
-      // Ignorieren der Magic Number
-      buffer.getInt();
-
-      int numLabels = buffer.getInt();
-
-      // Vorbereiten der Matrix-Array
-      Matrix[] labels = new Matrix[numLabels];
-
-      for (int i = 0; i < numLabels; i++) {
-        buffer = ByteBuffer.allocate(1);
-        channel.read(buffer);
-        buffer.flip();
-
-        int label = (int) buffer.get();
-        double[][] labelData = new double[10][1]; // 10 classes for digits 0-9
-        labelData[label][0] = 1.0; // One-hot encoding
-        labels[i] = new Matrix(labelData, 10, 1);
-      }
-      return List.of(labels);
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  private static Matrix[] loadImagesAsMatrix(String path) {
-    try (FileInputStream fis = new FileInputStream(path);
-        FileChannel channel = fis.getChannel()) {
-
-      // Lesen des Headers
-      ByteBuffer buffer = ByteBuffer.allocate(16);
-      channel.read(buffer);
-      buffer.flip();
-
-      // Ignorieren der Magic Number
-      buffer.getInt();
-
-      int numImages = buffer.getInt();
-      int numRows = buffer.getInt();
-      int numCols = buffer.getInt();
-
-      // Vorbereiten der Matrix-Array
-      Matrix[] images = new Matrix[numImages];
-
-      for (int i = 0; i < numImages; i++) {
-        buffer = ByteBuffer.allocate(numRows * numCols);
-        channel.read(buffer);
-        buffer.flip();
-
-        double[][] data = new double[numRows][numCols];
-        for (int r = 0; r < numRows; r++) {
-          for (int c = 0; c < numCols; c++) {
-            data[r][c] = (double) (buffer.get() & 0xFF) / 255.0; // Normalisierung der Pixelwerte
-          }
-        }
-        images[i] = new Matrix(data, numRows, numCols);
+        images.add(image);
       }
       return images;
     } catch (IOException e) {
@@ -154,32 +56,25 @@ public class CnnMnistExample {
     }
   }
 
-  private static Matrix[] loadLabelsAsMAtrix(String path) {
-    try (FileInputStream fis = new FileInputStream(path);
-        FileChannel channel = fis.getChannel()) {
+  private static List<Matrix3D> loadLabels(String path) {
+    try (DataInputStream dis =
+        new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
+      int magic = dis.readInt();
+      int numLabels = dis.readInt();
 
-      // Lesen des Headers
-      ByteBuffer buffer = ByteBuffer.allocate(8);
-      channel.read(buffer);
-      buffer.flip();
-
-      // Ignorieren der Magic Number
-      buffer.getInt();
-
-      int numLabels = buffer.getInt();
-
-      // Vorbereiten der Matrix-Array
-      Matrix[] labels = new Matrix[numLabels];
+      List<Matrix3D> labels = new ArrayList<>();
 
       for (int i = 0; i < numLabels; i++) {
-        buffer = ByteBuffer.allocate(1);
-        channel.read(buffer);
-        buffer.flip();
+        Matrix3D label = new Matrix3D(1, 1, 10); // 10 Klassen, 1x1x10 Matrix
 
-        int label = (int) buffer.get();
-        double[][] labelData = new double[10][1]; // 10 classes for digits 0-9
-        labelData[label][0] = 1.0; // One-hot encoding
-        labels[i] = new Matrix(labelData, 10, 1);
+        // Manuell alle Werte auf 0 setzen
+        for (int c = 0; c < 10; c++) {
+          label.set(0, 0, c, 0.0);
+        }
+
+        int lbl = dis.readUnsignedByte();
+        label.set(0, 0, lbl, 1.0); // Setzen des entsprechenden Indexes auf 1 für One-Hot-Encoding
+        labels.add(label);
       }
       return labels;
     } catch (IOException e) {

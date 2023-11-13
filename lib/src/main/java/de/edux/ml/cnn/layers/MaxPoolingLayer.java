@@ -1,58 +1,71 @@
 package de.edux.ml.cnn.layers;
 
-import de.edux.ml.cnn.math.Matrix;
+import de.edux.ml.cnn.math.Matrix3D;
 
 public class MaxPoolingLayer implements Layer {
-  private int filterSize;
+  private int poolSize;
   private int stride;
-  private Matrix lastInput;
-  private int[][] maxIndices;
+  private int[][] maxIndices; // Zum Speichern der Indizes der Max-Werte für den Backward-Pass
+  private Matrix3D lastInput;
 
-  public MaxPoolingLayer(int filterSize, int stride) {
-    this.filterSize = filterSize;
+  public MaxPoolingLayer(int poolSize, int stride) {
+    this.poolSize = poolSize;
     this.stride = stride;
   }
 
   @Override
-  public Matrix forward(Matrix input) {
+  public Matrix3D forward(Matrix3D input) {
     this.lastInput = input;
-    int outputHeight = (input.getRows() - filterSize) / stride + 1;
-    int outputWidth = (input.getCols() - filterSize) / stride + 1;
-    double[][] outputData = new double[outputHeight][outputWidth];
-    this.maxIndices = new int[outputHeight * outputWidth][2];
+    int outputDepth = input.getDepth();
+    int outputRows = (input.getRows() - poolSize) / stride + 1;
+    int outputCols = (input.getCols() - poolSize) / stride + 1;
+    Matrix3D output = new Matrix3D(outputDepth, outputRows, outputCols);
 
-    for (int i = 0; i < outputHeight; i++) {
-      for (int j = 0; j < outputWidth; j++) {
-        double maxVal = Double.NEGATIVE_INFINITY;
-        int maxRow = -1;
-        int maxCol = -1;
-        for (int fi = 0; fi < filterSize; fi++) {
-          for (int fj = 0; fj < filterSize; fj++) {
-            double val = input.getData()[i * stride + fi][j * stride + fj];
-            if (val > maxVal) {
-              maxVal = val;
-              maxRow = i * stride + fi;
-              maxCol = j * stride + fj;
+    maxIndices = new int[outputDepth][outputRows * outputCols];
+
+    for (int d = 0; d < outputDepth; d++) {
+      for (int row = 0; row < outputRows; row++) {
+        for (int col = 0; col < outputCols; col++) {
+          double max = -Double.MAX_VALUE;
+          int maxIndex = -1;
+          for (int i = 0; i < poolSize; i++) {
+            for (int j = 0; j < poolSize; j++) {
+              int rIndex = row * stride + i;
+              int cIndex = col * stride + j;
+              double value = input.get(d, rIndex, cIndex);
+              if (value > max) {
+                max = value;
+                maxIndex = rIndex * input.getCols() + cIndex;
+              }
             }
           }
+          output.set(d, row, col, max);
+          maxIndices[d][row * outputCols + col] = maxIndex;
         }
-        outputData[i][j] = maxVal;
-        maxIndices[i * outputWidth + j] = new int[] {maxRow, maxCol};
       }
     }
 
-    return new Matrix(outputData, outputHeight, outputWidth);
+    return output;
   }
 
   @Override
-  public Matrix backward(Matrix outputGradient, double learningRate) {
-    double[][] inputGradientData = new double[lastInput.getRows()][lastInput.getCols()];
-    for (int i = 0; i < outputGradient.getRows(); i++) {
-      for (int j = 0; j < outputGradient.getCols(); j++) {
-        int[] maxIndex = maxIndices[i * outputGradient.getCols() + j];
-        inputGradientData[maxIndex[0]][maxIndex[1]] = outputGradient.getData()[i][j];
+  public Matrix3D backward(Matrix3D outputGradient, double learningRate) {
+    Matrix3D inputGradient =
+        new Matrix3D(this.lastInput.getDepth(), this.lastInput.getRows(), this.lastInput.getCols());
+
+    for (int d = 0; d < inputGradient.getDepth(); d++) {
+      for (int i = 0; i < maxIndices[d].length; i++) {
+        int index = maxIndices[d][i];
+        int row = index / this.lastInput.getCols();
+        int col = index % this.lastInput.getCols();
+        inputGradient.set(
+            d,
+            row,
+            col,
+            outputGradient.get(d, i / outputGradient.getCols(), i % outputGradient.getCols()));
       }
     }
-    return new Matrix(inputGradientData, lastInput.getRows(), lastInput.getCols());
+
+    return inputGradient;
   }
 }

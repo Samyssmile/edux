@@ -1,21 +1,24 @@
 package de.edux.ml.cnn.layers;
 
-import de.edux.ml.cnn.math.Matrix;
+import de.edux.ml.cnn.math.Matrix3D;
 
 public class FlattenLayer implements Layer {
-  private int[] inputShape;
+
+  private int lastInputDepth;
+  private int lastInputRows;
+  private int lastInputCols;
 
   @Override
-  public Matrix forward(Matrix input) {
-    // Store the shape of the input to use in the backward pass
-    this.inputShape = new int[] {input.getRows(), input.getCols()};
+  public Matrix3D forward(Matrix3D input) {
+    this.lastInputDepth = input.getDepth();
+    this.lastInputRows = input.getRows();
+    this.lastInputCols = input.getCols();
 
-    // Flatten the input
     return input.flatten();
   }
 
   @Override
-  public Matrix backward(Matrix outputGradient, double learningRate) {
-    return outputGradient.reshape(inputShape[0], inputShape[1]);
+  public Matrix3D backward(Matrix3D outputGradient, double learningRate) {
+    return outputGradient.reshapeBack(lastInputDepth, lastInputRows, lastInputCols);
   }
 }
