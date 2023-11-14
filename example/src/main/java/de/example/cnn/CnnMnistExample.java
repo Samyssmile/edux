@@ -3,89 +3,89 @@ package de.example.cnn;
 import de.edux.ml.cnn.SimpleCNN;
 import de.edux.ml.cnn.layers.*;
 import de.edux.ml.cnn.math.Matrix3D;
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CnnMnistExample {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     String trainImagesPath =
-        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\train-images.idx3-ubyte";
+        "E:\\projects\\edux\\example\\datasets\\mnist\\train-images.idx3-ubyte";
     String trainLabelsPath =
-        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\train-labels.idx1-ubyte";
-    String testImagesPath =
-        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\t10k-images.idx3-ubyte";
-    String testLabelsPath =
-        "C:\\Users\\windo\\Documents\\projekte\\edux\\example\\datasets\\mnist\\t10k-labels.idx1-ubyte";
-
+        "E:\\projects\\edux\\example\\datasets\\mnist\\train-labels.idx1-ubyte";
+    String testImagesPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-images.idx3-ubyte";
+    String testLabelsPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-labels.idx1-ubyte";
     // Load MNIST data
-    List<Matrix3D> trainImages = loadImages(trainImagesPath);
-    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath);
+    List<Matrix3D> trainImages = loadImages(trainImagesPath, 100);
+    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath, 100);
 
-    List<Matrix3D> testImages = loadImages(testImagesPath);
-    List<Matrix3D> testLabels = loadLabels(testLabelsPath);
+    List<Matrix3D> testImages = loadImages(testImagesPath, 100);
+    List<Matrix3D> testLabels = loadLabels(testLabelsPath, 100);
 
     SimpleCNN model = new SimpleCNN();
-    model.train(trainImages, trainLabels, 0.0001, 100, testImages, testLabels);
+    model.train(trainImages, trainLabels, 0.01, 100, testImages, testLabels);
     double accuracy = model.evaluate(testImages, testLabels);
     System.out.println("Accuracy: " + accuracy + "%");
   }
 
-  private static List<Matrix3D> loadImages(String path) {
-    try (DataInputStream dis =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
-      int magic = dis.readInt();
-      int numImages = dis.readInt();
-      numImages = 3000;
-      int numRows = dis.readInt();
-      int numCols = dis.readInt();
+  public static List<Matrix3D> loadImages(String path, int limit) throws IOException {
+    try (FileInputStream in = new FileInputStream(path)) {
+      byte[] buffer = new byte[4];
+
+      // Reading and skipping the magic number
+      in.read(buffer, 0, 4);
+
+      // Reading the number of images
+      in.read(buffer, 0, 4);
+      int numberOfImages = ByteBuffer.wrap(buffer).getInt();
+
+      // Reading rows and columns
+      in.read(buffer, 0, 4);
+      int rows = ByteBuffer.wrap(buffer).getInt();
+      in.read(buffer, 0, 4);
+      int cols = ByteBuffer.wrap(buffer).getInt();
 
       List<Matrix3D> images = new ArrayList<>();
 
-      for (int i = 0; i < numImages; i++) {
-        Matrix3D image = new Matrix3D(1, numRows, numCols); // Tiefe 1 für einfarbige Bilder
-        for (int r = 0; r < numRows; r++) {
-          for (int c = 0; c < numCols; c++) {
-            image.set(0, r, c, (dis.readUnsignedByte() / 255.0)); // Normalisierung der Pixelwerte
+      for (int i = 0; i < (limit == 0 ? numberOfImages : limit); i++) {
+        Matrix3D img =
+            new Matrix3D(1, rows, cols); // Assuming Matrix3D is designed to hold image data
+        for (int r = 0; r < rows; r++) {
+          for (int c = 0; c < cols; c++) {
+            // Normalizing each pixel by dividing by 255
+            img.set(0, r, c, (in.read() & 0xFF) / 255.0); // Reading each pixel and normalizing
           }
         }
-        images.add(image);
+        images.add(img);
       }
+
       return images;
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
     }
   }
 
-  private static List<Matrix3D> loadLabels(String path) {
-    try (DataInputStream dis =
-        new DataInputStream(new BufferedInputStream(new FileInputStream(path)))) {
-      int magic = dis.readInt();
-      int numLabels = dis.readInt();
-      numLabels = 3000; // Nur 10.000 Labels für das Beispiel verwenden
+  public static List<Matrix3D> loadLabels(String path, int limit) throws IOException {
+    try (FileInputStream in = new FileInputStream(path)) {
+      byte[] buffer = new byte[4];
+
+      // Reading and skipping the magic number
+      in.read(buffer, 0, 4);
+
+      // Reading the number of labels
+      in.read(buffer, 0, 4);
+      int numberOfLabels = ByteBuffer.wrap(buffer).getInt();
 
       List<Matrix3D> labels = new ArrayList<>();
 
-      for (int i = 0; i < numLabels; i++) {
-        Matrix3D label = new Matrix3D(1, 1, 10); // 10 Klassen, 1x1x10 Matrix
-
-        // Manuell alle Werte auf 0 setzen
-        for (int c = 0; c < 10; c++) {
-          label.set(0, 0, c, 0.0);
-        }
-
-        int lbl = dis.readUnsignedByte();
-        label.set(0, 0, lbl, 1.0); // Setzen des entsprechenden Indexes auf 1 für One-Hot-Encoding
+      for (int i = 0; i < (limit == 0 ? numberOfLabels : limit); i++) {
+        Matrix3D label = new Matrix3D(1, 1, 10); // 10 for one-hot encoding of 0-9 digits
+        int labelValue = in.read();
+        label.set(0, 0, labelValue, 1); // Setting the corresponding index to 1
         labels.add(label);
       }
+
       return labels;
-    } catch (IOException e) {
-      e.printStackTrace();
-      return null;
     }
   }
 }

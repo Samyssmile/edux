@@ -1,5 +1,6 @@
 package de.edux.ml.cnn.math;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Matrix3D implements IMatrix3D {
@@ -32,6 +33,38 @@ public class Matrix3D implements IMatrix3D {
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
           matrix.set(d, r, c, random.nextDouble()); // Zufällige Werte
+        }
+      }
+    }
+
+    return matrix;
+  }
+
+  public static Matrix3D randomXavier(int depth, int rows, int cols) {
+    Matrix3D matrix = new Matrix3D(depth, rows, cols);
+    Random random = new Random();
+    double range = Math.sqrt(6.0 / (rows + cols)); // Xavier-Initialisierungsbereich
+
+    for (int d = 0; d < depth; d++) {
+      for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+          matrix.set(d, r, c, random.nextDouble() * 2 * range - range); // Werte im Xavier-Bereich
+        }
+      }
+    }
+
+    return matrix;
+  }
+
+  public static Matrix3D randomHe(int depth, int rows, int cols) {
+    Matrix3D matrix = new Matrix3D(depth, rows, cols);
+    Random random = new Random();
+    double range = Math.sqrt(6.0 / rows); // He-Initialisierungsbereich für ReLU
+
+    for (int d = 0; d < depth; d++) {
+      for (int r = 0; r < rows; r++) {
+        for (int c = 0; c < cols; c++) {
+          matrix.set(d, r, c, random.nextDouble() * 2 * range - range); // Werte im He-Bereich
         }
       }
     }
@@ -303,6 +336,7 @@ public class Matrix3D implements IMatrix3D {
   public Matrix3D subtract(Matrix3D other) {
 
     if (this.depth != other.depth || this.rows != other.rows || this.cols != other.cols) {
+      System.out.println("Method subtract");
       System.out.println("other: " + other);
       System.out.println("this: " + this);
       throw new IllegalArgumentException("Matrix dimensions must match for subtraction.");
@@ -402,14 +436,18 @@ public class Matrix3D implements IMatrix3D {
   }
 
   public void addToValue(int depth, int row, int col, double value) {
-    if (depth >= 0 && depth < this.depth &&
-            row >= 0 && row < this.rows &&
-            col >= 0 && col < this.cols) {
+    if (depth >= 0
+        && depth < this.depth
+        && row >= 0
+        && row < this.rows
+        && col >= 0
+        && col < this.cols) {
       this.data[depth][row][col] += value;
     } else {
       throw new IndexOutOfBoundsException("Index out of bounds for addToValue");
     }
   }
+
   @Override
   public int getDepth() {
     return depth;
@@ -495,5 +533,52 @@ public class Matrix3D implements IMatrix3D {
   @Override
   public String toString() {
     return "Matrix3D{depth=" + depth + ", rows=" + rows + ", cols=" + cols + '}';
+  }
+
+  /**
+   * Reshape the matrix to the specified dimensions.
+   *
+   * @param newDepth the new depth
+   * @param newRows the new number of rows
+   * @param newCols the new number of columns
+   * @return a new Matrix3D instance with the reshaped dimensions
+   */
+  public Matrix3D reshape(int newDepth, int newRows, int newCols) {
+    if (newDepth * newRows * newCols != this.depth * this.rows * this.cols) {
+      throw new IllegalArgumentException(
+          "Reshape dimensions must match the total number of elements in the matrix.");
+    }
+
+    Matrix3D reshaped = new Matrix3D(newDepth, newRows, newCols);
+    int totalElements = this.depth * this.rows * this.cols;
+
+    int inDepthIndex, inRowIndex, inColIndex;
+    for (int i = 0; i < totalElements; i++) {
+      inDepthIndex = i / (this.rows * this.cols);
+      inRowIndex = (i / this.cols) % this.rows;
+      inColIndex = i % this.cols;
+
+      int outDepthIndex = i / (newRows * newCols);
+      int outRowIndex = (i / newCols) % newRows;
+      int outColIndex = i % newCols;
+
+      reshaped.data[outDepthIndex][outRowIndex][outColIndex] =
+          this.data[inDepthIndex][inRowIndex][inColIndex];
+    }
+
+    return reshaped;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Matrix3D matrix3D = (Matrix3D) o;
+    return depth == matrix3D.depth && rows == matrix3D.rows && cols == matrix3D.cols;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(depth, rows, cols);
   }
 }
