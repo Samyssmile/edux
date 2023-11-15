@@ -39,12 +39,19 @@ public class SoftmaxLayer implements Layer {
     }
 
     // sum all values of all columns
-    for (int d = 0; d < input.getDepth(); d++) {
+    int depth = input.getDepth();
+    int cols = input.getCols();
+
+    for (int d = 0; d < depth; d++) {
       double sum = 0.0;
-      for (int c = 0; c < input.getCols(); c++) {
+      for (int c = 0; c < cols; c++) {
         sum += softmaxOutput.get(d, 0, c);
       }
+      if (Math.abs(sum - 1.0) > 1e-6) {
+        System.out.println("Sum of softmax values is not 1.0: " + sum);
+      }
     }
+
     return softmaxOutput;
   }
 

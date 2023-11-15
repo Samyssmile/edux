@@ -64,14 +64,17 @@ public class Matrix3D implements IMatrix3D {
     for (int d = 0; d < depth; d++) {
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
-          matrix.set(d, r, c, random.nextGaussian() * stdDeviation); // Normalverteilte Werte für He-Initialisierung
+          matrix.set(
+              d,
+              r,
+              c,
+              random.nextGaussian() * stdDeviation); // Normalverteilte Werte für He-Initialisierung
         }
       }
     }
 
     return matrix;
   }
-
 
   @Override
   public Matrix3D dot(Matrix3D other) {
@@ -331,6 +334,20 @@ public class Matrix3D implements IMatrix3D {
     }
 
     return result;
+  }
+
+  public void divide(double divisor) {
+    if (divisor == 0) {
+      throw new IllegalArgumentException("Divisor darf nicht Null sein");
+    }
+
+    for (int d = 0; d < this.depth; d++) {
+      for (int r = 0; r < this.rows; r++) {
+        for (int c = 0; c < this.cols; c++) {
+          this.data[d][r][c] /= divisor;
+        }
+      }
+    }
   }
 
   @Override

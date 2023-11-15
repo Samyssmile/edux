@@ -3,8 +3,6 @@ package de.example.cnn;
 import de.edux.ml.cnn.SimpleCNN;
 import de.edux.ml.cnn.layers.*;
 import de.edux.ml.cnn.math.Matrix3D;
-
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -13,26 +11,25 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 public class CnnMnistExample {
   private static BufferedImage sampleImage;
 
   public static void main(String[] args) throws IOException {
-    String trainImagesPath =
-        "mnist\\train-images.idx3-ubyte";
-    String trainLabelsPath =
-        "mnist\\train-labels.idx1-ubyte";
+    String trainImagesPath = "mnist\\train-images.idx3-ubyte";
+    String trainLabelsPath = "mnist\\train-labels.idx1-ubyte";
     String testImagesPath = "mnist\\t10k-images.idx3-ubyte";
     String testLabelsPath = "mnist\\t10k-labels.idx1-ubyte";
     // Load MNIST data
-    List<Matrix3D> trainImages = loadImages(trainImagesPath, 1000);
-    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath, 1000);
+    List<Matrix3D> trainImages = loadImages(trainImagesPath, 5000);
+    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath, 5000);
 
     List<Matrix3D> testImages = loadImages(testImagesPath, 1000);
     List<Matrix3D> testLabels = loadLabels(testLabelsPath, 1000);
 
     SimpleCNN model = new SimpleCNN();
-    model.train(trainImages, trainLabels, 0.01, 20, testImages, testLabels);
+    model.train(trainImages, trainLabels, 0.001, 50, 100, testImages, testLabels);
     double accuracy = model.evaluate(testImages, testLabels);
     System.out.println("Accuracy: " + accuracy + "%");
   }
@@ -56,7 +53,6 @@ public class CnnMnistExample {
 
       List<Matrix3D> images = new ArrayList<>();
 
-
       for (int i = 0; i < (limit == 0 ? numberOfImages : limit); i++) {
         Matrix3D img = new Matrix3D(1, rows, cols);
         BufferedImage bufferedImage = new BufferedImage(cols, rows, BufferedImage.TYPE_BYTE_GRAY);
@@ -73,7 +69,7 @@ public class CnnMnistExample {
         images.add(img);
 
         // Display the first three images
-/*        if (i < 5) {
+        /*        if (i < 5) {
           displayImage(bufferedImage, "Image " + (i + 1));
           CnnMnistExample.sampleImage = bufferedImage;
         }*/
@@ -112,7 +108,7 @@ public class CnnMnistExample {
       for (int i = 0; i < (limit == 0 ? numberOfLabels : limit); i++) {
         Matrix3D label = new Matrix3D(1, 1, 10); // 10 for one-hot encoding of 0-9 digits
         int labelValue = in.read();
-  /*      if (i < 5) {
+        /*      if (i < 5) {
           System.out.println(labelValue);
         }*/
         label.set(0, 0, labelValue, 1); // Setting the corresponding index to 1
