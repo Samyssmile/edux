@@ -10,7 +10,7 @@ class CnnTest {
   @Test
   void denseLayer() {
 
-    DenseLayer denseLayer = new DenseLayer(1568, 10, 1);
+    DenseLayer denseLayer = new DenseLayer( 10, 1);
 
     Matrix3D input = new Matrix3D(1, 1, 1568);
 

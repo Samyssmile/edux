@@ -3,17 +3,29 @@ package de.edux.ml.cnn.layers;
 import de.edux.ml.cnn.math.Matrix3D;
 
 public class DenseLayer implements Layer {
+  private final int depth;
+  private final int outputSize;
   private Matrix3D weights;
   private Matrix3D biases;
   private Matrix3D input;
+  private boolean isInitialized= false;
 
-  public DenseLayer(int inputSize, int outputSize, int depth) {
-    this.weights = Matrix3D.randomHe(depth, outputSize, inputSize); // Gewichte
+  public DenseLayer(int outputSize, int depth) {
+    this.depth = depth;
+    this.outputSize = outputSize;
     this.biases = new Matrix3D(depth, 1, outputSize); // Biases
+  }
+
+  private void initializeWeights(int depth, int outputSize, int inputSize) {
+    if(!isInitialized) {
+      weights=  Matrix3D.randomHe(depth, outputSize, inputSize); // Gewichte
+      isInitialized=true;
+    }
   }
 
   @Override
   public Matrix3D forward(Matrix3D input) {
+    initializeWeights(depth, outputSize, input.getCols());
     this.input = input;
     Matrix3D output = input.dot(this.weights.transpose()).add(this.biases);
     return output;

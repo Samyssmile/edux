@@ -3,6 +3,11 @@ package de.example.cnn;
 import de.edux.ml.cnn.SimpleCNN;
 import de.edux.ml.cnn.layers.*;
 import de.edux.ml.cnn.math.Matrix3D;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -10,22 +15,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CnnMnistExample {
+  private static BufferedImage sampleImage;
+
   public static void main(String[] args) throws IOException {
     String trainImagesPath =
-        "E:\\projects\\edux\\example\\datasets\\mnist\\train-images.idx3-ubyte";
+        "mnist\\train-images.idx3-ubyte";
     String trainLabelsPath =
-        "E:\\projects\\edux\\example\\datasets\\mnist\\train-labels.idx1-ubyte";
-    String testImagesPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-images.idx3-ubyte";
-    String testLabelsPath = "E:\\projects\\edux\\example\\datasets\\mnist\\t10k-labels.idx1-ubyte";
+        "mnist\\train-labels.idx1-ubyte";
+    String testImagesPath = "mnist\\t10k-images.idx3-ubyte";
+    String testLabelsPath = "mnist\\t10k-labels.idx1-ubyte";
     // Load MNIST data
-    List<Matrix3D> trainImages = loadImages(trainImagesPath, 100);
-    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath, 100);
+    List<Matrix3D> trainImages = loadImages(trainImagesPath, 1000);
+    List<Matrix3D> trainLabels = loadLabels(trainLabelsPath, 1000);
 
-    List<Matrix3D> testImages = loadImages(testImagesPath, 100);
-    List<Matrix3D> testLabels = loadLabels(testLabelsPath, 100);
+    List<Matrix3D> testImages = loadImages(testImagesPath, 1000);
+    List<Matrix3D> testLabels = loadLabels(testLabelsPath, 1000);
 
     SimpleCNN model = new SimpleCNN();
-    model.train(trainImages, trainLabels, 0.01, 100, testImages, testLabels);
+    model.train(trainImages, trainLabels, 0.01, 20, testImages, testLabels);
     double accuracy = model.evaluate(testImages, testLabels);
     System.out.println("Accuracy: " + accuracy + "%");
   }
@@ -49,19 +56,43 @@ public class CnnMnistExample {
 
       List<Matrix3D> images = new ArrayList<>();
 
+
       for (int i = 0; i < (limit == 0 ? numberOfImages : limit); i++) {
-        Matrix3D img =
-            new Matrix3D(1, rows, cols); // Assuming Matrix3D is designed to hold image data
+        Matrix3D img = new Matrix3D(1, rows, cols);
+        BufferedImage bufferedImage = new BufferedImage(cols, rows, BufferedImage.TYPE_BYTE_GRAY);
+
         for (int r = 0; r < rows; r++) {
           for (int c = 0; c < cols; c++) {
-            // Normalizing each pixel by dividing by 255
-            img.set(0, r, c, (in.read() & 0xFF) / 255.0); // Reading each pixel and normalizing
+            int pixel = in.read() & 0xFF;
+            img.set(0, r, c, pixel / 255.0);
+            int gray = 255 - pixel;
+            bufferedImage.setRGB(c, r, (gray << 16) | (gray << 8) | gray);
           }
         }
+
         images.add(img);
+
+        // Display the first three images
+/*        if (i < 5) {
+          displayImage(bufferedImage, "Image " + (i + 1));
+          CnnMnistExample.sampleImage = bufferedImage;
+        }*/
       }
 
       return images;
+    }
+  }
+
+  private static void displayImage(BufferedImage bufferedImage, String s) {
+    /*If Desktop show image*/
+    if (Desktop.isDesktopSupported()) {
+      try {
+        File outputfile = new File(s + ".png");
+        ImageIO.write(bufferedImage, "png", outputfile);
+        Desktop.getDesktop().open(outputfile);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -81,6 +112,9 @@ public class CnnMnistExample {
       for (int i = 0; i < (limit == 0 ? numberOfLabels : limit); i++) {
         Matrix3D label = new Matrix3D(1, 1, 10); // 10 for one-hot encoding of 0-9 digits
         int labelValue = in.read();
+  /*      if (i < 5) {
+          System.out.println(labelValue);
+        }*/
         label.set(0, 0, labelValue, 1); // Setting the corresponding index to 1
         labels.add(label);
       }

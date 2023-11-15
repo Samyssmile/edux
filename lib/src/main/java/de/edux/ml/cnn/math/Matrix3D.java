@@ -59,18 +59,19 @@ public class Matrix3D implements IMatrix3D {
   public static Matrix3D randomHe(int depth, int rows, int cols) {
     Matrix3D matrix = new Matrix3D(depth, rows, cols);
     Random random = new Random();
-    double range = Math.sqrt(6.0 / rows); // He-Initialisierungsbereich für ReLU
+    double stdDeviation = Math.sqrt(2.0 / rows); // Standardabweichung für He-Initialisierung
 
     for (int d = 0; d < depth; d++) {
       for (int r = 0; r < rows; r++) {
         for (int c = 0; c < cols; c++) {
-          matrix.set(d, r, c, random.nextDouble() * 2 * range - range); // Werte im He-Bereich
+          matrix.set(d, r, c, random.nextGaussian() * stdDeviation); // Normalverteilte Werte für He-Initialisierung
         }
       }
     }
 
     return matrix;
   }
+
 
   @Override
   public Matrix3D dot(Matrix3D other) {

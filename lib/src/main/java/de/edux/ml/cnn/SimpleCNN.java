@@ -11,9 +11,11 @@ public class SimpleCNN {
   public SimpleCNN() {
     this.layers =
         new Layer[] {
-          new ConvolutionalLayer(10, 3, 1, 1, 1), // inputDepth = 1 GrayScale Image
+          new ConvolutionalLayer(8, 3, 2, 1, 1),
+          new ReLuLayer(),
+          new MaxPoolingLayer(2, 2),
           new FlattenLayer(),
-          new DenseLayer(7840, 10, 1),
+          new DenseLayer(10, 1),
           new SoftmaxLayer()
         };
   }
