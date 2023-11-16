@@ -2,7 +2,6 @@ package de.edux.data.provider;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public interface Dataset {
 
@@ -20,9 +19,5 @@ public interface Dataset {
 
   double[][] getTestFeatures(int[] inputColumns);
 
-  Optional<Integer> getIndexOfColumn(String columnName);
-
-  String[] getColumnDataOf(String columnName);
-
-  String[] getColumnNames();
+  String[] getColumnDataOf(int columnIndex);
 }

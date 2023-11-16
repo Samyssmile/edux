@@ -29,16 +29,6 @@ public interface DataPostProcessor {
   DataPostProcessor shuffle();
 
   /**
-   * Performs imputation on missing values in a specified column using the provided imputation
-   * strategy. Imputation is the process of replacing missing data with substituted values.
-   *
-   * @param columnName the name of the column to apply imputation
-   * @param imputationStrategy the strategy to use for imputing missing values
-   * @return the {@code DataPostProcessor} instance with imputed data for method chaining
-   */
-  DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy);
-
-  /**
    * Performs imputation on missing values in a specified column index using the provided imputation
    * strategy.
    *

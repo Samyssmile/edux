@@ -197,9 +197,9 @@ class DataProcessorTest {
     ImputationStrategy modeImputter = ImputationStrategy.MODE;
     ImputationStrategy averageImputter = ImputationStrategy.AVERAGE;
 
-    dataProcessor.imputation("Fruit", modeImputter);
-    dataProcessor.imputation("Quantity", modeImputter);
-    dataProcessor.imputation("Price", averageImputter);
+    dataProcessor.imputation(0, modeImputter);
+    dataProcessor.imputation(1, modeImputter);
+    dataProcessor.imputation(2, averageImputter);
     var imputtedDataset = dataProcessor.getDataset();
 
     assertAll(
