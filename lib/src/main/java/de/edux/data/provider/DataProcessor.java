@@ -12,7 +12,6 @@ public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
   private final IDataReader dataReader;
   private final Normalizer normalizer;
   private final Map<String, Integer> indexToClassMap = new HashMap<>();
-  private String[] columnNames;
   private List<String[]> dataset;
   private List<String[]> trainData;
   private List<String[]> testData;
@@ -51,7 +50,7 @@ public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
   }
 
   private void skipHead() {
-    columnNames = dataset.remove(0);
+    dataset.remove(0);
   }
 
   @Override
@@ -116,22 +115,7 @@ public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
     return indexToClassMap;
   }
 
-  @Override
-  public Optional<Integer> getIndexOfColumn(String columnName) {
-    for (int i = 0; i < columnNames.length; i++) {
-      if (columnNames[i].equals(columnName)) {
-        return Optional.of(i);
-      }
-    }
-    return Optional.empty();
-  }
-
-  public String[] getColumnDataOf(String columnName) {
-    Optional<Integer> index = getIndexOfColumn(columnName);
-    if (index.isEmpty()) {
-      throw new IllegalArgumentException("Column name not found");
-    }
-    int columnIndex = index.get();
+  public String[] getColumnDataOf(int columnIndex) {
     String[] columnData = new String[dataset.size()];
     for (int i = 0; i < dataset.size(); i++) {
       columnData[i] = dataset.get(i)[columnIndex];
@@ -140,25 +124,13 @@ public class DataProcessor implements DataPostProcessor, Dataset, Dataloader {
   }
 
   @Override
-  public String[] getColumnNames() {
-    return columnNames;
-  }
-
-  public DataPostProcessor imputation(String columnName, ImputationStrategy imputationStrategy) {
-    String[] columnDataToUpdate = getColumnDataOf(columnName);
-    String[] updatedColumnData =
-        imputationStrategy.getImputation().performImputation(columnDataToUpdate);
-    int columnIndex = getIndexOfColumn(columnName).get();
+  public DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy) {
+    String[] dataToUpdate = getColumnDataOf(columnIndex);
+    String[] updatedData = imputationStrategy.getImputation().performImputation(dataToUpdate);
 
     for (int row = 0; row < dataset.size(); row++) {
-      dataset.get(row)[columnIndex] = updatedColumnData[row];
+      dataset.get(row)[columnIndex] = updatedData[row];
     }
-    return this;
-  }
-
-  public DataPostProcessor imputation(int columnIndex, ImputationStrategy imputationStrategy) {
-    String columnName = getColumnNames()[columnIndex];
-    this.imputation(columnName, imputationStrategy);
     return this;
   }
 
