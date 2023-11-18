@@ -11,15 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SingleImageAugmentationExample {
-    private static final File IMAGE_FILE =
-            new File(
-                    "example"
-                            + File.separator
-                            + "datasets"
-                            + File.separator
-                            + "images"
-                            + File.separator
-                            + "image.jpeg");
+    private static final String IMAGE_PATH = "images/cyborg.png";
     private static final Integer TARGET_WIDTH = 250;
     private static final Integer TARGET_HEIGHT = 250;
 
@@ -27,7 +19,7 @@ public class SingleImageAugmentationExample {
         // Get Buffered Image from image file
         System.out.println("<---- Starting Augmentation ----> ");
 
-        BufferedImage bufferedImage = ImageIO.read(IMAGE_FILE);
+        BufferedImage bufferedImage = loadTestImage(IMAGE_PATH);
         System.out.println("<---- Image Before Augmentation ----> ");
         System.out.println(bufferedImage);
 
@@ -42,5 +34,15 @@ public class SingleImageAugmentationExample {
         System.out.println(augmentedImage);
         System.out.println("<---- Ending Augmentation ----> ");
 
+    }
+
+    public static BufferedImage loadTestImage(String path) throws IOException {
+        var resourcePath = path;
+        var imageStream =
+                SingleImageAugmentationExample.class.getClassLoader().getResourceAsStream(resourcePath);
+        if (imageStream == null) {
+            throw new IOException("Cannot find resource: " + resourcePath);
+        }
+        return ImageIO.read(imageStream);
     }
 }
