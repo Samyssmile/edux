@@ -14,7 +14,10 @@ import java.net.URL;
 import static de.example.augmentation.SingleImageAugmentationExample.loadTestImage;
 
 public class MultiImageAugmentation {
-  private static final String IMAGE_DIR = "example/src/main/resources/images/small-julia/";
+  private static final String IMAGE_DIR = "example" + File.separator +
+                                           "src" + File.separator + "main" + File.separator +
+                                            "resources"+ File.separator +
+                                             "images" + File.separator + "small-julia";
 
   private static final Integer TARGET_WIDTH = 250;
   private static final Integer TARGET_HEIGHT = 250;
