@@ -47,3 +47,4 @@ gradle.properties
 !**/src/main/**/gradle.properties
 
 /benchmark-data/augmentation-benchmark-images/*
+*.png

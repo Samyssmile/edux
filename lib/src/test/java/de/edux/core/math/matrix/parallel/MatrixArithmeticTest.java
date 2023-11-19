@@ -54,8 +54,7 @@ class MatrixArithmeticTest {
 
     assertAll(
         () ->
-            assertThrows(
-                RuntimeException.class, () -> matrixArithmetic.multiply(matrixA, matrixB)),
+            assertThrows(RuntimeException.class, () -> matrixArithmetic.multiply(matrixA, matrixB)),
         () ->
             assertThrows(
                 RuntimeException.class, () -> matrixArithmetic.multiply(matrixC, matrixA)));
@@ -198,6 +197,6 @@ class MatrixArithmeticTest {
     double[] expected = {1, 2, 3};
     double[] result = matrixArithmetic.multiply(matrix, vector);
     assertArrayEquals(
-      expected, result, "Multiplying with identity matrix should return the original vector.");
+        expected, result, "Multiplying with identity matrix should return the original vector.");
   }
 }

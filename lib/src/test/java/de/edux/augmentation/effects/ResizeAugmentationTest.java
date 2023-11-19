@@ -1,14 +1,13 @@
 package de.edux.augmentation.effects;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-
+import static de.edux.augmentation.AugmentationTestUtils.loadTestImage;
 import static de.edux.augmentation.AugmentationTestUtils.openImageInPreview;
 import static org.junit.jupiter.api.Assertions.*;
+
 import java.io.File;
 import java.io.IOException;
-
-import static de.edux.augmentation.AugmentationTestUtils.loadTestImage;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 public class ResizeAugmentationTest extends AbstractAugmentationTest {
 

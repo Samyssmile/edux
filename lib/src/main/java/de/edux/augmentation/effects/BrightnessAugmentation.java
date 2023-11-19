@@ -1,9 +1,7 @@
 package de.edux.augmentation.effects;
 
 import de.edux.augmentation.core.AbstractAugmentation;
-
 import java.awt.image.BufferedImage;
-
 
 /**
  * This augmentation technique adjusts an image's brightness value by a specified amount

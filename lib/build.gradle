@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'io.github.samyssmile'
-version = '1.0.6'
+version = '1.0.7'
 
 java {
     toolchain {
@@ -70,7 +70,6 @@ task sourceJar(type: Jar) {
 }
 
 task javadocJar(type: Jar) {
-    dependsOn javadoc
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
@@ -121,12 +120,6 @@ publishing {
 
 signing {
     sign publishing.publications.mavenJava
-}
-
-javadoc {
-    if (JavaVersion.current().isJava9()) {
-        options.addBooleanOption('html5', true)
-    }
 }
 
 

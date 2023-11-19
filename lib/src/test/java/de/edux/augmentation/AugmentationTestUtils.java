@@ -9,7 +9,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 public class AugmentationTestUtils {
-  private static final boolean OPEN_IMAGES_IN_PREVIEW = true;
+  private static final boolean OPEN_IMAGES_IN_PREVIEW = false;
 
   public static void openImageInPreview(BufferedImage augmentedImage) throws InterruptedException {
     if (OPEN_IMAGES_IN_PREVIEW) {

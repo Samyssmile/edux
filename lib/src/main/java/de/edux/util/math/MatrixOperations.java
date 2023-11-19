@@ -1,5 +1,6 @@
 package de.edux.util.math;
 
+/** Provides the classes necessary for performing matrix operations in machine learning. */
 public interface MatrixOperations {
   /**
    * Adds two matrices and returns the resulting matrix.

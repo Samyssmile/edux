@@ -40,16 +40,13 @@ public class ImageConsumer implements Runnable {
   }
 
   private void processImage(BufferedImage image, String fileName) throws IOException {
-    // Erstellen des Dateinamens mit Zeitstempel
     File outputFile = Paths.get(outputDirectoryPath, fileName).toFile();
 
-    // Stellen Sie sicher, dass das Ausgabeverzeichnis existiert
     File outputDir = outputFile.getParentFile();
     if (!outputDir.exists()) {
       outputDir.mkdirs();
     }
 
-    // Speichern des Bildes
     ImageIO.write(image, "png", outputFile);
     System.out.println("Bild gespeichert: " + outputFile.getAbsolutePath());
   }
