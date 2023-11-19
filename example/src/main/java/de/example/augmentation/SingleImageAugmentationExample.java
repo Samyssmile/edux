@@ -20,7 +20,6 @@ public class SingleImageAugmentationExample {
 
         BufferedImage bufferedImage = loadTestImage(IMAGE_PATH);
 
-        System.out.println(bufferedImage);
 
         AugmentationSequence augmentationSequence=
                 new AugmentationBuilder()
