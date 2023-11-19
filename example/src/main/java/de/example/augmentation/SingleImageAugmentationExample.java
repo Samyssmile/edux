@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SingleImageAugmentationExample {
-    private static final String IMAGE_PATH = "images/cyborg.png";
+    private static final String IMAGE_PATH = "images" + File.separator + "cyborg.png";
     private static final Integer TARGET_WIDTH = 250;
     private static final Integer TARGET_HEIGHT = 250;
 
