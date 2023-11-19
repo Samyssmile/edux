@@ -17,10 +17,9 @@ public class SingleImageAugmentationExample {
 
     public static void main(String[] args) throws IOException {
         // Get Buffered Image from image file
-        System.out.println("<---- Starting Augmentation ----> ");
 
         BufferedImage bufferedImage = loadTestImage(IMAGE_PATH);
-        System.out.println("<---- Image Before Augmentation ----> ");
+
         System.out.println(bufferedImage);
 
         AugmentationSequence augmentationSequence=
@@ -30,9 +29,9 @@ public class SingleImageAugmentationExample {
                         .build();
 
         BufferedImage augmentedImage=augmentationSequence.applyTo(bufferedImage);
-        System.out.println("<---- Image After Augmentation ----> ");
+
         System.out.println(augmentedImage);
-        System.out.println("<---- Ending Augmentation ----> ");
+
 
     }
 
