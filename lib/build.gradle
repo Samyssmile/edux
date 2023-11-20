@@ -24,6 +24,11 @@ configurations.all {
     }
 }
 
+jmh {
+    resultFormat = 'JSON'
+    resultsFile = file("benchmark-results.json")
+}
+
 dependencies {
     String osString = getOsString()
     String archString = getArchString()
@@ -73,6 +78,7 @@ task javadocJar(type: Jar) {
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
+
 
 publishing {
     publications {

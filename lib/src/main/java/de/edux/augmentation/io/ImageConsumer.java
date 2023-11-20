@@ -48,6 +48,5 @@ public class ImageConsumer implements Runnable {
     }
 
     ImageIO.write(image, "png", outputFile);
-    System.out.println("Bild gespeichert: " + outputFile.getAbsolutePath());
   }
 }
