@@ -1,8 +1,6 @@
 package de.edux.functions.imputation;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Implements the {@code IImputationStrategy} interface to provide a median value imputation. This
@@ -36,7 +34,7 @@ public class MedianImputation implements IImputationStrategy {
     for (String value : datasetColumn) {
       if (!isNumeric(value)) {
         throw new RuntimeException(
-            "AVERAGE imputation strategy can not be used on categorical features. "
+            "MEDIAN imputation strategy can not be used on categorical features. "
                 + "Use MODE imputation strategy or perform a list wise deletion on the features.");
       }
     }
@@ -47,17 +45,17 @@ public class MedianImputation implements IImputationStrategy {
   }
 
   double calculateMedian(String[] datasetColumn) {
-    List<String> filteredDatasetColumn =
-        Arrays.stream(datasetColumn).filter((value) -> !value.isBlank()).toList();
-    List<Double> filteredDatasetColumnInNumbers =
-        new java.util.ArrayList<>(filteredDatasetColumn.stream().map(Double::parseDouble).toList());
-    Collections.sort(filteredDatasetColumnInNumbers);
-    if (filteredDatasetColumnInNumbers.size() % 2 == 0) {
-      Double upper = filteredDatasetColumnInNumbers.get(filteredDatasetColumnInNumbers.size() / 2);
+   double[] filteredDatasetColumnInNumbers = Arrays.stream(datasetColumn)
+           .filter(value -> !value.isBlank())
+           .mapToDouble(Double::parseDouble)
+           .sorted()
+           .toArray();
+    if (filteredDatasetColumnInNumbers.length % 2 == 0) {
+      Double upper = filteredDatasetColumnInNumbers[filteredDatasetColumnInNumbers.length / 2];
       Double lower =
-          filteredDatasetColumnInNumbers.get((filteredDatasetColumnInNumbers.size() / 2) - 1);
+          filteredDatasetColumnInNumbers[(filteredDatasetColumnInNumbers.length / 2) - 1];
       return (upper + lower) / 2.0;
     }
-    return filteredDatasetColumnInNumbers.get((filteredDatasetColumnInNumbers.size() / 2));
+    return filteredDatasetColumnInNumbers[filteredDatasetColumnInNumbers.length / 2];
   }
 }
