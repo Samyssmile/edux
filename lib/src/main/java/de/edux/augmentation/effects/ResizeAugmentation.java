@@ -11,11 +11,11 @@ import java.awt.image.BufferedImage;
  */
 public class ResizeAugmentation extends AbstractAugmentation {
 
+  private final boolean useScaleFactor;
+  private final ResizeQuality resizeQuality;
   private int targetHeight;
   private int targetWidth;
   private double scaleFactor;
-  private final boolean useScaleFactor;
-  private final ResizeQuality resizeQuality;
 
   /**
    * Creates a ResizeAugmentation instance with the specified target width and height. The resizing

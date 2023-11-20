@@ -4,20 +4,23 @@ import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
 import de.edux.augmentation.effects.ColorEqualizationAugmentation;
 import de.edux.augmentation.effects.ResizeAugmentation;
-
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-
-import static de.example.augmentation.SingleImageAugmentationExample.loadTestImage;
 
 public class MultiImageAugmentation {
-  private static final String IMAGE_DIR = "example" + File.separator +
-                                           "src" + File.separator + "main" + File.separator +
-                                            "resources"+ File.separator +
-                                             "images" + File.separator + "small-julia";
+  private static final String IMAGE_DIR =
+      "example"
+          + File.separator
+          + "src"
+          + File.separator
+          + "main"
+          + File.separator
+          + "resources"
+          + File.separator
+          + "images"
+          + File.separator
+          + "small-julia";
 
   private static final Integer TARGET_WIDTH = 250;
   private static final Integer TARGET_HEIGHT = 250;
@@ -26,7 +29,7 @@ public class MultiImageAugmentation {
   public static void main(String[] args) throws IOException, InterruptedException {
     String projectRootPath = new File("").getAbsolutePath();
     String imageDirPath = projectRootPath + File.separator + IMAGE_DIR;
-    String outputFolder = imageDirPath +File.separator+ "augmented";
+    String outputFolder = imageDirPath + File.separator + "augmented";
 
     AugmentationSequence augmentationSequence =
         new AugmentationBuilder()

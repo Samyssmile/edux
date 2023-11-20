@@ -10,7 +10,8 @@ Thank you for your interest in contributing to Edux! Here's how you can help:
 ## Submitting Code Changes
 
 1. **Fork the repository** and create your branch from `main`.
-2. **Make your changes**: Ensure they are clear, concise, and adhere to our coding standards. Add comments to clarify complex code sections.
+2. **Make your changes**: Ensure they are clear, concise, and adhere to our coding standards. Add comments to clarify
+   complex code sections.
 3. **Write or adapt tests** as needed to reflect your changes.
 4. **Commit your changes**: Use a clear and descriptive commit message.
 5. **Submit a Pull Request** with comprehensive request message.
