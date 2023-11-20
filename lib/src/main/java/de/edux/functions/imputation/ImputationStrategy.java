@@ -12,6 +12,8 @@ public enum ImputationStrategy {
    */
   AVERAGE(new AverageImputation()),
 
+  MEDIAN(new MedianImputation()),
+
   /**
    * Imputation strategy that replaces missing values with the most frequently occurring value
    * (mode) in the dataset column. This strategy can be used for both numerical and categorical
