@@ -43,6 +43,9 @@ dependencies {
         implementation(group: 'org.jcuda', name: "${lib}-natives", classifier: classifier, version: jCudaVersion)
     }
 
+    // OpenCl dependencies
+    implementation 'org.jocl:jocl:2.0.2'
+
     // JMH dependencies
     implementation 'org.openjdk.jmh:jmh-core:1.37'
     implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
