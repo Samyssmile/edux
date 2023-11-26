@@ -14,7 +14,7 @@ class CudaMatrixMatrixArithmeticTest {
 
   @BeforeAll
   static void setUp() {
-    cudaArithmetic = new CudaMatrixArithmetic();
+    cudaArithmetic = CudaMatrixArithmetic.getInstance();
   }
 
   @Test
@@ -94,7 +94,7 @@ class CudaMatrixMatrixArithmeticTest {
       {0, 0}
     };
 
-    IMatrixArithmetic cudaMatrixMultiplication = new CudaMatrixArithmetic();
+    IMatrixArithmetic cudaMatrixMultiplication = CudaMatrixArithmetic.getInstance();
     double[][] result = cudaMatrixMultiplication.multiply(matrixA, matrixB);
 
     assertArrayEquals(expected, result);

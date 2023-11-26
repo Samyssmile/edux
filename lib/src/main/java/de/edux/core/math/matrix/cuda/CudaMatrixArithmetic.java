@@ -13,12 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CudaMatrixArithmetic implements IMatrixArithmetic {
-
+  private static CudaMatrixArithmetic instance;
   private static final Logger LOG = LoggerFactory.getLogger(CudaMatrixArithmetic.class);
   private final IMatrixProduct matrixProduct;
   private final IMatrixVectorProduct matrixVectorProduct;
 
-  public CudaMatrixArithmetic() {
+  private CudaMatrixArithmetic() {
     if (!isCudaAvailable()) {
       this.matrixProduct = new MatrixProduct();
       this.matrixVectorProduct = new MatrixVectorProduct();
@@ -87,5 +87,11 @@ public class CudaMatrixArithmetic implements IMatrixArithmetic {
       throw new IllegalArgumentException("Matrix columns and vector size do not match.");
     }
     return matrixVectorProduct.multiply(matrix, vector);
+  }
+  public static CudaMatrixArithmetic getInstance() {
+    if(instance == null) {
+      instance =  new CudaMatrixArithmetic();
+    }
+    return instance;
   }
 }
