@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CudaMatrixArithmetic implements IMatrixArithmetic {
-  private static volatile CudaMatrixArithmetic instance;
+  private static CudaMatrixArithmetic instance;
   private static final Logger LOG = LoggerFactory.getLogger(CudaMatrixArithmetic.class);
   private final IMatrixProduct matrixProduct;
   private final IMatrixVectorProduct matrixVectorProduct;
@@ -89,15 +89,9 @@ public class CudaMatrixArithmetic implements IMatrixArithmetic {
     return matrixVectorProduct.multiply(matrix, vector);
   }
   public static CudaMatrixArithmetic getInstance() {
-    CudaMatrixArithmetic result = instance;
-    if(result == null) {
-      synchronized (CudaMatrixArithmetic.class) {
-        result = instance;
-        if(result == null) {
-          instance = result = new CudaMatrixArithmetic();
-        }
-      }
+    if(instance == null) {
+      instance =  new CudaMatrixArithmetic();
     }
-    return result;
+    return instance;
   }
 }
