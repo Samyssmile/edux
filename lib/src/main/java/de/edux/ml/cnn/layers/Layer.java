@@ -1,9 +1,14 @@
 package de.edux.ml.cnn.layers;
 
-import de.edux.ml.cnn.math.Matrix3D;
+import de.edux.ml.cnn.core.Tensor;
 
-public interface Layer {
-  Matrix3D forward(Matrix3D input);
+public abstract class Layer {
 
-  Matrix3D backward(Matrix3D outputGradient, double learningRate);
+    public Tensor weights;
+    public Tensor biases;
+
+    public abstract Tensor forward(Tensor input);
+
+    public abstract Tensor backward(Tensor input, double learningRate);
+
 }
