@@ -1,67 +1,78 @@
 package de.edux.ml.mlp.core.network;
 
 import de.edux.ml.mlp.core.tensor.Matrix;
+
+import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class BatchResult {
+public class BatchResult implements Serializable {
 
-    //Forward pass results
-    private LinkedList<Matrix> io = new LinkedList<>();
-    private LinkedList<Matrix> weightErrors = new LinkedList<>();
-    private LinkedList<Matrix> weightInputs = new LinkedList<>();
-    private Matrix inputError;
-    private double loss;
-    private double percentCorrect;
+  private AtomicReference<Matrix> accumulatedWeightGradient = new AtomicReference<>();
+  private AtomicReference<Matrix> accumulatedBiasGradient = new AtomicReference<>();
+  private AtomicReference<Matrix> lastInput = new AtomicReference<>();
 
-    public void addWeightInput(Matrix input) {
-        weightInputs.add(input);
+  private AtomicReference<Float> learningRate = new AtomicReference<>();
+
+  private AtomicInteger counter = new AtomicInteger(0);
+
+  private AtomicInteger length = new AtomicInteger(0);
+
+  public BatchResult() {
+    counter.incrementAndGet();
+  }
+
+  public AtomicInteger getCounter() {
+    return counter;
+  }
+
+  public synchronized void addGradients(
+      Matrix weightsGradient, Matrix biasGradient, float learningRate, Matrix lastInput) {
+
+    this.length.incrementAndGet();
+
+    if (accumulatedWeightGradient.get() == null) {
+      accumulatedWeightGradient.set(weightsGradient);
+    } else {
+      accumulatedWeightGradient.set(accumulatedWeightGradient.get().add(weightsGradient));
     }
 
-    public LinkedList<Matrix> getWeightInputs() {
-        return weightInputs;
+    if (accumulatedBiasGradient.get() == null) {
+      accumulatedBiasGradient.set(biasGradient);
+    } else {
+      accumulatedBiasGradient.set(accumulatedBiasGradient.get().add(biasGradient));
     }
 
-    public LinkedList<Matrix> getIo() {
-        return io;
-    }
+    this.lastInput.set(lastInput);
+    this.learningRate.set(learningRate);
+  }
 
-    public void addIo(Matrix input) {
-        io.add(input); //forwards
-    }
+  public AtomicReference<Matrix> getAccumulatedWeightGradient() {
+    return accumulatedWeightGradient;
+  }
 
-    public Matrix getInputError() {
-        return inputError;
-    }
+  public AtomicReference<Matrix> getAccumulatedBiasGradient() {
+    return accumulatedBiasGradient;
+  }
 
-    public void setInputError(Matrix inputError) {
-        this.inputError = inputError;
-    }
+  public AtomicReference<Matrix> getLastInput() {
+    return lastInput;
+  }
 
-    public void addWeightError(Matrix weightError) {
-        weightErrors.addFirst(weightError);
-    }
+  public AtomicReference<Float> getLearningRate() {
+    return learningRate;
+  }
 
-    public LinkedList<Matrix> getWeightErrors() {
-        return weightErrors;
-    }
+  public void clear() {
+    accumulatedWeightGradient.set(null);
+    accumulatedBiasGradient.set(null);
+    lastInput.set(null);
+    learningRate.set(null);
+    length.set(0);
+  }
 
-    public Matrix getOutput() {
-        return io.getLast();
-    }
-
-    public void setLoss(double loss) {
-        this.loss = loss;
-    }
-
-    public double getLoss() {
-        return loss;
-    }
-
-    public void setPercentCorrect(double percentCorrect) {
-        this.percentCorrect = percentCorrect;
-    }
-
-    public double getPercentCorrect() {
-        return percentCorrect;
-    }
+  public int getLength() {
+    return length.get();
+  }
 }

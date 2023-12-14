@@ -1,5 +1,7 @@
 package de.edux.ml.mlp.core.network;
 
+import de.edux.ml.api.ExecutionMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class NetworkBuilder {
     return this;
   }
 
-  public NetworkBuilder withThreads(int threads) {
-    this.threads = threads;
+  public NetworkBuilder withExecutionMode(ExecutionMode executuinMode) {
+    this.threads = executuinMode.getThreads();
     return this;
   }
 

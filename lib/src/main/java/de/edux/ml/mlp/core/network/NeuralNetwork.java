@@ -119,12 +119,15 @@ public class NeuralNetwork implements Serializable {
 
   @Override
   public String toString() {
-    return String.format("Epochs: %d\n", epochs)
+    return String.format("Neural Network Configuration\n")
+        + "----------------------------------------\n"
+        + String.format("Epochs: %d\n", epochs)
+        + String.format("Batch size: %d\n", engine.getBatchSize())
         + String.format(
             "Initial learning rate: %f, Final learning rate: %f\n",
             initialLearningRate, finalLearningRate)
         + String.format("Threads: %d\n", threads)
-        + "\nEngine configuration:"
+        + "\nNetwork Architecture:"
         + "\n----------------------------------------\n"
         + engine.toString();
   }
@@ -183,5 +186,10 @@ public class NeuralNetwork implements Serializable {
 
   public void setEpochs(int epochs) {
     this.epochs = epochs;
+  }
+
+  public NeuralNetwork printArchitecture() {
+    System.out.println(this);
+    return this;
   }
 }

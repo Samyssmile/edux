@@ -14,10 +14,22 @@ public class Matrix implements Serializable {
     private final int cols;
     private double[] data;
 
+    public Matrix multiplyParallel(double rate) {
+        Matrix result = new Matrix(this.rows, this.cols);
+
+        IntStream.range(0, this.rows).parallel().forEach(i -> {
+            for (int j = 0; j < this.cols; j++) {
+                result.data[i * this.cols + j] = this.data[i * this.cols + j] * rate;
+            }
+        });
+
+        return result;
+    }
+
     public double sum() {
         double sum = 0;
-        for (int i = 0; i < data.length; i++) {
-            sum += data[i];
+        for (double datum : data) {
+            sum += datum;
         }
         return sum;
     }
@@ -94,6 +106,18 @@ public class Matrix implements Serializable {
                 result.data[col * rows + row] = data[row * cols + col];
             }
         }
+        return result;
+    }
+
+    public Matrix transposeParallel() {
+        Matrix result = new Matrix(cols, rows);
+
+        IntStream.range(0, rows).parallel().forEach(row -> {
+            for (int col = 0; col < cols; col++) {
+                result.data[col * rows + row] = data[row * cols + col];
+            }
+        });
+
         return result;
     }
 

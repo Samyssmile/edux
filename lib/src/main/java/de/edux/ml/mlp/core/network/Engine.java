@@ -93,29 +93,6 @@ public class Engine implements Layer, Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("\nTransforms:\n");
-
-    int weightIndex = 0;
-    for (Transform transform : transforms) {
-      sb.append(transform);
-      sb.append(" ");
-      switch (transform) {
-        case DENSE:
-          sb.append(weights.get(weightIndex).toString(false));
-          weightIndex++;
-          break;
-        case RELU:
-          break;
-        case SOFTMAX:
-          break;
-      }
-      sb.append("\n");
-    }
-    return sb.toString();
-  }
-
-  public String toStringLayerBased() {
-    StringBuilder sb = new StringBuilder();
     for (Layer layer : layers) {
       sb.append(layer.toString());
       sb.append("\n");
@@ -140,5 +117,9 @@ public class Engine implements Layer, Serializable {
     for (Layer layer : layers) {
       layer.updateWeightsAndBias();
     }
+  }
+
+  public int getBatchSize() {
+    return batchSize;
   }
 }

@@ -6,13 +6,10 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DenseLayer implements Layer {
-  AtomicReference<Matrix> weights;
-  AtomicReference<Matrix> bias;
-
+  private AtomicReference<Matrix> weights;
+  private AtomicReference<Matrix> bias;
   private final Random random = new Random();
-
   private Matrix lastInput;
-
 
   public DenseLayer(int inputSize, int outputSize) {
     weights = new AtomicReference<>(new Matrix(outputSize, inputSize));
@@ -38,32 +35,31 @@ public class DenseLayer implements Layer {
   @Override
   public Matrix forwardLayerbased(Matrix input) {
     this.lastInput = input;
-    return this.weights.get().multiply(input).add(this.bias.get());
+    return this.weights.get().multiplyParallel(input).add(this.bias.get());
   }
 
   @Override
-  public synchronized void updateWeightsAndBias() {
-  }
+  public synchronized void updateWeightsAndBias() {}
 
   @Override
   public Matrix backwardLayerBased(Matrix error, float learningRate) {
-    Matrix output = weights.get().transpose().multiply(error);
+    Matrix output = weights.get().transposeParallel().multiplyParallel(error);
     // Calculate gradient of weights
-    Matrix weightsGradient = error.multiply(lastInput.transpose());
+    Matrix weightsGradient = error.multiplyParallel(lastInput.transposeParallel());
     // Calculate gradient of bias
     Matrix biasGradient = error.averageColumn();
-
-    float rate = learningRate / lastInput.getCols();
+    // Calculate learning rate per weight
+    float rate = learningRate / (lastInput.getCols());
 
     // Update weights and bias
-    weights.set(weights.get().subtract(weightsGradient.multiply(rate)));
-    bias.set(bias.get().subtract(biasGradient.multiply(rate)));
+    weights.set(weights.get().subtract(weightsGradient.multiplyParallel(rate)));
+    bias.set(bias.get().subtract(biasGradient.multiplyParallel(rate)));
 
     return output;
   }
 
   @Override
   public String toString() {
-    return "DenseLayer " + weights.get().getRows() + "x" + weights.get().getCols();
+    return "DenseLayer in: " + weights.get().getCols() + " x out: " + weights.get().getRows();
   }
 }

@@ -120,12 +120,12 @@ class MatrixTest {
     @Test
     public void shouldRunWithoutOutOfMemory() {
         try {
-            var matrixSize = 150;
+            var matrixSize = 1000;
             Matrix a = new Matrix(matrixSize, matrixSize, (index) -> index);
             Matrix b = new Matrix(matrixSize, matrixSize, (index) -> index);
 
             long startTime = System.nanoTime();
-            Matrix result = a.multiply(b);
+            a.multiply(b);
             long endTime = System.nanoTime();
 
             System.out.println("Time: " + (endTime - startTime) / 1e9 + "s");
@@ -141,7 +141,7 @@ class MatrixTest {
             Matrix b = new Matrix(1500, 1500, (index) -> index);
 
             long startTime = System.nanoTime();
-            Matrix result = a.multiplyParallel(b);
+            a.multiplyParallel(b);
             long endTime = System.nanoTime();
 
             System.out.println("Time: " + (endTime - startTime) / 1e9 + "s");
@@ -244,5 +244,40 @@ class MatrixTest {
 
         System.out.println(m);
         System.out.println(result);
+    }
+
+    @Test
+    void testDivideNormalCase() {
+        Matrix matrix = new Matrix(4, 4, i -> (double)i);
+        int batches = 2;
+        Matrix result = matrix.divide(batches);
+
+        assertNotNull(result, "The resulting matrix should not be null");
+        assertEquals(matrix.getRows(), result.getRows(), "The number of rows should remain the same");
+        assertEquals(matrix.getCols(), result.getCols(), "The number of columns should remain the same");
+
+        for (int row = 0; row < matrix.getRows(); row++) {
+            for (int col = 0; col < matrix.getCols(); col++) {
+                double expectedValue = matrix.get(row, col) / batches;
+                assertEquals(expectedValue, result.get(row, col), "The value at position [" + row + "][" + col + "] is not correct");
+            }
+        }
+    }
+
+
+    @Test
+    void testDivideWithInvalidBatches() {
+        Matrix matrix = new Matrix(4, 4);
+        int invalidBatches = 0;
+        assertThrows(IllegalArgumentException.class, () -> matrix.divide(invalidBatches));
+    }
+
+    @Test
+    void testDivideWithBoundaryBatches() {
+        Matrix matrix = new Matrix(4, 4);
+        int batches = 1; // Oder ein anderer Grenzwert
+        Matrix result = matrix.divide(batches);
+        assertNotNull(result);
+
     }
 }

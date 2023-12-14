@@ -1,7 +1,7 @@
 package de.example.mlp;
 
+import de.edux.ml.api.ExecutionMode;
 import de.edux.ml.mlp.core.network.NetworkBuilder;
-import de.edux.ml.mlp.core.network.NeuralNetwork;
 import de.edux.ml.mlp.core.network.layers.DenseLayer;
 import de.edux.ml.mlp.core.network.layers.ReLuLayer;
 import de.edux.ml.mlp.core.network.layers.SoftmaxLayer;
@@ -46,8 +46,8 @@ public class MlpExampleOnMNIST {
             + "t10k-labels.idx1-ubyte";
 
     int batchSize = 100;
-    int threads = 1;
-    int epochs = 10;
+    ExecutionMode singleThread = ExecutionMode.SINGLE_THREAD;
+    int epochs = 5;
     float initialLearningRate = 0.1f;
     float finalLearningRate = 0.001f;
 
@@ -61,20 +61,27 @@ public class MlpExampleOnMNIST {
 
     // Training from scratch
     new NetworkBuilder()
-        .addLayer(new DenseLayer(inputSize, 32))
+        .addLayer(new DenseLayer(inputSize, 128))
         .addLayer(new ReLuLayer())
-        .addLayer(new DenseLayer(32, outputSize))
+        .addLayer(new DenseLayer(128, 128))
+        .addLayer(new ReLuLayer())
+        .addLayer(new DenseLayer(128, outputSize))
         .addLayer(new SoftmaxLayer())
         .withBatchSize(batchSize)
         .withLearningRates(initialLearningRate, finalLearningRate)
-        .withThreads(threads)
+        .withExecutionMode(singleThread)
         .withEpochs(epochs)
         .build()
+        .printArchitecture()
         .fit(trainLoader, testLoader)
-        .saveModel("model.edux"); // Save the model
+        .saveModel("mnist_trained.edux");
 
-    // Loading a model and continue training
-    NeuralNetwork nn =
-        new NetworkBuilder().withEpochs(10).loadModel("model.edux").fit(trainLoader, testLoader);
+    // Loading a trained model
+    new NetworkBuilder()
+        .withExecutionMode(singleThread)
+        .withEpochs(5)
+        .withLearningRates(0.01f, 0.001f)
+        .loadModel("mnist_trained.edux")
+        .fit(trainLoader, testLoader);
   }
 }

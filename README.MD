@@ -46,7 +46,7 @@ Edux supports a variety of image augmentations, which can be used to increase th
 
 #### Single Image
 
-````java
+```
     AugmentationSequence augmentationSequence=
         new AugmentationBuilder()
         .addAugmentation(new ResizeAugmentation(250,250))
@@ -54,11 +54,11 @@ Edux supports a variety of image augmentations, which can be used to increase th
         .build();
 
         BufferedImage augmentedImage=augmentationSequence.applyTo(image);
-````
+```
 
 #### Run for all images in a directory
 
-```java
+```
     AugmentationSequence augmentationSequence=
         new AugmentationBuilder()
         .addAugmentation(new ResizeAugmentation(250,250))
@@ -128,7 +128,10 @@ input features. An MLP is characterized by several layers of input nodes connect
 and output layers.
 
 ### Step 0: Get Familiar with the Dataset
+
 In this example we use the famouse MNIST Dataset. The MNIST database contains 60,000 training images and 10,000 testing
+
+![](https://hc-linux.eu/edux/mnist-examples.png)
 
 ### Step 1: Data Processing
 
@@ -158,7 +161,9 @@ In this example we use the famouse MNIST Dataset. The MNIST database contains 60
 ```
 
 ### Step 3: Build the Network
+
 We use the NetworkBuilder Class
+
 ```
     new NetworkBuilder()
         .addLayer(new DenseLayer(inputSize, 32))  //32 Neurons as output size
@@ -167,15 +172,18 @@ We use the NetworkBuilder Class
         .addLayer(new SoftmaxLayer())
         .withBatchSize(batchSize)
         .withLearningRates(initialLearningRate, finalLearningRate)
-        .withThreads(threads)
+        .withExecutionMode(singleThread)
         .withEpochs(epochs)
         .build()
+        .printArchitecture()
         .fit(trainLoader, testLoader)
-        .saveModel("model.edux"); // Save the model
+        .saveModel("model.edux"); // Save the trained model
 ```
 
 ### Step 4: Load the model and continue training
+
 Load 'model.edux' and continue training for 10 epochs.
+
 ```
     NeuralNetwork nn =
         new NetworkBuilder().withEpochs(10).loadModel("model.edux").fit(trainLoader, testLoader);
