@@ -127,78 +127,66 @@ A multi-layer perceptron (MLP) is a feedforward artificial neural network that g
 input features. An MLP is characterized by several layers of input nodes connected as a directed graph between the input
 and output layers.
 
-![Neural Network](https://hc-linux.eu/github/iris-nn.png)
+### Step 0: Get Familiar with the Dataset
+In this example we use the famouse MNIST Dataset. The MNIST database contains 60,000 training images and 10,000 testing
 
 ### Step 1: Data Processing
 
-Firstly, we will load and prepare the IRIS dataset:
+```
+    String trainImages = "train-images.idx3-ubyte";
+    String trainLabels = "train-labels.idx1-ubyte";
+    String testImages = "t10k-images.idx3-ubyte";
+    String testLabels = "t10k-labels.idx1-ubyte";
+    Loader trainLoader = new ImageLoader(trainImages, trainLabels, batchSize);
+    Loader testLoader = new ImageLoader(testImages, testLabels, batchSize);
 
-| sepal.length | sepal.width | petal.length | petal.width | variety |
-|--------------|-------------|--------------|-------------|---------|
-| 5.1          | 3.5         | 1.4          | 0.2         | Setosa  |
-
-```java
-var featureColumnIndices=new int[]{0,1,2,3}; // Specify your feature columns
-        var targetColumnIndex=4; // Specify your target column
-
-        var dataProcessor=new DataProcessor(new CSVIDataReader());
-        var dataset=dataProcessor.loadDataSetFromCSV(
-        "path/to/your/data.csv", // Replace with your CSV file path
-        ',',                     // CSV delimiter
-        true,                    // Whether to skip the header
-        featureColumnIndices,
-        targetColumnIndex
-        );
-        dataset.shuffle();
-        dataset.normalize();
-        dataProcessor.split(0.8); // Replace with your train-test split ratio
 ```
 
-### Step 2: Preparing Training and Test Sets:
+### Step 2: Configure the MultilayerPerceptron
 
-Extract the features and labels for both training and test sets:
+```
+    int batchSize = 100;
+    int threads = 1;
+    int epochs = 10;
+    float initialLearningRate = 0.1f;
+    float finalLearningRate = 0.001f;
 
-```java
-    var trainFeatures=dataProcessor.getTrainFeatures(featureColumnIndices);
-        var trainLabels=dataProcessor.getTrainLabels(targetColumnIndex);
-        var testFeatures=dataProcessor.getTestFeatures(featureColumnIndices);
-        var testLabels=dataProcessor.getTestLabels(targetColumnIndex);
+    MetaData trainMetaData = trainLoader.open();
+    int inputSize = trainMetaData.getInputSize();
+    int outputSize = trainMetaData.getExpectedSize();
+    trainLoader.close();
 ```
 
-### Step 3: Network Configuration
-
-```java
-var networkConfiguration=new NetworkConfiguration(
-        trainFeatures[0].length,     // Number of input neurons
-        List.of(128,256,512),      // Number of neurons in each hidden layer
-        3,                           // Number of output neurons
-        0.01,                        // Learning rate
-        300,                         // Number of epochs
-        ActivationFunction.LEAKY_RELU, // Activation function for hidden layers
-        ActivationFunction.SOFTMAX,    // Activation function for output layer
-        LossFunction.CATEGORICAL_CROSS_ENTROPY, // Loss function
-        Initialization.XAVIER,        // Weight initialization for hidden layers
-        Initialization.XAVIER         // Weight initialization for output layer
-        );
+### Step 3: Build the Network
+We use the NetworkBuilder Class
+```
+    new NetworkBuilder()
+        .addLayer(new DenseLayer(inputSize, 32))  //32 Neurons as output size
+        .addLayer(new ReLuLayer())
+        .addLayer(new DenseLayer(32, outputSize)) //32 Neurons as input size
+        .addLayer(new SoftmaxLayer())
+        .withBatchSize(batchSize)
+        .withLearningRates(initialLearningRate, finalLearningRate)
+        .withThreads(threads)
+        .withEpochs(epochs)
+        .build()
+        .fit(trainLoader, testLoader)
+        .saveModel("model.edux"); // Save the model
 ```
 
-### Step 4: Training and Evaluation
-
-```java
-MultilayerPerceptron multilayerPerceptron=new MultilayerPerceptron(
-        networkConfiguration,
-        testFeatures,
-        testLabels
-        );
-        multilayerPerceptron.train(trainFeatures,trainLabels);
-        multilayerPerceptron.evaluate(testFeatures,testLabels);
+### Step 4: Load the model and continue training
+Load 'model.edux' and continue training for 10 epochs.
+```
+    NeuralNetwork nn =
+        new NetworkBuilder().withEpochs(10).loadModel("model.edux").fit(trainLoader, testLoader);
 ```
 
 ### Results
 
 ```output
+........................Epoch: 1, Loss: 1,14, Accuracy: 91,04
 ...
-MultilayerPerceptron - Best accuracy after restoring best MLP model: 98,56%
+........................Epoch: 10, Loss: 0,13, Accuracy: 96,16
 ```
 
 ### Working examples
