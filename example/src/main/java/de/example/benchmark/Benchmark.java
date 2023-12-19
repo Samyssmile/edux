@@ -8,8 +8,6 @@ import de.edux.functions.initialization.Initialization;
 import de.edux.functions.loss.LossFunction;
 import de.edux.ml.decisiontree.DecisionTree;
 import de.edux.ml.knn.KnnClassifier;
-import de.edux.ml.nn.config.NetworkConfiguration;
-import de.edux.ml.nn.network.MultilayerPerceptron;
 import de.edux.ml.randomforest.RandomForest;
 import de.edux.ml.svm.SVMKernel;
 import de.edux.ml.svm.SupportVectorMachine;
@@ -37,8 +35,6 @@ public class Benchmark {
   private double[][] trainLabels;
   private double[][] testFeatures;
   private double[][] testLabels;
-  private MultilayerPerceptron multilayerPerceptron;
-  private NetworkConfiguration networkConfiguration;
   private DataProcessor dataProcessor;
 
   public Benchmark() {
@@ -46,7 +42,6 @@ public class Benchmark {
     results.put("DecisionTree", new ArrayList<>());
     results.put("RandomForest", new ArrayList<>());
     results.put("SVM", new ArrayList<>());
-    results.put("MLP", new ArrayList<>());
 
     init();
   }
@@ -80,38 +75,20 @@ public class Benchmark {
       Classifier randomForest = new RandomForest(500, 10, 2, 3, 3, 60);
       Classifier svm = new SupportVectorMachine(SVMKernel.LINEAR, 1);
 
-      networkConfiguration =
-          new NetworkConfiguration(
-              trainFeatures[0].length,
-              List.of(64, 256, 512),
-              3,
-              0.01,
-              300,
-              ActivationFunction.LEAKY_RELU,
-              ActivationFunction.SOFTMAX,
-              LossFunction.CATEGORICAL_CROSS_ENTROPY,
-              Initialization.XAVIER,
-              Initialization.XAVIER);
-      multilayerPerceptron =
-          new MultilayerPerceptron(networkConfiguration, testFeatures, testLabels);
-
       knn.train(trainFeatures, trainLabels);
       decisionTree.train(trainFeatures, trainLabels);
       randomForest.train(trainFeatures, trainLabels);
       svm.train(trainFeatures, trainLabels);
-      multilayerPerceptron.train(trainFeatures, trainLabels);
 
       double knnAccuracy = knn.evaluate(testFeatures, testLabels);
       double decisionTreeAccuracy = decisionTree.evaluate(testFeatures, testLabels);
       double randomForestAccuracy = randomForest.evaluate(testFeatures, testLabels);
       double svmAccuracy = svm.evaluate(testFeatures, testLabels);
-      double multilayerPerceptronAccuracy = multilayerPerceptron.evaluate(testFeatures, testLabels);
 
       results.get("KNN").add(knnAccuracy);
       results.get("DecisionTree").add(decisionTreeAccuracy);
       results.get("RandomForest").add(randomForestAccuracy);
       results.get("SVM").add(svmAccuracy);
-      results.get("MLP").add(multilayerPerceptronAccuracy);
       init();
     }
 
