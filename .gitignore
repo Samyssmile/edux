@@ -48,3 +48,4 @@ gradle.properties
 
 /benchmark-data/augmentation-benchmark-images/*
 *.png
+*.edux

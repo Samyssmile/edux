@@ -1,10 +1,8 @@
 package de.edux.ml.mlp.core.network;
 
-import de.edux.api.Classifier;
 import de.edux.ml.mlp.core.network.loss.LossFunction;
 import de.edux.ml.mlp.core.network.loss.LossFunctions;
 import de.edux.ml.mlp.core.tensor.Matrix;
-import de.edux.ml.mlp.core.transformer.Transform;
 import de.edux.ml.mlp.exceptions.UnsupportedLossFunction;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -14,22 +12,18 @@ public class Engine implements Layer, Serializable {
   private static final long serialVersionUID = 1L;
   private final LinkedList<Double> lossHistory = new LinkedList<>();
   private final LinkedList<Double> accuracyHistory = new LinkedList<>();
-  private final LinkedList<Transform> transforms = new LinkedList<>();
-  private final LinkedList<Matrix> weights = new LinkedList<>();
-  private final LinkedList<Matrix> biases = new LinkedList<>();
 
   private final LinkedList<Layer> layers = new LinkedList<>();
 
   private final LossFunction lossFunction = LossFunction.CROSS_ENTROPY;
 
   private transient RunningAverages runningAverages;
+  private int batchSize;
 
   public Engine(int batchSize) {
     this.batchSize = batchSize;
     initAverageMetrics();
   }
-
-  private int batchSize;
 
   @Override
   public Matrix backwardLayerBased(Matrix error, float learningRate) {
@@ -108,10 +102,6 @@ public class Engine implements Layer, Serializable {
     return accuracyHistory;
   }
 
-  public void setBatchSize(int batchSize) {
-    this.batchSize = batchSize;
-  }
-
   @Override
   public void updateWeightsAndBias() {
     for (Layer layer : layers) {
@@ -121,5 +111,9 @@ public class Engine implements Layer, Serializable {
 
   public int getBatchSize() {
     return batchSize;
+  }
+
+  public void setBatchSize(int batchSize) {
+    this.batchSize = batchSize;
   }
 }

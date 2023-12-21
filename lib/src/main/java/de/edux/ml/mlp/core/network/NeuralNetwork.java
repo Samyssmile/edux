@@ -1,6 +1,5 @@
 package de.edux.ml.mlp.core.network;
 
-import de.edux.api.Classifier;
 import de.edux.ml.mlp.core.network.loader.BatchData;
 import de.edux.ml.mlp.core.network.loader.Loader;
 import de.edux.ml.mlp.core.network.loader.MetaData;
@@ -25,6 +24,21 @@ public class NeuralNetwork implements Serializable {
 
   NeuralNetwork(int batchSize) {
     engine = new Engine(batchSize);
+  }
+
+  public static NeuralNetwork loadModel(String fileName) {
+    NeuralNetwork model = null;
+    File file = new File(fileName);
+    if (!file.exists()) {
+      return null;
+    }
+    try (var ds = new ObjectInputStream(new FileInputStream(file))) {
+      model = (NeuralNetwork) ds.readObject();
+    } catch (IOException | ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+    log.info("Model loaded from {}", file.getAbsolutePath());
+    return model;
   }
 
   public void setLearningRates(float initialLearningRate, float finalLearningRate) {
@@ -64,7 +78,7 @@ public class NeuralNetwork implements Serializable {
     BatchData batchData = loader.readBatch();
     int itemsRead = metaData.getItemsRead();
     int inputSize = metaData.getInputSize();
-    int expectedSize = metaData.getExpectedSize();
+    int expectedSize = metaData.getNumberOfClasses();
 
     Matrix input = new Matrix(inputSize, itemsRead, batchData.getInputBatch());
     Matrix expected = new Matrix(expectedSize, itemsRead, batchData.getExpectedBatch());
@@ -147,21 +161,6 @@ public class NeuralNetwork implements Serializable {
     }
 
     return true;
-  }
-
-  public static NeuralNetwork loadModel(String fileName) {
-    NeuralNetwork model = null;
-    File file = new File(fileName);
-    if (!file.exists()) {
-      return null;
-    }
-    try (var ds = new ObjectInputStream(new FileInputStream(file))) {
-      model = (NeuralNetwork) ds.readObject();
-    } catch (IOException | ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-    log.info("Model loaded from {}", file.getAbsolutePath());
-    return model;
   }
 
   public double[] predict(Matrix input) {
