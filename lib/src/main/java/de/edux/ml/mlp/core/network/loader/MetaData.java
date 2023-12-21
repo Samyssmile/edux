@@ -1,27 +1,31 @@
 package de.edux.ml.mlp.core.network.loader;
 
 public interface MetaData {
-    int getNumberItems();
+  int getNumberItems();
 
-    void setNumberItems(int numberItems);
+  void setNumberItems(int numberItems);
 
-    int getInputSize();
+  int getInputSize();
 
-    void setInputSize(int inputSize);
+  void setInputSize(int inputSize);
 
-    int getExpectedSize();
+  int getNumberOfClasses();
 
-    void setExpectedSize(int expectedSize);
+  void setNumberOfClasses(int expectedSize);
 
-    int getNumberBatches();
+  int getNumberBatches();
 
-    void setNumberBatches(int numberBatches);
+  void setNumberBatches(int numberBatches);
 
-    int getTotalItemsRead();
+  int getTotalItemsRead();
 
-    void setTotalItemsRead(int totalItemsRead);
+  void setTotalItemsRead(int totalItemsRead);
 
-    int getItemsRead();
+  int getItemsRead();
 
-    void setItemsRead(int itemsRead);
+  void setItemsRead(int itemsRead);
+
+  int getBatchLength();
+
+  void setBatchLength(int batchLength);
 }
