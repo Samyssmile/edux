@@ -77,11 +77,6 @@ public class Matrix implements Serializable {
         return this.apply((index, value) -> input.get(index) > 0 ? value : 0);
     }
 
-    public Matrix print() {
-        System.out.println(this);
-        return this;
-    }
-
     public void set(int row, int col, double value) {
         data[row * cols + col] = value;
     }
@@ -129,13 +124,6 @@ public class Matrix implements Serializable {
         return this.apply((index, value) -> value * rate);
     }
 
-    public Matrix copy() {
-        Matrix result = new Matrix(rows, cols);
-        System.arraycopy(data, 0, result.data, 0, data.length);
-        return result;
-    }
-
-
     public interface RowColumnProducer {
         double produce(int row, int col, double value);
     }
@@ -146,10 +134,6 @@ public class Matrix implements Serializable {
 
     public interface IndexValueProducer {
         double produce(int index, double value);
-    }
-
-    public interface ValueProducer {
-        double produce(double value);
     }
 
     public interface IndexValueConsumer {
@@ -292,21 +276,6 @@ public class Matrix implements Serializable {
         }
         return this;
     }
-
-    public Matrix modify(ValueProducer function) {
-        for (int i = 0; i < data.length; i++) {
-            data[i] = function.produce(data[i]);
-        }
-        return this;
-    }
-
-    public Matrix modify(IndexValueProducer function) {
-        for (int i = 0; i < data.length; i++) {
-            data[i] = function.produce(i, data[i]);
-        }
-        return this;
-    }
-
 
     public void forEach(IndexValueConsumer consumer) {
         for (int i = 0; i < data.length; i++) {
