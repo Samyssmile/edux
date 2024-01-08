@@ -44,12 +44,13 @@ public class MedianImputation implements IImputationStrategy {
     return value.matches("-?\\d+(\\.\\d+)?") || value.isBlank();
   }
 
-  double calculateMedian(String[] datasetColumn) {
-   double[] filteredDatasetColumnInNumbers = Arrays.stream(datasetColumn)
-           .filter(value -> !value.isBlank())
-           .mapToDouble(Double::parseDouble)
-           .sorted()
-           .toArray();
+  public double calculateMedian(String[] datasetColumn) {
+    double[] filteredDatasetColumnInNumbers =
+        Arrays.stream(datasetColumn)
+            .filter(value -> !value.isBlank())
+            .mapToDouble(Double::parseDouble)
+            .sorted()
+            .toArray();
     if (filteredDatasetColumnInNumbers.length % 2 == 0) {
       Double upper = filteredDatasetColumnInNumbers[filteredDatasetColumnInNumbers.length / 2];
       Double lower =

@@ -14,26 +14,26 @@ class FractalityLoaderTest {
   static void setUp() {
     fractalityLoader =
         new FractalityLoader(
-            "src/test/resources/fractality/test/class",
-            "src/test/resources/fractality/test/images.csv",
+            "src/test/resources/fractality/small_test/class",
+            "src/test/resources/fractality/small_test/images.csv",
             5,
-            256,
-            256);
+            64,
+            64);
   }
 
   @Test
   void shouldLoadCSVContent() {
-    assertEquals(120, fractalityLoader.getCsvContent().size());
+    assertEquals(59, fractalityLoader.getCsvContent().size());
     assertTrue(fractalityLoader.getCsvContent().values().stream().allMatch(s -> s != null));
   }
 
   @Test
   void shouldReadMetaData() {
     MetaData metaData = fractalityLoader.open();
-    assertEquals(120, metaData.getNumberItems());
+    assertEquals(59, metaData.getNumberItems());
     assertNotNull(fractalityLoader.getMetaData());
     assertEquals(6, metaData.getNumberOfClasses());
-    assertEquals(24, metaData.getNumberBatches());
+    assertEquals(11, metaData.getNumberBatches());
     assertEquals(0, metaData.getTotalItemsRead());
     assertEquals(5, metaData.getBatchLength());
   }

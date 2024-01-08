@@ -9,10 +9,46 @@ import java.util.stream.IntStream;
 public class Matrix implements Serializable {
 
     private static final String NUMBER_FORMAT = "%.3f";
-    private double tolerance = 1e-5;
     private final int rows;
     private final int cols;
+    private double tolerance = 1e-5;
     private double[] data;
+
+    public Matrix(int rows, int cols) {
+        data = new double[rows * cols];
+        this.rows = rows;
+        this.cols = cols;
+    }
+
+    public Matrix(int rows, int cols, Producer producer) {
+        this(rows, cols);
+        for (int i = 0; i < data.length; i++) {
+            data[i] = producer.produce(i);
+        }
+    }
+
+    public Matrix(int rows, int cols, double[] values) {
+        if (values == null){
+            throw new IllegalArgumentException("Values must not be null");
+        }
+        this.rows = rows;
+        this.cols = cols;
+
+        Matrix temp = new Matrix(cols, rows);
+        temp.data = values;
+        Matrix transposed = temp.transpose();
+        data = transposed.data;
+    }
+    public Matrix(double[][]values){
+        this.rows = values.length;
+        this.cols = values[0].length;
+        this.data = new double[rows*cols];
+        for(int i = 0; i < rows; i++){
+            for(int j = 0; j < cols; j++){
+                this.data[i*cols+j] = values[i][j];
+            }
+        }
+    }
 
     public Matrix multiplyParallel(double rate) {
         Matrix result = new Matrix(this.rows, this.cols);
@@ -45,6 +81,7 @@ public class Matrix implements Serializable {
         }
         return result;
     }
+
     /**
      * Subtracts the given matrix from this matrix.
      * <p>
@@ -135,74 +172,8 @@ public class Matrix implements Serializable {
         return result;
     }
 
-
-    public interface RowColumnProducer {
-        double produce(int row, int col, double value);
-    }
-
-    public interface Producer {
-        double produce(int index);
-    }
-
-    public interface IndexValueProducer {
-        double produce(int index, double value);
-    }
-
-    public interface ValueProducer {
-        double produce(double value);
-    }
-
-    public interface IndexValueConsumer {
-        void consume(int index, double value);
-    }
-
-    public interface RowColValueConsumer {
-        void consume(int row, int col, double value);
-    }
-
-
-    public interface RowColIndexValueConsumer {
-        void consume(int row, int col, int index, double value);
-    }
-
     public double[] getData() {
         return data;
-    }
-
-
-
-    public Matrix(int rows, int cols) {
-        data = new double[rows * cols];
-        this.rows = rows;
-        this.cols = cols;
-    }
-
-    public Matrix(int rows, int cols, Producer producer) {
-        this(rows, cols);
-        for (int i = 0; i < data.length; i++) {
-            data[i] = producer.produce(i);
-        }
-    }
-
-    public Matrix(int rows, int cols, double[] values) {
-        this.rows = rows;
-        this.cols = cols;
-
-        Matrix temp = new Matrix(cols, rows);
-        temp.data = values;
-        Matrix transposed = temp.transpose();
-        data = transposed.data;
-    }
-
-    public Matrix(double[][]values){
-        this.rows = values.length;
-        this.cols = values[0].length;
-        this.data = new double[rows*cols];
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
-                this.data[i*cols+j] = values[i][j];
-            }
-        }
     }
 
     public Matrix apply(IndexValueProducer function) {
@@ -306,7 +277,6 @@ public class Matrix implements Serializable {
         }
         return this;
     }
-
 
     public void forEach(IndexValueConsumer consumer) {
         for (int i = 0; i < data.length; i++) {
@@ -451,5 +421,33 @@ public class Matrix implements Serializable {
                     ", cols=" + cols +
                     '}';
         }
+    }
+
+    public interface RowColumnProducer {
+        double produce(int row, int col, double value);
+    }
+
+    public interface Producer {
+        double produce(int index);
+    }
+
+    public interface IndexValueProducer {
+        double produce(int index, double value);
+    }
+
+    public interface ValueProducer {
+        double produce(double value);
+    }
+
+    public interface IndexValueConsumer {
+        void consume(int index, double value);
+    }
+
+    public interface RowColValueConsumer {
+        void consume(int row, int col, double value);
+    }
+
+    public interface RowColIndexValueConsumer {
+        void consume(int row, int col, int index, double value);
     }
 }
