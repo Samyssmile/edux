@@ -52,7 +52,6 @@ public class MedianImputationBenchmark {
       }
     }
 
-    // Erwarteter Median
     double[] numericValues =
         Arrays.stream(largeDataset)
             .filter(s -> !s.isBlank())

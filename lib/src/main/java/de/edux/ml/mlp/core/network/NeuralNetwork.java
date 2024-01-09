@@ -125,6 +125,7 @@ public class NeuralNetwork implements Serializable {
     for (int i = 0; i < numberBatches; i++) {
       batches.add(executor.submit(() -> runBatch(loader, trainingMode)));
     }
+    loader.reset();
 
     executor.shutdown();
 

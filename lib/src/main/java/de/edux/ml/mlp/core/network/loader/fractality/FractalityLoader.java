@@ -3,7 +3,6 @@ package de.edux.ml.mlp.core.network.loader.fractality;
 import de.edux.ml.mlp.core.network.loader.BatchData;
 import de.edux.ml.mlp.core.network.loader.Loader;
 import de.edux.ml.mlp.core.network.loader.MetaData;
-import de.edux.ml.mlp.core.network.loader.mnist.MnistMetaData;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -15,7 +14,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 
 public class FractalityLoader implements Loader {
 
@@ -26,8 +24,7 @@ public class FractalityLoader implements Loader {
   private final int imageWidth;
   private final int imageHeight;
   Iterator<Map.Entry<String, String>> csvContentIterator;
-  private ImageInputStream imageInputStream;
-  private MnistMetaData metaData;
+  private FractalityMetaData metaData;
 
   public FractalityLoader(
       String imageFolderPath, String csvLabelDataFile, int batchLength, int width, int height) {
@@ -67,23 +64,18 @@ public class FractalityLoader implements Loader {
   }
 
   private MetaData readMetaData() {
-    this.metaData = new MnistMetaData();
+    this.metaData = new FractalityMetaData();
     metaData.setNumberItems(csvContent.size());
     metaData.setInputSize(imageWidth * imageHeight);
     metaData.setNumberOfClasses(6);
     metaData.setNumberBatches((int) Math.ceil(metaData.getNumberItems() / batchLength));
-    metaData.setHeight(imageHeight);
-    metaData.setWidth(imageWidth);
     metaData.setBatchLength(batchLength);
 
     return metaData;
   }
 
-
-
   @Override
   public void close() {
-
     this.metaData = null;
   }
 
@@ -95,20 +87,25 @@ public class FractalityLoader implements Loader {
   @Override
   public BatchData readBatch() {
     BatchData batchData = new FractalityBatchData();
-    var totalItemsRead = metaData.getTotalItemsRead();
-    var numberItems = metaData.getNumberItems();
 
     int inputsRead = readInputBatch(batchData);
+    metaData.setItemsRead(inputsRead);
 
     return batchData;
   }
 
+  @Override
+  public void reset() {
+    csvContentIterator = csvContent.entrySet().iterator();
+  }
+
   private int readInputBatch(BatchData batchData) {
     var numberToRead =
-        Math.min(metaData.getBatchLength(), metaData.getInputSize()) - metaData.getTotalItemsRead();
+        Math.min(
+            metaData.getBatchLength(), (metaData.getInputSize() - metaData.getTotalItemsRead()));
+
     double[] dataInputs = new double[metaData.getInputSize() * metaData.getBatchLength()];
     double[] dataExpected = new double[metaData.getNumberOfClasses() * metaData.getBatchLength()];
-
     for (int i = 0; i < numberToRead; i++) {
       if (csvContentIterator.hasNext()) {
         Map.Entry<String, String> entry = csvContentIterator.next();
@@ -119,7 +116,6 @@ public class FractalityLoader implements Loader {
                 + File.separator
                 + entry.getKey()
                 + ".png";
-        System.out.println(imagePath);
 
         try {
           BufferedImage image = ImageIO.read(new File(imagePath));
@@ -166,7 +162,6 @@ public class FractalityLoader implements Loader {
   }
 
   private double colorToDouble(Color color) {
-    // Konvertierung zu Graustufen und Normalisierung (Beispiel)
     return (color.getRed() + color.getGreen() + color.getBlue()) / 3.0 / 255.0;
   }
 
