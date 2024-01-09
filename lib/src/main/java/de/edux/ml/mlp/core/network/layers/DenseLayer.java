@@ -6,9 +6,9 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DenseLayer implements Layer {
+  private final Random random = new Random();
   private AtomicReference<Matrix> weights;
   private AtomicReference<Matrix> bias;
-  private final Random random = new Random();
   private Matrix lastInput;
 
   public DenseLayer(int inputSize, int outputSize) {
@@ -60,6 +60,6 @@ public class DenseLayer implements Layer {
 
   @Override
   public String toString() {
-    return "DenseLayer in: " + weights.get().getCols() + " x out: " + weights.get().getRows();
+    return "Dense in: " + weights.get().getCols() + " x out: " + weights.get().getRows();
   }
 }
