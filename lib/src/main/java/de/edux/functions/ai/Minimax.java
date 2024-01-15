@@ -25,7 +25,6 @@ public class Minimax {
       throw new IllegalArgumentException("The number of outcomes must be greater than 1");
     }
     else if ((outcomes.length & (outcomes.length - 1)) != 0) {
-      System.out.println(outcomes.length & (outcomes.length + 1));
       throw new IllegalArgumentException("The number of outcomes must be equal to a power of 2");
     }
     this.outcomes = outcomes;
@@ -50,7 +49,6 @@ public class Minimax {
    * @return double
    */
   private double maximum(double... outcomes) {
-    System.out.println("Outcome length in maximum: " + outcomes.length);
     if (outcomes.length == 2) {
       return Math.max(outcomes[0], outcomes[1]);
     } else {
@@ -67,7 +65,6 @@ public class Minimax {
    * @return double
    */
   private double minimum(double... outcomes) {
-    System.out.println("Outcome length in minimum: " + outcomes.length);
     if (outcomes.length == 2) {
       return Math.min(outcomes[0], outcomes[1]);
     } else {
