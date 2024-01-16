@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class MinimaxTest {
 
   @Test
-  public void testMiniMax() {
+  public void testMinimax() {
     double[] emptyArray = {};
     double[] tooSmallArray = { 3.0 };
     double[] incorrectArraySize = { 1.0, 1.3, 2.5, 0.8, 1.6 };
