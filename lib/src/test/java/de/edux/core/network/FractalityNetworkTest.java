@@ -1,5 +1,10 @@
 package de.edux.core.network;
 
+import java.nio.file.Paths;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import de.edux.ml.api.ExecutionMode;
 import de.edux.ml.mlp.core.network.NetworkBuilder;
 import de.edux.ml.mlp.core.network.layers.DenseLayer;
@@ -8,8 +13,6 @@ import de.edux.ml.mlp.core.network.layers.SoftmaxLayer;
 import de.edux.ml.mlp.core.network.loader.Loader;
 import de.edux.ml.mlp.core.network.loader.MetaData;
 import de.edux.ml.mlp.core.network.loader.fractality.FractalityLoader;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 public class FractalityNetworkTest {
 
@@ -18,22 +21,22 @@ public class FractalityNetworkTest {
 
   @BeforeAll
   static void setUp() {
+
     fractalityTrainLoader =
         new FractalityLoader(
-            "src/test/resources/fractality/small_train/class",
-            "src/test/resources/fractality/small_train/images.csv",
+            Paths.get("src", "test", "resources", "fractility", "small_train", "class").toString(),
+            Paths.get("src", "test", "resources", "fractility", "small_train", "images.csv").toString(),
             100,
             64,
             64);
 
-    fractalityTestLoader =
-        new FractalityLoader(
-            "src/test/resources/fractality/small_test/class",
-            "src/test/resources/fractality/small_test/images.csv",
-            10,
-            64,
-            64);
-  }
+    fractalityTestLoader = new FractalityLoader(
+        Paths.get("src", "test", "resources", "fractility", "small_test", "class").toString(),
+        Paths.get("src", "test", "resources", "fractility", "small_test", "images.csv").toString(),
+        10,
+        64,
+        64);
+}
 
   @Test
   public void shouldTrain() {
