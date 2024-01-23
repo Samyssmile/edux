@@ -24,15 +24,15 @@ public class FractalityNetworkTest {
 
     fractalityTrainLoader =
         new FractalityLoader(
-            Paths.get("src", "test", "resources", "fractility", "small_train", "class").toString(),
-            Paths.get("src", "test", "resources", "fractility", "small_train", "images.csv").toString(),
+            Paths.get("src", "test", "resources", "fractality", "small_train", "class").toString(),
+            Paths.get("src", "test", "resources", "fractality", "small_train", "images.csv").toString(),
             100,
             64,
             64);
 
     fractalityTestLoader = new FractalityLoader(
-        Paths.get("src", "test", "resources", "fractility", "small_test", "class").toString(),
-        Paths.get("src", "test", "resources", "fractility", "small_test", "images.csv").toString(),
+        Paths.get("src", "test", "resources", "fractality", "small_test", "class").toString(),
+        Paths.get("src", "test", "resources", "fractality", "small_test", "images.csv").toString(),
         10,
         64,
         64);
