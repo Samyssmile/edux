@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id "me.champeau.jmh" version "0.7.2"
+    id 'com.github.ben-manes.versions' version '0.51.0'
 }
 
 group = 'io.github.samyssmile'
@@ -36,16 +37,16 @@ dependencies {
     implementation 'org.openjdk.jmh:jmh-generator-annprocess:1.37'
 
     // Other dependencies
-    implementation 'com.opencsv:opencsv:5.8'
-    implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
-    implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.20.0'
+    implementation 'com.opencsv:opencsv:5.9'
+    implementation 'org.apache.logging.log4j:log4j-api:3.0.0-beta1'
+    implementation 'org.apache.logging.log4j:log4j-core:3.0.0-beta1'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta1'
 
     // Test dependencies
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testImplementation 'org.mockito:mockito-core:5.7.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.7.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testImplementation 'org.mockito:mockito-core:5.10.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.10.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
 
 tasks.withType(Test) {
