@@ -30,21 +30,6 @@ jmh {
 }
 
 dependencies {
-    String osString = getOsString()
-    String archString = getArchString()
-    String classifier = "${osString}-${archString}"
-    String jCudaVersion = '11.8.0'
-
-    // JCuda dependencies
-    ['jcuda', 'jcublas', 'jcufft', 'jcusparse', 'jcurand', 'jcusolver', 'jcudnn'].each { lib ->
-        implementation(group: 'org.jcuda', name: "${lib}", version: jCudaVersion) {
-            transitive = false
-        }
-        implementation(group: 'org.jcuda', name: "${lib}-natives", classifier: classifier, version: jCudaVersion)
-    }
-
-    // OpenCl dependencies
-    implementation 'org.jocl:jocl:2.0.2'
 
     // JMH dependencies
     implementation 'org.openjdk.jmh:jmh-core:1.37'
@@ -127,50 +112,4 @@ signing {
 }
 
 
-static String getOsString() {
-    String vendor = System.getProperty("java.vendor");
-    if ("The Android Project" == vendor) {
-        return "android";
-    } else {
-        String osName = System.getProperty("os.name");
-        osName = osName.toLowerCase(Locale.ENGLISH);
-        if (osName.startsWith("windows")) {
-            return "windows";
-        } else if (osName.startsWith("mac os")) {
-            return "apple";
-        } else if (osName.startsWith("linux")) {
-            return "linux";
-        } else if (osName.startsWith("sun")) {
-            return "sun"
-        }
-        return "unknown"
-    }
-}
-
-static String getArchString() {
-    String osArch = System.getProperty("os.arch");
-    osArch = osArch.toLowerCase(Locale.ENGLISH);
-    if ("i386" == osArch || "x86" == osArch || "i686" == osArch) {
-        return "x86";
-    } else if (osArch.startsWith("amd64") || osArch.startsWith("x86_64")) {
-        return "x86_64";
-    } else if (osArch.startsWith("arm64")) {
-        return "arm64";
-    } else if (osArch.startsWith("arm")) {
-        return "arm";
-    } else if ("ppc" == osArch || "powerpc" == osArch) {
-        return "ppc";
-    } else if (osArch.startsWith("ppc")) {
-        return "ppc_64";
-    } else if (osArch.startsWith("sparc")) {
-        return "sparc";
-    } else if (osArch.startsWith("mips64")) {
-        return "mips64";
-    } else if (osArch.startsWith("mips")) {
-        return "mips";
-    } else if (osArch.contains("risc")) {
-        return "risc";
-    }
-    return "unknown";
-}
 
