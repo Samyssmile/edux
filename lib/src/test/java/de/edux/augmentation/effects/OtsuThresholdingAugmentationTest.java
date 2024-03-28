@@ -3,7 +3,6 @@ package de.edux.augmentation.effects;
 import de.edux.augmentation.core.AugmentationBuilder;
 import de.edux.augmentation.core.AugmentationSequence;
 import org.junit.jupiter.api.Test;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;

@@ -3,8 +3,11 @@ package de.example.augmentation;
 import de.edux.augmentation.effects.OtsuThresholdingAugmentation;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -14,11 +17,11 @@ public class OtsuThresholdingAugmentationExample {
     private static final String IMAGE_PATH = "images" + File.separator + "cyborg.png";
 
     public static void main(String[] args) throws IOException {
-        BufferedImage bufferedImage = loadTestImage(IMAGE_PATH);
+        BufferedImage originalImage = loadTestImage(IMAGE_PATH);
         OtsuThresholdingAugmentation otsuThreshold = new OtsuThresholdingAugmentation();
-        BufferedImage otsoImage = otsuThreshold.apply(bufferedImage);
-        display(bufferedImage, "Original Image");
-        display(otsoImage, "After Otsu Thresholing");
+        BufferedImage otsuImage = otsuThreshold.apply(originalImage);
+        display(originalImage, "Original Image");
+        display(otsuImage, "After Otsu Augmentation");
     }
 
     public static BufferedImage loadTestImage(String path) throws IOException {
