@@ -1,13 +1,13 @@
 package de.example.mlp;
 
 import de.edux.ml.api.ExecutionMode;
-import de.edux.ml.mlp.core.network.NetworkBuilder;
-import de.edux.ml.mlp.core.network.layers.DenseLayer;
-import de.edux.ml.mlp.core.network.layers.ReLuLayer;
-import de.edux.ml.mlp.core.network.layers.SoftmaxLayer;
-import de.edux.ml.mlp.core.network.loader.Loader;
-import de.edux.ml.mlp.core.network.loader.MetaData;
-import de.edux.ml.mlp.core.network.loader.mnist.MnistLoader;
+import de.edux.ml.api.core.network.NetworkBuilder;
+import de.edux.ml.api.core.network.layers.DenseLayer;
+import de.edux.ml.api.core.network.layers.ReLuLayer;
+import de.edux.ml.api.core.network.layers.SoftmaxLayer;
+import de.edux.ml.api.core.network.loader.Loader;
+import de.edux.ml.api.core.network.loader.MetaData;
+import de.edux.ml.api.core.network.loader.mnist.MnistLoader;
 import java.io.File;
 
 public class MlpExampleOnMNIST {

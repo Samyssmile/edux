@@ -6,13 +6,13 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import de.edux.ml.api.ExecutionMode;
-import de.edux.ml.mlp.core.network.NetworkBuilder;
-import de.edux.ml.mlp.core.network.layers.DenseLayer;
-import de.edux.ml.mlp.core.network.layers.ReLuLayer;
-import de.edux.ml.mlp.core.network.layers.SoftmaxLayer;
-import de.edux.ml.mlp.core.network.loader.Loader;
-import de.edux.ml.mlp.core.network.loader.MetaData;
-import de.edux.ml.mlp.core.network.loader.fractality.FractalityLoader;
+import de.edux.ml.api.core.network.NetworkBuilder;
+import de.edux.ml.api.core.network.layers.DenseLayer;
+import de.edux.ml.api.core.network.layers.ReLuLayer;
+import de.edux.ml.api.core.network.layers.SoftmaxLayer;
+import de.edux.ml.api.core.network.loader.Loader;
+import de.edux.ml.api.core.network.loader.MetaData;
+import de.edux.ml.api.core.network.loader.fractality.FractalityLoader;
 
 public class FractalityNetworkTest {
 
@@ -25,18 +25,21 @@ public class FractalityNetworkTest {
     fractalityTrainLoader =
         new FractalityLoader(
             Paths.get("src", "test", "resources", "fractality", "small_train", "class").toString(),
-            Paths.get("src", "test", "resources", "fractality", "small_train", "images.csv").toString(),
+            Paths.get("src", "test", "resources", "fractality", "small_train", "images.csv")
+                .toString(),
             100,
             64,
             64);
 
-    fractalityTestLoader = new FractalityLoader(
-        Paths.get("src", "test", "resources", "fractality", "small_test", "class").toString(),
-        Paths.get("src", "test", "resources", "fractality", "small_test", "images.csv").toString(),
-        10,
-        64,
-        64);
-}
+    fractalityTestLoader =
+        new FractalityLoader(
+            Paths.get("src", "test", "resources", "fractality", "small_test", "class").toString(),
+            Paths.get("src", "test", "resources", "fractality", "small_test", "images.csv")
+                .toString(),
+            10,
+            64,
+            64);
+  }
 
   @Test
   public void shouldTrain() {

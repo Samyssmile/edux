@@ -2,7 +2,8 @@ package de.edux.ml.mlp.core.network.loader.fractality;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.edux.ml.mlp.core.network.loader.MetaData;
+import de.edux.ml.api.core.network.loader.MetaData;
+import de.edux.ml.api.core.network.loader.fractality.FractalityLoader;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

@@ -2,11 +2,11 @@ package de.edux.core.network.loader;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.edux.ml.mlp.core.network.loader.BatchData;
-import de.edux.ml.mlp.core.network.loader.Loader;
-import de.edux.ml.mlp.core.network.loader.MetaData;
-import de.edux.ml.mlp.core.network.loader.test.TestLoader;
-import de.edux.ml.mlp.core.tensor.Matrix;
+import de.edux.ml.api.core.network.loader.BatchData;
+import de.edux.ml.api.core.network.loader.Loader;
+import de.edux.ml.api.core.network.loader.MetaData;
+import de.edux.ml.api.core.network.loader.test.TestLoader;
+import de.edux.ml.api.core.tensor.Matrix;
 import org.junit.jupiter.api.Test;
 
 class LoaderTest {
