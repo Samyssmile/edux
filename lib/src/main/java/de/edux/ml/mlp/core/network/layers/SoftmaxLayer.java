@@ -15,7 +15,6 @@ public class SoftmaxLayer implements Layer {
     @Override
     public Matrix forwardLayerbased(Matrix input) {
         this.lastSoftmax = input.softmax();
-        ;
         return lastSoftmax;
     }
 

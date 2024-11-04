@@ -32,6 +32,13 @@ public class DenseLayer implements Layer {
     }
   }
 
+  /**
+   * 100 Bilder Batch
+   * Rows: 784
+   * Cols: 100
+   * @param input
+   * @return
+   */
   @Override
   public Matrix forwardLayerbased(Matrix input) {
     this.lastInput = input;

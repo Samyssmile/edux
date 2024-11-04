@@ -3,6 +3,7 @@ package de.edux.ml.mlp.core.tensor;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -269,12 +270,26 @@ public class Matrix implements Serializable {
   }
 
   public void forEach(RowColValueConsumer consumer) {
+    //alternatie parallel soultion
     int index = 0;
+
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         consumer.consume(row, col, data[index++]);
       }
     }
+
+/*    IntStream.range(0, rows)
+        .parallel()
+        .forEach(
+            row -> {
+              for (int col = 0; col < cols; col++) {
+                consumer.consume(row, col, data[row * cols + col]);
+              }
+            });*/
+
+    
+
   }
 
   public void setTolerance(double tolerance) {
@@ -292,6 +307,87 @@ public class Matrix implements Serializable {
 
     return result;
   }
+
+  public static Matrix random(int rows, int cols) {
+    Matrix matrix = new Matrix(rows, cols);
+    Random random = new Random();
+    double standardDeviation = Math.sqrt(2.0 / (rows * cols));
+
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++) {
+        matrix.set(i, j, random.nextGaussian() * standardDeviation);
+      }
+    }
+
+    return matrix;
+  }
+
+  public static Matrix convolve(double[][][] image, double[][][][] filters, double[] biases,
+                                int filterSize, int numFilters, int outputHeight, int outputWidth) {
+    int channels = image.length;
+
+    // Vorbereitung der Datenmatrix (im2col)
+    int dataMatrixRows = filterSize * filterSize * channels;
+    int dataMatrixCols = outputHeight * outputWidth;
+    double[][] dataMatrix = new double[dataMatrixRows][dataMatrixCols];
+
+    int columnIndex = 0;
+    for (int i = 0; i < outputHeight; i++) {
+      for (int j = 0; j < outputWidth; j++) {
+        int idx = 0;
+        for (int c = 0; c < channels; c++) {
+          for (int fi = 0; fi < filterSize; fi++) {
+            for (int fj = 0; fj < filterSize; fj++) {
+              dataMatrix[idx++][columnIndex] = image[c][i + fi][j + fj];
+            }
+          }
+        }
+        columnIndex++;
+      }
+    }
+
+    // Vorbereitung der Filtermatrix
+    double[][] filtersMatrix = new double[numFilters][dataMatrixRows];
+    for (int f = 0; f < numFilters; f++) {
+      int idx = 0;
+      for (int c = 0; c < channels; c++) {
+        for (int fi = 0; fi < filterSize; fi++) {
+          for (int fj = 0; fj < filterSize; fj++) {
+            filtersMatrix[f][idx++] = filters[f][c][fi][fj];
+          }
+        }
+      }
+    }
+
+    // Parallele Matrixmultiplikation
+    double[][] outputMatrix = new double[numFilters][dataMatrixCols];
+
+    // Parallelisierung über Filter und Ausgabespalten
+    IntStream.range(0, numFilters).parallel().forEach(f -> {
+      double[] filter = filtersMatrix[f];
+      double bias = biases[f];
+      IntStream.range(0, dataMatrixCols).parallel().forEach(col -> {
+        double sum = 0;
+        for (int k = 0; k < dataMatrixRows; k++) {
+          sum += filter[k] * dataMatrix[k][col];
+        }
+        sum += bias;
+        outputMatrix[f][col] = sum;
+      });
+    });
+
+    // Ausgabe vorbereiten
+    Matrix output = new Matrix(numFilters * outputHeight * outputWidth, 1);
+    int outputIndex = 0;
+    for (int f = 0; f < numFilters; f++) {
+      for (int col = 0; col < dataMatrixCols; col++) {
+        output.set(outputIndex++, 0, outputMatrix[f][col]);
+      }
+    }
+
+    return output;
+  }
+
 
   public Matrix softmax() {
     Matrix result = new Matrix(rows, cols, i -> Math.exp(data[i]));
@@ -391,6 +487,20 @@ public class Matrix implements Serializable {
       return toString();
     } else {
       return "{" + "rows=" + rows + ", cols=" + cols + '}';
+    }
+  }
+
+  public double[] getColumn(int b) {
+    double[] result = new double[rows];
+    for (int i = 0; i < rows; i++) {
+      result[i] = data[i * cols + b];
+    }
+    return result;
+  }
+
+  public void setColumn(int b, double[] inputGradColumn) {
+    for (int i = 0; i < rows; i++) {
+      data[i * cols + b] = inputGradColumn[i];
     }
   }
 

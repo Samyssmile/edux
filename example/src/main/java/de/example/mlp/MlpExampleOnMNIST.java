@@ -47,7 +47,7 @@ public class MlpExampleOnMNIST {
 
     int batchSize = 100;
     ExecutionMode singleThread = ExecutionMode.SINGLE_THREAD;
-    int epochs = 100;
+    int epochs = 5;
     float initialLearningRate = 0.1f;
     float finalLearningRate = 0.0001f;
 
@@ -81,7 +81,7 @@ public class MlpExampleOnMNIST {
     // Loading a trained model
     new NetworkBuilder()
         .withExecutionMode(singleThread)
-        .withEpochs(5)
+        .withEpochs(2)
         .withLearningRates(0.001f, 0.001f)
         .loadModel("mnist_trained.edux")
         .fit(trainLoader, testLoader);

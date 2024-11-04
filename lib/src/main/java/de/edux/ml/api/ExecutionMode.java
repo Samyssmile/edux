@@ -16,7 +16,7 @@ public enum ExecutionMode {
    * Single-thread execution mode. In this mode, all batches are processed sequentially in a single
    * thread.
    */
-  SINGLE_THREAD(1);
+  SINGLE_THREAD(1), MULTI_THREAD(6);
 
   int threads = 1;
 
