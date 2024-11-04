@@ -38,15 +38,15 @@ dependencies {
 
     // Other dependencies
     implementation 'com.opencsv:opencsv:5.9'
-    implementation 'org.apache.logging.log4j:log4j-api:3.0.0-beta1'
-    implementation 'org.apache.logging.log4j:log4j-core:3.0.0-beta1'
-    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta1'
+    implementation 'org.apache.logging.log4j:log4j-api:3.0.0-beta2'
+    implementation 'org.apache.logging.log4j:log4j-core:3.0.0-beta2'
+    implementation 'org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta2'
 
     // Test dependencies
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
-    testImplementation 'org.mockito:mockito-core:5.10.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.10.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.3'
+    testImplementation 'org.mockito:mockito-core:5.11.3'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
 }
 
 tasks.withType(Test) {
