@@ -28,4 +28,6 @@ public interface MetaData {
   int getBatchLength();
 
   void setBatchLength(int batchLength);
+
+  void printDatasetInformation();
 }

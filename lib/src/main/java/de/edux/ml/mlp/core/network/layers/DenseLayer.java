@@ -62,6 +62,7 @@ public class DenseLayer implements Layer {
     weights.set(weights.get().subtract(weightsGradient.multiplyParallel(rate)));
     bias.set(bias.get().subtract(biasGradient.multiplyParallel(rate)));
 
+
     return output;
   }
 

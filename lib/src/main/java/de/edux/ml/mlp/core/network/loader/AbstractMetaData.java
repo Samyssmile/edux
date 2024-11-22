@@ -78,4 +78,15 @@ public abstract class AbstractMetaData implements MetaData {
   public void setBatchLength(int batchLength) {
     this.batchLength = batchLength;
   }
+
+  @Override
+    public void printDatasetInformation() {
+        System.out.println("Number of items: " + numberItems);
+        System.out.println("Input size: " + inputSize);
+        System.out.println("Number of classes: " + numberOfClasses);
+        System.out.println("Number of batches: " + numberBatches);
+        System.out.println("Total items read: " + totalItemsRead);
+        System.out.println("Items read: " + itemsRead);
+        System.out.println("Batch length: " + batchLength);
+    }
 }

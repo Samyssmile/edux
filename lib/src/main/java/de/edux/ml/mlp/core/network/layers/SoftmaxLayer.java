@@ -9,12 +9,32 @@ public class SoftmaxLayer implements Layer {
 
     @Override
     public Matrix backwardLayerBased(Matrix expected, float learningRate) {
-        return lastSoftmax.subtract(expected);
+        /*Check that output cotains NaN*/
+        for (int i = 0; i < expected.getRows(); i++) {
+            for (int j = 0; j < expected.getCols(); j++) {
+                if (Double.isNaN(expected.get(i, j))) {
+                    throw new RuntimeException("NaN in output");
+                }
+            }
+        }
+        Matrix output = lastSoftmax.subtract(expected);
+
+        for (int i = 0; i < output.getRows(); i++) {
+            for (int j = 0; j < output.getCols(); j++) {
+                if (Double.isNaN(output.get(i, j))) {
+                    throw new RuntimeException("NaN in output");
+                }
+            }
+        }
+        return output;
     }
 
     @Override
     public Matrix forwardLayerbased(Matrix input) {
         this.lastSoftmax = input.softmax();
+        if (lastSoftmax.hasNaN()) {
+            throw new RuntimeException("NaN in output");
+        }
         return lastSoftmax;
     }
 

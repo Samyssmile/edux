@@ -53,7 +53,7 @@ public class CnnExampleOnMNIST {
                         + "t10k-labels.idx1-ubyte";
 
         int batchSize = 100;
-        int epochs = 10;
+        int epochs = 2;
         float initialLearningRate = 0.1f;
         float finalLearningRate = 0.0001f;
 
@@ -70,14 +70,8 @@ public class CnnExampleOnMNIST {
                 .addLayer(new ReLuLayer())
                 .addLayer(new PoolingLayer(8, 26, 26, 2, 2, 2)) // Pooling layer (2x2, stride 2)
 
-                .addLayer(new ConvolutionalLayer(16, 3, 13, 13, 8)) // 16 Filter, 3x3, input 13x13, 8 channels
-                .addLayer(new ReLuLayer())
-                .addLayer(new PoolingLayer(16, 11, 11, 2, 2, 2)) // Pooling layer (2x2, stride 2)
-
-                .addLayer(new FlattenLayer(16, 5, 5)) // Updated dimensions: 16 channels, 5x5 output
-                .addLayer(new DenseLayer(16 * 5 * 5, 128)) // Dense layer input from flattened convolution output
-                .addLayer(new ReLuLayer())
-                .addLayer(new DenseLayer(128, numberOfOutputClasses)) // Final dense layer with number of classes as output
+                .addLayer(new FlattenLayer(8, 13, 13)) // Updated dimensions: 16 channels, 5x5 output
+                .addLayer(new DenseLayer(8*13*13, numberOfOutputClasses)) // Final dense layer with number of classes as output
                 .addLayer(new SoftmaxLayer())
 
                 // Hyperparameter configuration
@@ -95,11 +89,5 @@ public class CnnExampleOnMNIST {
         long endTime = System.currentTimeMillis();
         System.out.println("Training took: " + (endTime - startTime) / 1000 + " seconds");
 
-        new NetworkBuilder()
-                .withExecutionMode(ExecutionMode.SINGLE_THREAD)
-                .withEpochs(2)
-                .withLearningRates(0.001f, 0.001f)
-                .loadModel("cnn_mnist_trained.edux")
-                .fit(trainLoader, testLoader);
     }
 }

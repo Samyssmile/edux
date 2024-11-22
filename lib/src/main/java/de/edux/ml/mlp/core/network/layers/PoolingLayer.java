@@ -100,7 +100,7 @@ public class PoolingLayer implements Layer {
         Matrix inputGradients = new Matrix(numChannels * inputHeight * inputWidth, batchSize);
 
 
-        pool.submit(() -> IntStream.range(0, batchSize).parallel().forEach(b -> {
+        pool.submit(() -> IntStream.range(0, batchSize).forEach(b -> {
             int[][][] sampleMaxIndices = maxIndices.get(b);
             double[] errorColumn = error.getColumn(b);
             double[][][] inputGrad = new double[numChannels][inputHeight][inputWidth];
@@ -113,8 +113,11 @@ public class PoolingLayer implements Layer {
                         int maxIndex = sampleMaxIndices[c][i][j];
                         int maxI = maxIndex / inputWidth;
                         int maxJ = maxIndex % inputWidth;
-
+try{
                         inputGrad[c][maxI][maxJ] += errorColumn[errorIndex++];
+}catch(Exception e){
+    System.out.println("errorIndex: "+errorIndex);
+}
                     }
                 }
             }

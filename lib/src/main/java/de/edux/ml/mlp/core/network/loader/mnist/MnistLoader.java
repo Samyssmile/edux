@@ -64,7 +64,10 @@ public class MnistLoader implements Loader {
     MnistBatchData batchData;
     try {
       batchData = new MnistBatchData();
+
+      //100
       int inputItemsRead = readInputBatch(batchData);
+      //100
       int expectedItemsRead = readExpectedBatch(batchData);
 
       if (inputItemsRead != expectedItemsRead) {

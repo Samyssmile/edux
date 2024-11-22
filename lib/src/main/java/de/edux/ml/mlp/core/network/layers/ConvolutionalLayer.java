@@ -117,7 +117,12 @@ public class ConvolutionalLayer implements Layer {
                     for (int f = 0; f < numFilters; f++) {
                         for (int i = 0; i < outputHeight; i++) {
                             for (int j = 0; j < outputWidth; j++) {
-                                errorVolume[f][i][j] = errorColumn[errorIndex++];
+                                try{
+                                    errorVolume[f][i][j] = errorColumn[errorIndex++];
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
                             }
                         }
                     }

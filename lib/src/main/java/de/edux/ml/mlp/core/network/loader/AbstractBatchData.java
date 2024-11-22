@@ -12,6 +12,9 @@ public abstract class AbstractBatchData implements BatchData {
 
     @Override
     public void setInputBatch(double[] inputBatch) {
+        if (inputBatch == null) {
+            throw new IllegalArgumentException("Input batch is null");
+        }
         this.inputBatch = inputBatch;
     }
 

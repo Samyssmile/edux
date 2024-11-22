@@ -23,7 +23,7 @@ public class NeuralNetwork implements Serializable {
     private float finalLearningRate;
     private transient float learningRate;
 
-    private int threads = 6;
+    private int threads = 1;
 
     NeuralNetwork(int batchSize) {
         engine = new Engine(batchSize);
@@ -52,7 +52,6 @@ public class NeuralNetwork implements Serializable {
     public NeuralNetwork fit(Loader trainLoader, Loader evalLoader) {
         learningRate = initialLearningRate;
         for (int epoch = 0; epoch < epochs; epoch++) {
-            long startTime = System.currentTimeMillis();
             runEpochLayerBased(trainLoader, true);
 
             if (evalLoader != null) {
@@ -60,8 +59,6 @@ public class NeuralNetwork implements Serializable {
             }
 
             learningRate -= (initialLearningRate - finalLearningRate) / epochs;
-            long endTime = System.currentTimeMillis();
-            log.info("Epoch {} took {} seconds", epoch, (endTime - startTime) / 1000);
         }
         return this;
     }
@@ -85,8 +82,11 @@ public class NeuralNetwork implements Serializable {
         int itemsRead = metaData.getItemsRead();
         int inputSize = metaData.getInputSize();
         int expectedSize = metaData.getNumberOfClasses();
-
-        Matrix input = new Matrix(inputSize, itemsRead, batchData.getInputBatch());
+        double[] inputBatch = batchData.getInputBatch();
+        if (inputBatch == null) {
+            System.out.println("inputBatch is null");
+        }
+        Matrix input = new Matrix(inputSize, itemsRead, inputBatch);
         Matrix expected = new Matrix(expectedSize, itemsRead, batchData.getExpectedBatch());
 
         Matrix batchResult = engine.forwardLayerbased(input);
@@ -107,13 +107,12 @@ public class NeuralNetwork implements Serializable {
 
         for (var batch : batches) {
             try {
-                var batchResult = batch.get();
-
+                var batchResult = batch.get(10000, java.util.concurrent.TimeUnit.SECONDS);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            int printDot = (numberBatches / 25) + 1;
+            int printDot = (numberBatches / 100) + 1;
             if (traingMode && index++ % printDot == 0) {
                 System.out.print(".");
             }
@@ -126,13 +125,12 @@ public class NeuralNetwork implements Serializable {
         MetaData metaData = loader.getMetaData();
         var numberBatches = metaData.getNumberBatches();
 
-        var executor = Executors.newFixedThreadPool(threads);
-
+        var executor = Executors.newFixedThreadPool(1);
+        loader.reset();
         for (int i = 0; i < numberBatches; i++) {
             batches.add(executor.submit(() -> runBatch(loader, trainingMode)));
         }
 
-        loader.reset();
 
         executor.shutdown();
 

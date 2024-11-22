@@ -30,26 +30,6 @@ public class FlattenLayer implements Layer {
 
         // Erstelle die Ausgabematrix mit der richtigen Größe
         Matrix output = new Matrix(outputSize, batchSize);
-
-        // Flattening des Inputs: wir müssen jeden der Bilder in der Eingabe-3D-Matrix "plätten"
-/*        for (int b = 0; b < batchSize; b++) {
-            double[] inputColumn = input.getColumn(b); // Hole die Spalte (ein "Bild" im Batch)
-            double[] flattened = new double[outputSize]; // Dieser Vektor wird ein Bild plattmachen
-            int index = 0;
-
-            // Durchlaufe jedes Element in (Kanäle x Höhe x Breite) und flach es.
-            for (int c = 0; c < numChannels; c++) {
-                for (int i = 0; i < inputHeight; i++) {
-                    for (int j = 0; j < inputWidth; j++) {
-                        flattened[index++] = inputColumn[c * inputHeight * inputWidth + i * inputWidth + j];
-                    }
-                }
-            }
-
-            // Speichere den flachgemachten Vektor in der Output-Matrix.
-            output.setColumn(b, flattened);
-        }*/
-
         pool.submit(() ->
                 IntStream.range(0, batchSize).parallel().forEach(b -> {
                     double[] inputColumn = input.getColumn(b); // Hole die Spalte (ein "Bild" im Batch)
@@ -80,7 +60,7 @@ public class FlattenLayer implements Layer {
         Matrix errorReshaped = new Matrix(numChannels * inputHeight * inputWidth, batchSize);
 
         // Prinzip bleibt dasselbe: Wir transformieren den Fehler zurück in die Form der vorherigen Schicht.
-/*        for (int b = 0; b < batchSize; b++) {
+        for (int b = 0; b < batchSize; b++) {
             double[] errorColumn = error.getColumn(b);
             double[] reshaped = new double[inputHeight * inputWidth * numChannels];
 
@@ -89,9 +69,9 @@ public class FlattenLayer implements Layer {
                 reshaped[i] = errorColumn[i];
             }
             errorReshaped.setColumn(b, reshaped);
-        }*/
+        }
 
-        pool.submit(() ->
+/*        pool.submit(() ->
                 IntStream.range(0, batchSize).parallel().forEach(b -> {
                     double[] errorColumn = error.getColumn(b);
                     double[] reshaped = new double[inputHeight * inputWidth * numChannels];
@@ -101,7 +81,9 @@ public class FlattenLayer implements Layer {
                         reshaped[i] = errorColumn[i];
                     }
                     errorReshaped.setColumn(b, reshaped);
-                })).join();
+                })).join();*/
+
+
 
         return errorReshaped;
     }

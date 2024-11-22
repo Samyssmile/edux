@@ -17,6 +17,9 @@ public class Matrix implements Serializable {
 
   public Matrix(int rows, int cols) {
     data = new double[rows * cols];
+    if (data== null){
+        System.out.println("HOLD");
+    }
     this.rows = rows;
     this.cols = cols;
   }
@@ -32,17 +35,40 @@ public class Matrix implements Serializable {
     this.rows = rows;
     this.cols = cols;
 
-    Matrix temp = new Matrix(cols, rows);
-    temp.data = values;
+    Matrix temp = new Matrix(this.cols, this.rows);
+    if (temp.data == null){
+        System.out.println("HOLD");
+    }
+    if (values == null){
+        System.out.println("HOLD");
+    }
+    temp.setData(values);
     Matrix transposed = temp.transpose();
+    if (transposed.data == null){
+        System.out.println("HOLD");
+    }
     data = transposed.data;
+  }
+
+  private void setData(double[] values) {
+    if (values != null){
+      System.arraycopy(values, 0, data, 0, values.length);
+    }else{
+      throw new IllegalArgumentException("Values Array must not be null");
+    }
   }
 
   public Matrix(double[][] values) {
     this.rows = values.length;
     this.cols = values[0].length;
+    if (this.data == null){
+      System.out.println("HOLD");
+    }
     this.data = new double[rows * cols];
     for (int i = 0; i < rows; i++) {
+      if (this.data == null){
+        System.out.println("HOLD");
+      }
       System.arraycopy(values[i], 0, this.data, i * cols, cols);
     }
   }
@@ -54,6 +80,9 @@ public class Matrix implements Serializable {
         .parallel()
         .forEach(
             i -> {
+              if (this.data == null){
+                System.out.println("HOLD");
+              }
               for (int j = 0; j < this.cols; j++) {
                 result.data[i * this.cols + j] = this.data[i * this.cols + j] * rate;
               }
@@ -75,6 +104,9 @@ public class Matrix implements Serializable {
       throw new IllegalArgumentException("Division durch null ist nicht erlaubt.");
     }
 
+    if (this.data == null){
+      System.out.println("HOLD");
+    }
     Matrix result = new Matrix(this.rows, this.cols);
     for (int i = 0; i < this.data.length; i++) {
       result.data[i] = this.data[i] / batches;
@@ -99,9 +131,17 @@ public class Matrix implements Serializable {
       throw new IllegalArgumentException("Matrices must have the same size.");
     }
 
+    if (this.data == null){
+      System.out.println("HOLD");
+    }
     Matrix result = new Matrix(this.rows, this.cols);
     for (int i = 0; i < this.data.length; i++) {
-      result.data[i] = this.data[i] - matrix.getData()[i];
+
+      double termOne = this.data[i];
+
+      double termTwo = matrix.getData()[i];
+      result.data[i] = termOne - termTwo;
+
     }
     return result;
   }
@@ -135,6 +175,14 @@ public class Matrix implements Serializable {
     Matrix result = new Matrix(cols, rows);
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
+        if (result.data == null){
+          System.out.println("HOLD");
+        }
+        if (data == null){
+          System.out.println("HOLD");
+        }
+
+
         result.data[col * rows + row] = data[row * cols + col];
       }
     }
@@ -231,9 +279,15 @@ public class Matrix implements Serializable {
     for (int row = 0; row < this.rows; row++) {
       for (int col = 0; col < this.cols; col++) {
         if (other.cols == 1) {
+          if (this.data == null){
+            System.out.println("HOLD");
+          }
           // Addiere den Bias, wenn die zweite Matrix eine Spaltenmatrix ist
           result.data[row * cols + col] = this.data[row * cols + col] + other.data[row];
         } else {
+          if (this.data == null){
+            System.out.println("HOLD");
+          }
           // Normale elementweise Addition, wenn die zweite Matrix dieselbe Größe hat
           result.data[row * cols + col] =
               this.data[row * cols + col] + other.data[row * cols + col];
@@ -390,12 +444,33 @@ public class Matrix implements Serializable {
 
 
   public Matrix softmax() {
-    Matrix result = new Matrix(rows, cols, i -> Math.exp(data[i]));
-    Matrix colSum = result.sumColumns();
+    // Berechne das Maximum pro Spalte (für Stabilität)
+    Matrix maxColumn = new Matrix(1, cols, col -> Arrays.stream(getColumn(col)).max().orElse(0));
 
-    result.modify((row, col, value) -> value / colSum.getData()[col]);
+    // Initialisiere das Ergebnis und berechne stabilisierte Exponentialwerte
+    Matrix result = new Matrix(rows, cols);
+    double[] expSumPerCol = new double[cols]; // Speichert die Spaltensummen
+
+    for (int col = 0; col < cols; col++) {
+      double max = maxColumn.get(0, col);
+      for (int row = 0; row < rows; row++) {
+        double stabilizedExp = Math.exp(get(row, col) - max);
+        result.set(row, col, stabilizedExp);
+        expSumPerCol[col] += stabilizedExp; // Summiere direkt während der Berechnung
+      }
+    }
+
+    // Normiere die Werte
+    for (int col = 0; col < cols; col++) {
+      for (int row = 0; row < rows; row++) {
+        double normalized = result.get(row, col) / expSumPerCol[col];
+        result.set(row, col, normalized);
+      }
+    }
     return result;
   }
+
+
 
   public Matrix getGreatestRowNumber() {
     Matrix result = new Matrix(1, cols);
@@ -446,7 +521,7 @@ public class Matrix implements Serializable {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-
+/*
     // Berechnen der maximalen Breite jeder Spalte
     int[] maxWidth = new int[cols];
     for (int row = 0; row < rows; row++) {
@@ -477,7 +552,7 @@ public class Matrix implements Serializable {
       }
       sb.append("\n");
     }
-    sb.append(rowSeparator);
+    sb.append(rowSeparator);*/
 
     return sb.toString();
   }
@@ -502,6 +577,16 @@ public class Matrix implements Serializable {
     for (int i = 0; i < rows; i++) {
       data[i * cols + b] = inputGradColumn[i];
     }
+  }
+
+  public boolean hasNaN() {
+    for(int i = 0; i < data.length; i++) {
+      if (Double.isNaN(data[i])) {
+        System.err.println("NaN detected at index " + i);
+        return true;
+      }
+    }
+    return false;
   }
 
   public interface RowColumnProducer {
