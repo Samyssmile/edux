@@ -39,7 +39,6 @@ public class MinimaxOnTicTacToe {
 		ticTacToe.applyMove(7, MAXIMIZING_PLAYER);
 		ticTacToe.applyMove(4, MINIMIZING_PLAYER);
 
-
 		return ticTacToe;
 	}
 }
