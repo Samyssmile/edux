@@ -59,8 +59,20 @@ public class NeuralNetwork implements Serializable {
             }
 
             learningRate -= (initialLearningRate - finalLearningRate) / epochs;
+            System.out.println("----new epoch----");
+            LinkedList<Double> accuracyHistory = engine.getAccuracyHistory();
+            LinkedList<Double> lossHistory     = engine.getLossHistory();
+            calculateAndPrintAverage(accuracyHistory, lossHistory);
         }
+
         return this;
+    }
+
+    private void calculateAndPrintAverage(LinkedList<Double> accuracyHistory, LinkedList<Double> lossHistory) {
+        double averageAccuracy = accuracyHistory.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double averageLoss = lossHistory.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        System.out.println("Average accuracy: " + averageAccuracy);
+        System.out.println("Average loss: " + averageLoss);
     }
 
     private void runEpochLayerBased(Loader loader, boolean traingMode) {
@@ -81,19 +93,22 @@ public class NeuralNetwork implements Serializable {
         BatchData batchData = loader.readBatch();
         int itemsRead = metaData.getItemsRead();
         int inputSize = metaData.getInputSize();
-        int expectedSize = metaData.getNumberOfClasses();
+        int numberOfClasses = metaData.getNumberOfClasses();
         double[] inputBatch = batchData.getInputBatch();
         if (inputBatch == null) {
             System.out.println("inputBatch is null");
         }
         Matrix input = new Matrix(inputSize, itemsRead, inputBatch);
-        Matrix expected = new Matrix(expectedSize, itemsRead, batchData.getExpectedBatch());
+
+
+        Matrix expected = new Matrix(numberOfClasses, itemsRead, batchData.getExpectedBatch());
 
         Matrix batchResult = engine.forwardLayerbased(input);
 
         if (trainingMode) {
             engine.backwardLayerBased(expected, learningRate);
         } else {
+            //Expected batch liefert nur 0 oder nur 1. Hier ist bestimmt der fehler.
             engine.evaluateLayerBased(batchResult, expected);
         }
 
@@ -139,7 +154,7 @@ public class NeuralNetwork implements Serializable {
 
     @Override
     public String toString() {
-        return String.format("Neural Network Configuration\n")
+        return "Neural Network Configuration\n"
                 + "----------------------------------------\n"
                 + String.format("Epochs: %d\n", epochs)
                 + String.format("Batch size: %d\n", engine.getBatchSize())
@@ -149,7 +164,7 @@ public class NeuralNetwork implements Serializable {
                 + String.format("Threads: %d\n", threads)
                 + "\nNetwork Architecture:"
                 + "\n----------------------------------------\n"
-                + engine.toString();
+                + engine;
     }
 
     public void setBatchSize(int batchSize) {

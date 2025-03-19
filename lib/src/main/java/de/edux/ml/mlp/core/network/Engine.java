@@ -22,7 +22,6 @@ public class Engine implements Layer, Serializable {
 
   public Engine(int batchSize) {
     this.batchSize = batchSize;
-    initAverageMetrics();
   }
 
   @Override
@@ -50,6 +49,7 @@ public class Engine implements Layer, Serializable {
 
     double loss = LossFunctions.crossEntropy(expected, predicted).averageColumn().get(0);
     Matrix predictions = predicted.getGreatestRowNumber();
+
     Matrix actual = expected.getGreatestRowNumber();
 
     int correct = 0;
@@ -60,25 +60,15 @@ public class Engine implements Layer, Serializable {
     }
 
     double percentCorrect = (100.0 * correct) / actual.getCols();
+
     this.accuracyHistory.add(percentCorrect);
     this.lossHistory.add(loss);
-    if (this.runningAverages == null) {
-      initAverageMetrics();
-    }
-    this.runningAverages.add(loss, percentCorrect);
+
+    System.out.println("Loss: " + loss + " Accuracy: " + percentCorrect + "%");
+
     return loss;
   }
 
-  private void initAverageMetrics() {
-    this.runningAverages =
-        new RunningAverages(
-            2,
-            this.batchSize,
-            (callNumber, averages) -> {
-              System.out.printf(
-                  "Epoch: %d, Loss: %.2f, Accuracy: %.2f\n", callNumber, averages[0], averages[1]);
-            });
-  }
 
   public void addLayer(Layer layer) {
     layers.add(layer);

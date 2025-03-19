@@ -12,7 +12,7 @@ import de.edux.ml.mlp.core.network.loader.fractality.FractalityLoader;
 public class CnnExampleOnFractality {
     static final int INPUT_HEIGHT = 64;
     static final int INPUT_WIDTH = 64;
-    static final int BATCH_SIZE = 500; // Beibehaltung der Batch-Größe
+    static final int BATCH_SIZE = 100; // Beibehaltung der Batch-Größe
 
     public static void main(String[] args) {
         new CnnExampleOnFractality().start();
@@ -23,21 +23,21 @@ public class CnnExampleOnFractality {
         int stride = 2;
         int filterSize = 3;
         int poolSize = 2;
-        int epochs = 10; // Reduzierung der Epochenzahl
+        int epochs = 20; // Reduzierung der Epochenzahl
         float initialLearningRate = 0.01f;
         float finalLearningRate = 0.0001f;
 
         Loader trainLoader = new FractalityLoader(
-                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-M\\train",
-                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-M\\train\\images.csv",
+                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-xs\\train",
+                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-xs\\train\\images.csv",
                 BATCH_SIZE,
                 INPUT_HEIGHT,
                 INPUT_WIDTH
         );
 
         Loader testLoader = new FractalityLoader(
-                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-M\\test",
-                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-M\\test\\images.csv",
+                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-xs\\test",
+                "C:\\Users\\windo\\Documents\\projects\\edux\\example\\datasets\\fractality-xs\\test\\images.csv",
                 BATCH_SIZE,
                 INPUT_HEIGHT,
                 INPUT_WIDTH

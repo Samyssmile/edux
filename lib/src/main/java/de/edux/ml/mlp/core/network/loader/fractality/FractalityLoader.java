@@ -248,4 +248,20 @@ public class FractalityLoader implements Loader {
   public class FractalityBatchData extends AbstractBatchData {
     // Kann erweitert werden, falls nötig
   }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", FractalityLoader.class.getSimpleName() + "[", "]")
+            .add("inputHeight=" + inputHeight)
+            .add("inputWeight=" + inputWeight)
+            .add("labelFileName='" + labelFileName + "'")
+            .add("batchSize=" + batchSize)
+            .add("imagePaths=" + imagePaths)
+            .add("labels=" + labels)
+            .add("currentIndex=" + currentIndex)
+            .add("classToIndex=" + classToIndex)
+            .add("metaData=" + metaData)
+            .add("readLock=" + readLock)
+            .toString();
+  }
 }

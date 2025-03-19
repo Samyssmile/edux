@@ -1,0 +1,11 @@
+ich vermutte das
+
+in
+  private int readInputBatch(FractalityBatchData batchData, List<String> batchImagePaths, List<Integer> batchLabels) {
+
+die
+
+    batchData.setInputBatch(inputData);
+    batchData.setExpectedBatch(expectedData);
+
+    nicht zueinander passen. Deswegen ist die accuratcy bei den ersten batches immer 0 und nur beim letzten batch 100%
