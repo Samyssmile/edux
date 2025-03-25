@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -8,101 +9,138 @@
     <link href="animation.css" rel="stylesheet">
     <link href="navigation.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/a11y-dark.min.css"></link>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/a11y-dark.min.css">
+    </link>
 
 
 </head>
+
 <body>
 
-<div class="container">
-    <!-- Kopfteil der Seite -->
-    <header>
-        <h1>EDUX - Java Machine Learning Library</h1>
-        <!-- Projektbeschreibung -->
-        <section id="beschreibung">
-            <p>Java library for solving problems with a machine learning approach.</p>
-        </section>
-    </header>
+    <div class="container">
+        <!-- Kopfteil der Seite -->
+        <header>
+            <h1>EDUX - Java Machine Learning Library</h1>
+            <!-- Projektbeschreibung -->
+            <section id="beschreibung">
+                <p>Java library for solving problems with a machine learning approach.</p>
+            </section>
+        </header>
 
-    <!--Horizontal Menu with two buttons-->
-    <nav>
-        <ul>
-            <li><a href="javadocs">JavaDocs</a></li>
-            <li><a href="#integration">Integration Gradle/Maven</a></li>
-            <li><a href="#code-example">Examples</a></li>
-        </ul>
-    </nav>
-    <!-- Hauptinhalt -->
-    <main>
-        <!-- Features Sektion -->
-        <section>
-            <h2>Features</h2>
-            <div class="animation-fade-in" id="features">
-                <p>Edux library supports a wide array of machine learning methods and algorithms. Here's what you can
-                    expect:</p>
-                <div class="features-list">
-                    <ul>
-                        <li>Multilayer Perceptron (Neural Network)</li>
-                        <li>K Nearest Neighbors</li>
-                        <li>Decision Tree</li>
-                        <li>Support Vector Machine</li>
-                        <li>RandomForest</li>
-                    </ul>
+        <!--Horizontal Menu with two buttons-->
+        <nav>
+            <ul>
+                <li><a href="javadocs">JavaDocs</a></li>
+                <li><a href="#integration">Integration Gradle/Maven</a></li>
+                <li><a href="#code-example">Examples</a></li>
+            </ul>
+        </nav>
+        <!-- Hauptinhalt -->
+        <main>
+            <!-- Features Sektion -->
+            <section>
+                <h2>Features</h2>
+                <div class="animation-fade-in" id="features">
+                    <p>Edux library supports a wide array of machine learning methods and algorithms. Here's what you
+                        can
+                        expect:</p>
+                    <div class="features-list">
+                        <ul>
+                            <li>Multilayer Perceptron (Neural Network)</li>
+                            <li>K Nearest Neighbors</li>
+                            <li>Decision Tree</li>
+                            <li>Support Vector Machine</li>
+                            <li>RandomForest</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
 
-        <!-- Integration -->
-        <section id="integration">
-            <h2>Integration</h2>
-            <!-- Gradle -->
-            <div class="integration-section">
-                <h3>Gradle</h3>
-                <pre class="animation-fade-in">
-                    <code>
-implementation 'io.github.samyssmile:edux:1.0.5'
+            <!-- Integration -->
+            <section id="integration">
+                <h2>Integration</h2>
+                <!-- Gradle -->
+                <div class="integration-section">
+                    <h3>Gradle</h3>
+                    <pre class="animation-fade-in">
+                        
+                    <code id="myInput">
+implementation 'io.github.samyssmile:edux:1.0.7'
                     </code>
                 </pre>
-            </div>
+                </div>
 
-            <!-- Maven -->
-            <div class="integration-section">
-                <h3>Maven</h3>
-                <pre class="animation-fade-in">
-                    <code class="language-gradle">
+                <!-- Maven -->
+                <div class="integration-section">
+                    <h3>Maven</h3>
+                    <pre class="animation-fade-in">
+                    <code class="language-java">
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.samyssmile&lt;/groupId&gt;
     &lt;artifactId&gt;edux&lt;/artifactId&gt;
-    &lt;version&gt;1.0.5&lt;/version&gt;
+    &lt;version&gt;1.0.7&lt;/version&gt;
 &lt;/dependency&gt;
+</div>
                     </code></pre>
-            </div>
-        </section>
+                </div>
+            </section>
 
-        <section class="integration-section" id="code-example">
-            <h2>Examples</h2>
-            <h3>Multilayer Network</h3>
-            <pre class="animation-fade-in">
+            <section class="integration-section" id="code-example">
+                <h2>Examples</h2>
+                <h3>Multilayer Network</h3>
+                <pre class="animation-fade-in">
+                <h4>Step 1: Data Processing</h4>
                 <code class="language-java">
-    NetworkConfiguration config = new NetworkConfiguration(
-                    ActivationFunction.LEAKY_RELU,
-                    ActivationFunction.SOFTMAX,
-                    LossFunction.CATEGORICAL_CROSS_ENTROPY,
-                    Initialization.XAVIER, Initialization.XAVIER);
+    String trainImages = "train-images.idx3-ubyte";
+    String trainLabels = "train-labels.idx1-ubyte";
+    String testImages = "t10k-images.idx3-ubyte";
+    String testLabels = "t10k-labels.idx1-ubyte";
+    Loader trainLoader = new ImageLoader(trainImages, trainLabels, batchSize);
+    Loader testLoader = new ImageLoader(testImages, testLabels, batchSize);
 
-    Classifier mlp = new MultilayerPerceptron(
-                    features,
-                    labels,
-                    testFeatures,
-                    testLabels,
-                    config);
-    mlp.train();
-    mlp.predict(...);
+                </code>
+
+                <h4>Step 2: Configure the MultilayerPerceptron</h4>
+                <code class="language-java">
+    int batchSize = 100;
+    int threads = 1;
+    int epochs = 10;
+    float initialLearningRate = 0.1f;
+    float finalLearningRate = 0.001f;
+
+    MetaData trainMetaData = trainLoader.open();
+    int inputSize = trainMetaData.getInputSize();
+    int outputSize = trainMetaData.getExpectedSize();
+    trainLoader.close();
+                </code>
+
+
+                <h4>Step 3: Build the Network</h4>
+                <code class="language-java">
+    new NetworkBuilder()
+        .addLayer(new DenseLayer(inputSize, 32))  //32 Neurons as output size
+        .addLayer(new ReLuLayer())
+        .addLayer(new DenseLayer(32, outputSize)) //32 Neurons as input size
+        .addLayer(new SoftmaxLayer())
+        .withBatchSize(batchSize)
+        .withLearningRates(initialLearningRate, finalLearningRate)
+        .withExecutionMode(singleThread)
+        .withEpochs(epochs)
+        .build()
+        .printArchitecture()
+        .fit(trainLoader, testLoader)
+        .saveModel("model.edux"); // Save the trained model
+                </code>
+
+                <h4>Step 4: Load the model and continue training</h4>
+                <code class="language-java">
+    NeuralNetwork nn =
+        new NetworkBuilder().withEpochs(10).loadModel("model.edux").fit(trainLoader, testLoader);
                 </code>
             </pre>
-            <h3>Decision Tree</h3>
-            <pre>
+                <h3>Decision Tree</h3>
+                <pre>
                 <code class="language-java">
     var datasetProvider = new IrisProvider(NORMALIZE, SHUFFLE, 0.6);
     datasetProvider.printStatistics();
@@ -118,8 +156,8 @@ implementation 'io.github.samyssmile:edux:1.0.5'
     decisionTree.evaluate(testFeatures, testLabels);
                 </code>
             </pre>
-            <h3>Support Vector Machine - Example on IRIS Dataset</h3>
-            <pre>
+                <h3>Support Vector Machine - Example on IRIS Dataset</h3>
+                <pre>
                 <code class="language-java">
     /*
         +-------------+------------+-------------+------------+---------+
@@ -153,29 +191,30 @@ implementation 'io.github.samyssmile:edux:1.0.5'
     svm.evaluate(trainTestFeatures, trainTestLabels);
                 </code>
             </pre>
-        </section>
-        <!-- Log-Ausgabe -->
-        <h2>Log</h2>
-        <section class="log-ausgabe animation-fade-in">
-            <log class="log">
-    ========================= Data Statistic ==================
-    [main] INFO - Total dataset size: 150
-    [main] INFO - Training dataset size: 90
-    [main] INFO - Test data set size: 60
-    [main] INFO - Classes: 3
-    ===========================================================
-    [main] INFO - Decision Tree - accuracy: 93,33%
-            </log>
-        </section>
+            </section>
+            <!-- Log-Ausgabe -->
+            <h2>Log</h2>
+            <section class="log-ausgabe animation-fade-in">
+                <log class="log">
+                    ========================= Data Statistic ==================
+                    [main] INFO - Total dataset size: 150
+                    [main] INFO - Training dataset size: 90
+                    [main] INFO - Test data set size: 60
+                    [main] INFO - Classes: 3
+                    ===========================================================
+                    [main] INFO - Decision Tree - accuracy: 93,33%
+                </log>
+            </section>
 
-    </main>
+        </main>
 
-    <!-- Fußzeile -->
-    <footer>
-        <p>Copyright 2023 - This Project is open source - Apache License v2</p>
-    </footer>
-</div>
-<script>hljs.highlightAll();</script>
+        <!-- Fußzeile -->
+        <footer>
+            <p>Copyright 2023 - This Project is open source - Apache License v2</p>
+        </footer>
+    </div>
+    <script>hljs.highlightAll();</script>
 
 </body>
+
 </html>
