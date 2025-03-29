@@ -1,4 +1,4 @@
-[![Build](https://github.com/Samyssmile/edux/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/Samyssmile/edux/actions/workflows/gradle.yml)
+[![Build](https://github.com/Samyssmile/ejdux/actions/workflows/gradle.yml/badge.svg?branch=main)](https://github.com/Samyssmile/edux/actions/workflows/gradle.yml)
 [![CodeQL](https://github.com/Samyssmile/edux/actions/workflows/codeql-analysis.yml/badge.svg?branch=main)](https://github.com/Samyssmile/edux/actions/workflows/codeql-analysis.yml)
 
 # EDUX - Java Machine Learning Library
@@ -120,81 +120,83 @@ EDUX supports Nvidia GPU acceleration.
 
 ## Getting started tutorial
 
-This section guides you through using EDUX to process your dataset, configure a multilayer perceptron (Multilayer Neural
-Network), perform training and evaluation.
+This section guides you through using EDUX to process your dataset, by configuring a decision tree 
 
-A multi-layer perceptron (MLP) is a feedforward artificial neural network that generates a set of outputs from a set of
-input features. An MLP is characterized by several layers of input nodes connected as a directed graph between the input
-and output layers.
+
+A decision tree is a graphical representation of different options for solving a problem and shows how different factors are related. It has a hierarchical tree structure which starts with one main question at the top called a node which further branches out into different possible outcomes where:
+
+* Root Node is the starting point that represents the entire dataset.
+
+* Branches: These are the lines that connect nodes. It shows the flow from one decision to another.
+
+* Internal Nodes are Points where decisions are made based on the input features.
+
+* Leaf Nodes: These are the terminal nodes at the end of branches that represent final outcomes or predictions
+Decision-Tree
+
+![decision_tree.png](decision_tree.png)
 
 ### Step 0: Get Familiar with the Dataset
 
-In this example we use the famouse MNIST Dataset. The MNIST database contains 60,000 training images and 10,000 testing
+In this example we will use a dataset of seaborn penguins based on their
+species, island, Bill length(mm), Bill depth(mm), flipper length (mm), Body mass (g) and their sex
 
-![](https://hc-linux.eu/edux/mnist-examples.png)
 
-### Step 1: Data Processing
 
-```
-    String trainImages = "train-images.idx3-ubyte";
-    String trainLabels = "train-labels.idx1-ubyte";
-    String testImages = "t10k-images.idx3-ubyte";
-    String testLabels = "t10k-labels.idx1-ubyte";
-    Loader trainLoader = new ImageLoader(trainImages, trainLabels, batchSize);
-    Loader testLoader = new ImageLoader(testImages, testLabels, batchSize);
+### Step 1: Initiate 
 
 ```
-
-### Step 2: Configure the MultilayerPerceptron
-
-```
-    int batchSize = 100;
-    int threads = 1;
-    int epochs = 10;
-    float initialLearningRate = 0.1f;
-    float finalLearningRate = 0.001f;
-
-    MetaData trainMetaData = trainLoader.open();
-    int inputSize = trainMetaData.getInputSize();
-    int outputSize = trainMetaData.getExpectedSize();
-    trainLoader.close();
-```
-
-### Step 3: Build the Network
-
-We use the NetworkBuilder Class
+    private static final double TRAIN_TEST_SPLIT_RATIO = 0.70;
+    private static final File CSV_FILE =
+            new File("path-to-the-penguins.csv");
+    private static final boolean SKIP_HEAD = true;
+    private static final ImputationStrategy averageImputation = ImputationStrategy.AVERAGE;
+    private static final ImputationStrategy modeImputation = ImputationStrategy.MODE;
 
 ```
-    new NetworkBuilder()
-        .addLayer(new DenseLayer(inputSize, 32))  //32 Neurons as output size
-        .addLayer(new ReLuLayer())
-        .addLayer(new DenseLayer(32, outputSize)) //32 Neurons as input size
-        .addLayer(new SoftmaxLayer())
-        .withBatchSize(batchSize)
-        .withLearningRates(initialLearningRate, finalLearningRate)
-        .withExecutionMode(singleThread)
-        .withEpochs(epochs)
-        .build()
-        .printArchitecture()
-        .fit(trainLoader, testLoader)
-        .saveModel("model.edux"); // Save the trained model
-```
 
-### Step 4: Load the model and continue training
-
-Load 'model.edux' and continue training for 10 epochs.
+### Step 2: Load the csv file and process the data
 
 ```
-    NeuralNetwork nn =
-        new NetworkBuilder().withEpochs(10).loadModel("model.edux").fit(trainLoader, testLoader);
+    var featureColumnIndices = new int[] {1, 2, 3, 4, 5, 6};
+    var targetColumnIndex = 0;
+
+    var penguinsDataProcessor =
+        new DataProcessor(new CSVIDataReader())
+            .loadDataSetFromCSV(CSV_FILE, ',', SKIP_HEAD, featureColumnIndices, targetColumnIndex)
+            .imputation(0, modeImputation)
+            .imputation(1, modeImputation)
+            .imputation(2, averageImputation)
+            .imputation(3, averageImputation)
+            .imputation(4, averageImputation)
+            .imputation(5, averageImputation)
+            .imputation(6, modeImputation)
+            .normalize()
+            .shuffle()
+            .split(TRAIN_TEST_SPLIT_RATIO);
+```
+
+### Step 3: Enable the classifier
+
+```
+    Classifier classifier = new DecisionTree(2, 2, 3, 12);
+
+    var trainFeatures = penguinsDataProcessor.getTrainFeatures(featureColumnIndices);
+    var trainTestFeatures = penguinsDataProcessor.getTestFeatures(featureColumnIndices);
+    var trainLabels = penguinsDataProcessor.getTrainLabels(targetColumnIndex);
+    var trainTestLabels = penguinsDataProcessor.getTestLabels(targetColumnIndex);
+
+    classifier.train(trainFeatures, trainLabels);
+    classifier.evaluate(trainTestFeatures, trainTestLabels);
 ```
 
 ### Results
 
 ```output
-........................Epoch: 1, Loss: 1,14, Accuracy: 91,04
-...
-........................Epoch: 10, Loss: 0,13, Accuracy: 96,16
+23:02:19.211 [main] INFO  de.edux.data.provider.DataProcessor - Dataset loaded
+23:02:20.341 [main] INFO  de.edux.ml.decisiontree.DecisionTree - Decision Tree -  accuracy: 94.23%
+
+Process finished with exit code 0
 ```
 
 ### Working examples
