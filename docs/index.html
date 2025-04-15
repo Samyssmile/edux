@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -8,101 +9,170 @@
     <link href="animation.css" rel="stylesheet">
     <link href="navigation.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/a11y-dark.min.css"></link>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/a11y-dark.min.css">
+    </link>
 
 
 </head>
+
 <body>
 
-<div class="container">
-    <!-- Kopfteil der Seite -->
-    <header>
-        <h1>EDUX - Java Machine Learning Library</h1>
-        <!-- Projektbeschreibung -->
-        <section id="beschreibung">
-            <p>Java library for solving problems with a machine learning approach.</p>
-        </section>
-    </header>
+    <div class="container">
+        <!-- Kopfteil der Seite -->
+        <header>
+            <h1>EDUX - Java Machine Learning Library</h1>
+            <!-- Projektbeschreibung -->
+            <section id="beschreibung">
+                <p>Java library for solving problems with a machine learning approach.</p>
+            </section>
+        </header>
 
-    <!--Horizontal Menu with two buttons-->
-    <nav>
-        <ul>
-            <li><a href="javadocs">JavaDocs</a></li>
-            <li><a href="#integration">Integration Gradle/Maven</a></li>
-            <li><a href="#code-example">Examples</a></li>
-        </ul>
-    </nav>
-    <!-- Hauptinhalt -->
-    <main>
-        <!-- Features Sektion -->
-        <section>
-            <h2>Features</h2>
-            <div class="animation-fade-in" id="features">
-                <p>Edux library supports a wide array of machine learning methods and algorithms. Here's what you can
-                    expect:</p>
-                <div class="features-list">
-                    <ul>
-                        <li>Multilayer Perceptron (Neural Network)</li>
-                        <li>K Nearest Neighbors</li>
-                        <li>Decision Tree</li>
-                        <li>Support Vector Machine</li>
-                        <li>RandomForest</li>
-                    </ul>
+        <!--Horizontal Menu with two buttons-->
+        <nav>
+            <ul>
+                <li><a href="javadocs">JavaDocs</a></li>
+                <li><a href="#integration">Integration Gradle/Maven</a></li>
+                <li><a href="#code-example">Examples</a></li>
+            </ul>
+        </nav>
+        <!-- Hauptinhalt -->
+        <main>
+            <!-- Features Sektion -->
+            <section>
+                <h2>Features</h2>
+                <div class="animation-fade-in" id="features">
+                    <p>Edux library supports a wide array of machine learning methods and algorithms. Here's what you
+                        can
+                        expect:</p>
+                    <div class="features-list">
+                        <ul>
+                            <li>Multilayer Perceptron (Neural Network)</li>
+                            <li>K Nearest Neighbors</li>
+                            <li>Decision Tree</li>
+                            <li>Support Vector Machine</li>
+                            <li>RandomForest</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
 
-        <!-- Integration -->
-        <section id="integration">
-            <h2>Integration</h2>
-            <!-- Gradle -->
-            <div class="integration-section">
-                <h3>Gradle</h3>
-                <pre class="animation-fade-in">
-                    <code>
-implementation 'io.github.samyssmile:edux:1.0.5'
+            <!-- Integration -->
+            <section id="integration">
+                <h2>Integration</h2>
+                <!-- Gradle -->
+                <div class="integration-section">
+                    <h3>Gradle</h3>
+                    <pre class="animation-fade-in">
+                        
+                    <code id="myInput">
+implementation 'io.github.samyssmile:edux:1.0.7'
                     </code>
                 </pre>
-            </div>
+                </div>
 
-            <!-- Maven -->
-            <div class="integration-section">
-                <h3>Maven</h3>
-                <pre class="animation-fade-in">
-                    <code class="language-gradle">
+                <!-- Maven -->
+                <div class="integration-section">
+                    <h3>Maven</h3>
+                    <pre class="animation-fade-in">
+                    <code class="language-java">
 &lt;dependency&gt;
     &lt;groupId&gt;io.github.samyssmile&lt;/groupId&gt;
     &lt;artifactId&gt;edux&lt;/artifactId&gt;
-    &lt;version&gt;1.0.5&lt;/version&gt;
+    &lt;version&gt;1.0.7&lt;/version&gt;
 &lt;/dependency&gt;
+</div>
                     </code></pre>
-            </div>
-        </section>
+                </div>
+            </section>
 
-        <section class="integration-section" id="code-example">
-            <h2>Examples</h2>
-            <h3>Multilayer Network</h3>
-            <pre class="animation-fade-in">
+            <section class="integration-section" id="code-example">
+                <h2>Examples</h2>
+                <h3>Multilayer Network</h3>
+                <pre class="animation-fade-in">
+                <h4>Step 1: Data Processing</h4>
+                <h5>Firstly, we will load and prepare the IRIS dataset:</h5>
+<table style="width:100%">
+  <tr>
+    <td>sepal.length</td>
+    <td>sepal.width</td>
+    <td>petal.length</td>
+    <td>petal.width</td>
+    <td>variety</td>
+  </tr>
+  <tr>
+    <td>5.1</td>
+    <td>3.5</td>
+    <td>1.4</td>
+    <td>0.2</td>
+    <td>Setosa</td>
+  </tr>
+</table>
                 <code class="language-java">
-    NetworkConfiguration config = new NetworkConfiguration(
-                    ActivationFunction.LEAKY_RELU,
-                    ActivationFunction.SOFTMAX,
-                    LossFunction.CATEGORICAL_CROSS_ENTROPY,
-                    Initialization.XAVIER, Initialization.XAVIER);
 
-    Classifier mlp = new MultilayerPerceptron(
-                    features,
-                    labels,
-                    testFeatures,
-                    testLabels,
-                    config);
-    mlp.train();
-    mlp.predict(...);
+var featureColumnIndices=new int[]{0,1,2,3}; // Specify your feature columns
+        var targetColumnIndex=4; // Specify your target column
+
+        var dataProcessor=new DataProcessor(new CSVIDataReader());
+        var dataset=dataProcessor.loadDataSetFromCSV(
+        new File("path/to/your/data.csv"), // Replace with your CSV file path
+        ',',                     // CSV delimiter
+        true,                    // Whether to skip the header
+        featureColumnIndices,
+        targetColumnIndex
+        );
+        dataset.shuffle();
+        dataset.normalize();
+        dataProcessor.split(0.8); // Replace with your train-test split ratio
+
+                </code>
+
+                <h4>Step 2: Configure the MultilayerPerceptron</h4>
+                    <h5>Extract the features and labels for both training and test sets: </h5>
+
+                <code class="language-java">
+var trainFeatures=dataProcessor.getTrainFeatures(featureColumnIndices);
+        var trainLabels=dataProcessor.getTrainLabels(targetColumnIndex);
+        var testFeatures=dataProcessor.getTestFeatures(featureColumnIndices);
+        var testLabels=dataProcessor.getTestLabels(targetColumnIndex);
+                </code>
+
+
+                <h4>Step 3: Network Configuration</h4>
+                <code class="language-java">
+var networkConfiguration=new NetworkConfiguration(
+        trainFeatures[0].length,     // Number of input neurons
+        List.of(128,256,512),      // Number of neurons in each hidden layer
+        3,                           // Number of output neurons
+        0.01,                        // Learning rate
+        300,                         // Number of epochs
+        ActivationFunction.LEAKY_RELU, // Activation function for hidden layers
+        ActivationFunction.SOFTMAX,    // Activation function for output layer
+        LossFunction.CATEGORICAL_CROSS_ENTROPY, // Loss function
+        Initialization.XAVIER,        // Weight initialization for hidden layers
+        Initialization.XAVIER         // Weight initialization for output layer
+        );
+                </code>
+
+                <h4>Step 4: Training and Evaluation</h4>
+                <code class="language-java">
+MultilayerPerceptron multilayerPerceptron=new MultilayerPerceptron(
+        networkConfiguration,
+        testFeatures,
+        testLabels
+        );
+        multilayerPerceptron.train(trainFeatures,trainLabels);
+        multilayerPerceptron.evaluate(testFeatures,testLabels);
+                </code>
+
+                <h4>Results </h4>
+                <code class="language-java">
+...
+MultilayerPerceptron - Best accuracy after restoring best MLP model: 93.33%
                 </code>
             </pre>
-            <h3>Decision Tree</h3>
-            <pre>
+                <h3>Decision Tree</h3>
+                <pre>
                 <code class="language-java">
     var datasetProvider = new IrisProvider(NORMALIZE, SHUFFLE, 0.6);
     datasetProvider.printStatistics();
@@ -118,8 +188,16 @@ implementation 'io.github.samyssmile:edux:1.0.5'
     decisionTree.evaluate(testFeatures, testLabels);
                 </code>
             </pre>
-            <h3>Support Vector Machine - Example on IRIS Dataset</h3>
-            <pre>
+                <h3>Support Vector Machine - Example on IRIS Dataset</h3>
+                <pre>
+                    <h4>Step 1 : Initialize the variables</h4>
+                <code class="language-java">
+  private static final double TRAIN_TEST_SPLIT_RATIO = 0.70;
+  private static final File CSV_FILE =
+      new File("path/to/your/iris.csv");
+  private static final boolean SKIP_HEAD = true;
+                </code>
+                    <h4>Step 2 : Create,train and evaluate classifier</h4>
                 <code class="language-java">
     /*
         +-------------+------------+-------------+------------+---------+
@@ -134,48 +212,48 @@ implementation 'io.github.samyssmile:edux:1.0.5'
     // Last column is the target
     var targetColumnIndex = 4;
 
-    var irisDataProcessor = new DataProcessor(new CSVIDataReader())
-        .loadDataSetFromCSV(CSV_FILE, ',', SKIP_HEAD,
-                    featureColumnIndices,
-                    targetColumnIndex)
+    var irisDataProcessor =
+        new DataProcessor(new CSVIDataReader())
+        .loadDataSetFromCSV(CSV_FILE, ',', SKIP_HEAD,featureColumnIndices,targetColumnIndex)
         .normalize().shuffle()
         .split(TRAIN_TEST_SPLIT_RATIO);
 
 
-    Classifier svm = new SupportVectorMachine(SVMKernel.LINEAR, 2);
+    Classifier classifier = new DecisionTree(2, 2, 3, 12);
 
     var trainFeatures = irisDataProcessor.getTrainFeatures(featureColumnIndices);
     var trainTestFeatures = irisDataProcessor.getTestFeatures(featureColumnIndices);
     var trainLabels = irisDataProcessor.getTrainLabels(targetColumnIndex);
     var trainTestLabels = irisDataProcessor.getTestLabels(targetColumnIndex);
 
-    svm.train(trainFeatures, trainLabels);
-    svm.evaluate(trainTestFeatures, trainTestLabels);
+    classifier.train(trainFeatures, trainLabels);
+    classifier.evaluate(trainTestFeatures, trainTestLabels);
                 </code>
             </pre>
-        </section>
-        <!-- Log-Ausgabe -->
-        <h2>Log</h2>
-        <section class="log-ausgabe animation-fade-in">
-            <log class="log">
-    ========================= Data Statistic ==================
-    [main] INFO - Total dataset size: 150
-    [main] INFO - Training dataset size: 90
-    [main] INFO - Test data set size: 60
-    [main] INFO - Classes: 3
-    ===========================================================
-    [main] INFO - Decision Tree - accuracy: 93,33%
-            </log>
-        </section>
+            </section>
+            <!-- Log-Ausgabe -->
+            <h2>Log</h2>
+            <section class="log-ausgabe animation-fade-in">
+                <log class="log">
+                    ========================= Data Statistic ==================
+                    [main] INFO - Total dataset size: 150
+                    [main] INFO - Training dataset size: 90
+                    [main] INFO - Test data set size: 60
+                    [main] INFO - Classes: 3
+                    ===========================================================
+                    [main] INFO - Decision Tree - accuracy: 93,33%
+                </log>
+            </section>
 
-    </main>
+        </main>
 
-    <!-- Fußzeile -->
-    <footer>
-        <p>Copyright 2023 - This Project is open source - Apache License v2</p>
-    </footer>
-</div>
-<script>hljs.highlightAll();</script>
+        <!-- Fußzeile -->
+        <footer>
+            <p>Copyright 2023 - This Project is open source - Apache License v2</p>
+        </footer>
+    </div>
+    <script>hljs.highlightAll();</script>
 
 </body>
+
 </html>
