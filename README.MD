@@ -129,7 +129,7 @@ and output layers.
 
 ### Step 0: Get Familiar with the Dataset
 
-In this example we use the famouse MNIST Dataset. The MNIST database contains 60,000 training images and 10,000 testing
+In this example we use the famous MNIST Dataset. The MNIST database contains 60,000 training images and 10,000 testing
 
 ![](https://hc-linux.eu/edux/mnist-examples.png)
 
