@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'io.github.samyssmile'
-version = '1.0.7'
+version = '2.0.0'
 
 java {
     toolchain {
