@@ -101,7 +101,14 @@ publishing {
 
 signing {
     required { gradle.taskGraph.hasTask("publish") }
-    useGpgCmd()
+    def signingKey = System.getenv("GPG_PRIVATE_KEY")
+    def signingPassword = System.getenv("GPG_PASSPHRASE")
+    
+    if (signingKey && signingPassword) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    } else {
+        useGpgCmd()
+    }
     sign publishing.publications.mavenJava
 }
 

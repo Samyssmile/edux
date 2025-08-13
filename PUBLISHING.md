@@ -31,14 +31,30 @@ nmcp {
 }
 ```
 
-### Required Secrets
+### Required Environment Variables
 
-The following GitHub secrets must be configured:
+For local development and CI/CD, the following environment variables must be set:
 
 1. **MAVEN_CENTRAL_USERNAME**: Username from Central Portal token
 2. **MAVEN_CENTRAL_PASSWORD**: Password from Central Portal token  
-3. **SIGNING_KEY**: GPG private key for artifact signing
-4. **SIGNING_PASSWORD**: GPG key passphrase
+3. **GPG_PRIVATE_KEY**: GPG private key for artifact signing (complete PGP block)
+4. **GPG_PASSPHRASE**: GPG key passphrase
+
+### Local Development Setup
+
+Use the provided setup script:
+```bash
+# Source the environment variables
+source setup-publishing-env.sh
+
+# Test local publishing first
+./gradlew lib:publishMavenJavaPublicationToMavenLocal
+
+# Publish to Central Portal
+./gradlew lib:publish
+# or
+./gradlew lib:publishAllPublicationsToCentralPortal
+```
 
 ### Central Portal Token Generation
 
@@ -81,8 +97,29 @@ After publishing with `USER_MANAGED`:
 - ✅ Updated GitHub Actions workflow
 - ✅ Fixed JUnit test dependencies (unrelated but needed for build)
 
+### GPG Signing Configuration
+
+The build now supports both in-memory GPG signing and GPG command-line tool:
+
+```gradle
+signing {
+    required { gradle.taskGraph.hasTask("publish") }
+    def signingKey = System.getenv("GPG_PRIVATE_KEY")
+    def signingPassword = System.getenv("GPG_PASSPHRASE")
+    
+    if (signingKey && signingPassword) {
+        useInMemoryPgpKeys(signingKey, signingPassword)  // Preferred for CI/CD
+    } else {
+        useGpgCmd()  // Fallback to local GPG installation
+    }
+    sign publishing.publications.mavenJava
+}
+```
+
 ### Troubleshooting
 
-- Ensure all required secrets are configured in GitHub repository settings
-- Verify GPG signing key is properly formatted (include `-----BEGIN PGP PRIVATE KEY BLOCK-----` headers)
+- **GPG Error "finished with non-zero exit value 2"**: Use the provided `setup-publishing-env.sh` script to set environment variables for in-memory GPG signing
+- Ensure all required environment variables are set before publishing
+- Verify GPG private key is properly formatted (include `-----BEGIN PGP PRIVATE KEY BLOCK-----` headers)
+- Test local publishing first: `./gradlew lib:publishMavenJavaPublicationToMavenLocal`
 - Check Central Portal deployment status at https://central.sonatype.com/
