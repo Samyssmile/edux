@@ -4,6 +4,7 @@ plugins {
     id 'signing'
     id "me.champeau.jmh" version "0.7.2"
     id 'com.github.ben-manes.versions' version '0.51.0'
+    id 'com.gradleup.nmcp' version '0.0.8'
 }
 
 group = 'io.github.samyssmile'
@@ -43,10 +44,10 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-slf4j-impl:3.0.0-beta2'
 
     // Test dependencies
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.3'
+    testImplementation platform('org.junit:junit-bom:5.11.3')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.mockito:mockito-core:5.11.3'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
 }
 
 tasks.withType(Test) {
@@ -96,20 +97,28 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            name = "sonatype"
-            url = version.endsWith('SNAPSHOT') ? 'https://s01.oss.sonatype.org/content/repositories/snapshots/' : 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
-            credentials {
-                username = System.getenv("OSSRH_USERNAME")
-                password = System.getenv("OSSRH_PASSWORD")
-            }
-        }
-    }
 }
 
 signing {
+    required { gradle.taskGraph.hasTask("publish") }
+    def signingKey = System.getenv("GPG_PRIVATE_KEY")
+    def signingPassword = System.getenv("GPG_PASSPHRASE")
+    
+    if (signingKey && signingPassword) {
+        useInMemoryPgpKeys(signingKey, signingPassword)
+    } else {
+        useGpgCmd()
+    }
     sign publishing.publications.mavenJava
+}
+
+nmcp {
+    publish("mavenJava") {
+        username = System.getenv("MAVEN_CENTRAL_USERNAME")
+        password = System.getenv("MAVEN_CENTRAL_PASSWORD")
+        // Use USER_MANAGED for manual publishing control, or AUTOMATIC for auto-publish
+        publicationType = "USER_MANAGED"
+    }
 }
 
 
