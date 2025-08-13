@@ -100,14 +100,18 @@ publishing {
 }
 
 signing {
-    required { gradle.taskGraph.hasTask("publish") }
+    required { gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishAllPublicationsToNmcpMavenJavaRepository") || gradle.taskGraph.hasTask("publishMavenJavaPublicationToCentralPortal") }
     def signingKey = System.getenv("GPG_PRIVATE_KEY")
     def signingPassword = System.getenv("GPG_PASSPHRASE")
     
     if (signingKey && signingPassword) {
         useInMemoryPgpKeys(signingKey, signingPassword)
     } else {
-        useGpgCmd()
+        // Only use GPG cmd if signing is actually required (publishing tasks are running)
+        def isSigningRequired = gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishAllPublicationsToNmcpMavenJavaRepository") || gradle.taskGraph.hasTask("publishMavenJavaPublicationToCentralPortal")
+        if (isSigningRequired) {
+            useGpgCmd()
+        }
     }
     sign publishing.publications.mavenJava
 }
