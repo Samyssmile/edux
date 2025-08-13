@@ -49,3 +49,6 @@ gradle.properties
 /benchmark-data/augmentation-benchmark-images/*
 *.png
 *.edux
+publish-ticket.md
+setup-publishing-env.sh
+CLAUDE.md
