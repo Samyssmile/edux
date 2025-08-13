@@ -69,6 +69,17 @@ source setup-publishing-env.sh
 - GitHub Action runs: `./gradlew publishAllPublicationsToNmcpMavenJavaRepository`
 - With `USER_MANAGED` setting, releases require manual approval on Central Portal
 
+**Required GitHub Repository Secrets:**
+- `MAVEN_CENTRAL_USERNAME`: Username from Central Portal token
+- `MAVEN_CENTRAL_PASSWORD`: Password from Central Portal token  
+- `GPG_PRIVATE_KEY`: Complete GPG private key block
+- `GPG_PASSPHRASE`: GPG key passphrase
+
+To configure these secrets:
+1. Go to your GitHub repository → Settings → Secrets and variables → Actions
+2. Click "New repository secret" for each required secret
+3. Use the exact names listed above
+
 #### Manual Publishing
 ```bash
 # Publish to Central Portal
