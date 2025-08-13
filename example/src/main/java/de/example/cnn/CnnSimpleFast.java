@@ -13,6 +13,8 @@ import de.edux.ml.cnn.training.Trainer;
 import de.edux.ml.cnn.training.TrainerContext;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  *  Download Dataset from https://github.com/rasbt/mnist-pngs and put it into edux/example/datasets/mnist-pngs
@@ -23,10 +25,10 @@ public class CnnSimpleFast {
 		System.out.println("==================================================");
 
 
-		String datasetRoot = "edux/example/datasets/mnist-pngs";
-		String trainCsv    = datasetRoot + "/train.csv";
-		String testCsv     = datasetRoot + "/test.csv";
-		String modelPath   = "edux-small-cnn-model.ser";
+		Path datasetRoot = Paths.get("example", "datasets", "mnist-pngs");
+		Path trainCsv    = datasetRoot.resolve("train.csv");
+		Path testCsv     = datasetRoot.resolve("test.csv");
+		Path modelPath   = Paths.get("edux-small-cnn-model.ser");
 
 		int    batchSize    = 256;
 		int    epochs       = 2;
@@ -34,8 +36,8 @@ public class CnnSimpleFast {
 
 
 		System.out.println("Loading dataset...");
-		MNISTDataLoader trainLoader = new MNISTDataLoader(trainCsv, datasetRoot, batchSize, 0.20);
-		MNISTDataLoader testLoader  = new MNISTDataLoader(testCsv, datasetRoot, batchSize, 1);
+		MNISTDataLoader trainLoader = new MNISTDataLoader(trainCsv.toString(), datasetRoot.toString(), batchSize, 0.20);
+		MNISTDataLoader testLoader  = new MNISTDataLoader(testCsv.toString(), datasetRoot.toString(), batchSize, 1);
 
 
 		NeuralNetwork smallCnn = new NetworkBuilder()
@@ -160,10 +162,10 @@ public class CnnSimpleFast {
 		}
 
 		System.out.println("\n💾 Saving Small EDUX CNN model...");
-		saveModel(smallCnn, modelPath);
+		saveModel(smallCnn, modelPath.toString());
 
 		System.out.println("\n🔬 Testing model persistence...");
-		NeuralNetwork loadedModel = loadModel(modelPath);
+		NeuralNetwork loadedModel = loadModel(modelPath.toString());
 		if (loadedModel != null) {
 			System.out.println("✅ Small EDUX CNN model saved and loaded successfully!");
 			loadedModel.cleanup();
@@ -175,7 +177,7 @@ public class CnnSimpleFast {
 
 		System.out.println("\n" + "=".repeat(50));
 		System.out.println("🎊 Small EDUX CNN Training Complete!");
-		System.out.println("📁 Model saved as: " + modelPath);
+		System.out.println("📁 Model saved as: " + modelPath.toString());
 		System.out.printf("⏱️  Total training time: %.1f minutes\n", totalTrainingTime / 60.0);
 		System.out.printf("🎯 Final accuracy: %.2f%%\n", accuracy * 100);
 		System.out.println("🚀 Small EDUX CNN ready for testing!");
