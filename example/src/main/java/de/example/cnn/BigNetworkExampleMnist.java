@@ -25,8 +25,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 /**
  *  Download Dataset from https://github.com/rasbt/mnist-pngs and put it into edux/example/datasets/mnist-pngs
+ *
+ *  Showcase of a complete CNN training example using the EDUX library.
+ *  This example includes detailed logging, callbacks for monitoring training progress,
+ *  and model persistence with save/load functionality.
+ *
+ *  Also the usage of callbacks to monitor training progress and evaluate performance.
+ *  The model is trained on the MNIST dataset and evaluated on a test set.
  */
-public class CNNMNISTExample {
+public class BigNetworkExampleMnist {
 	public static void main(String[] args) {
 		System.out.println("Starting MNIST CNN Training with EDUX Library");
 		System.out.println("==============================================");
@@ -36,7 +43,6 @@ public class CNNMNISTExample {
 		Path testCsv     = datasetRoot.resolve("test.csv");
 		Path modelPath   = Paths.get("edux-cnn-model.ser");
 
-// Falls du Strings brauchst:
 		String trainCsvPath = trainCsv.toString();
 		String testCsvPath      = testCsv.toString();
 
@@ -45,33 +51,11 @@ public class CNNMNISTExample {
 		int    epochs       = 3;
 		double learningRate = 0.001;
 
-		System.out.println("Training Configuration:");
-		System.out.println("- Batch Size: " + batchSize);
-		System.out.println("- Epochs: " + epochs);
-		System.out.println("- Learning Rate: " + learningRate);
-		System.out.println("- Model will be saved as: " + modelPath);
-		System.out.println();
 
 		System.out.println("Loading dataset...");
 		MNISTDataLoader trainLoader = new MNISTDataLoader(trainCsvPath, datasetRoot.toString(), batchSize, 1);
 		MNISTDataLoader testLoader  = new MNISTDataLoader(testCsvPath, datasetRoot.toString(), batchSize, 1);
 
-		System.out.println("Building CNN Architecture with EDUX:");
-		System.out.println("Architecture Details:");
-		System.out.println("- Input: 28x28x1 (grayscale images)");
-		System.out.println("- Conv1: 1→32 filters, 3x3 kernel, ReLU");
-		System.out.println("- Conv2: 32→32 filters, 3x3 kernel, ReLU");
-		System.out.println("- MaxPool: 2x2 (28x28 → 14x14)");
-		System.out.println("- Conv3: 32→64 filters, 3x3 kernel, ReLU");
-		System.out.println("- Conv4: 64→64 filters, 3x3 kernel, ReLU");
-		System.out.println("- MaxPool: 2x2 (14x14 → 7x7)");
-		System.out.println("- Conv5: 64→128 filters, 3x3 kernel, ReLU");
-		System.out.println("- MaxPool: 2x2 (7x7 → 3x3)");
-		System.out.println("- Flatten: 128×3×3 = 1152 features");
-		System.out.println("- FC1: 1152→256, ReLU");
-		System.out.println("- FC2: 256→128, ReLU");
-		System.out.println("- FC3: 128→10 (output classes)");
-		System.out.println();
 
 		NeuralNetwork cnn = new NetworkBuilder()
 				.addLayer(new ConvolutionalLayer(1, 32, 3, 1, 1))
@@ -98,11 +82,7 @@ public class CNNMNISTExample {
 				.addLayer(new FullyConnectedLayer(128, 10))
 				.build();
 
-		System.out.println("Network built successfully with EDUX!");
-		System.out.printf("Total layers: %d\n", cnn.getLayerCount());
-		System.out.println();
 
-		System.out.println("Setting up training...");
 		CrossEntropyLoss lossFunction = new CrossEntropyLoss();
 		SGD              optimizer    = new SGD(learningRate);
 		Trainer          trainer      = new Trainer(cnn, lossFunction, optimizer);
