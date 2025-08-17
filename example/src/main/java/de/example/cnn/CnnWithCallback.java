@@ -18,8 +18,11 @@ import java.nio.file.Paths;
 
 /**
  *  Download Dataset from https://github.com/rasbt/mnist-pngs and put it into edux/example/datasets/mnist-pngs
+ *
+ *  Showcases a small CNN model with callbacks for monitoring training progress.
+ *  This example uses a smaller architecture suitable for quick training and testing.
  */
-public class CnnSimpleFast {
+public class CnnWithCallback {
 	public static void main(String[] args) {
 		System.out.println("Starting Small MNIST CNN Training with EDUX Library");
 		System.out.println("==================================================");
