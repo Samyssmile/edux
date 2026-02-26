@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'io.github.samyssmile'
-version = '2.0.1'
+version = '2.0.2'
 
 java {
     toolchain {
@@ -127,5 +127,4 @@ nmcp {
         publicationType = "USER_MANAGED"
     }
 }
-
 
