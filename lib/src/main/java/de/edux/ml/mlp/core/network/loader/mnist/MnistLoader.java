@@ -161,7 +161,7 @@ public class MnistLoader implements Loader {
       int width = imageInputStream.readInt();
       metaData.setInputSize(height * width);
       metaData.setNumberOfClasses(10);
-      metaData.setNumberBatches((int) Math.ceil(numberItems / batchSize));
+      metaData.setNumberBatches((int) Math.ceil((double) numberItems / batchSize));
       metaData.setHeight(height);
       metaData.setWidth(width);
 

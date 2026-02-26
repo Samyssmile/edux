@@ -151,20 +151,26 @@ public class ConvolutionalLayer implements Layer, Serializable {
             }
         }
         
-        // Parallel gradient computation
-        forkJoinPool.invoke(new BackwardTask(
+        // Parallel gradient computation with local accumulators (lock-free)
+        var task = new BackwardTask(
             inputTensor.getPrimitiveData(),
             gradOutputTensor.getPrimitiveData(),
             gradInput.getPrimitiveData(),
             weights.getPrimitiveData(),
-            weightGradients.getPrimitiveData(),
-            bias ? biasGradients.getPrimitiveData() : null,
+            bias,
             batch, inputChannels, inputHeight, inputWidth,
             outputChannels, outputHeight, outputWidth,
             kernelSize, stride, padding,
             0, batch
-        ));
-        
+        );
+        forkJoinPool.invoke(task);
+
+        // Copy merged results into gradient tensors
+        System.arraycopy(task.localWeightGrads, 0, weightGradients.getPrimitiveData(), 0, task.localWeightGrads.length);
+        if (bias && task.localBiasGrads != null) {
+            System.arraycopy(task.localBiasGrads, 0, biasGradients.getPrimitiveData(), 0, task.localBiasGrads.length);
+        }
+
         // Sync primitive arrays back to boxed arrays
         gradInput.syncFromPrimitive();
         weightGradients.syncFromPrimitive();
@@ -226,29 +232,34 @@ public class ConvolutionalLayer implements Layer, Serializable {
     }
     
     /**
-     * Recursive task for parallel backward computation
+     * Recursive task for parallel backward computation.
+     * Uses lock-free local accumulators per leaf task, merged up through the fork/join tree.
      */
     private static class BackwardTask extends RecursiveAction {
         private static final int THRESHOLD = 4;
-        
-        private final float[] input, gradOutput, gradInput, weights, weightGrads, biasGrads;
+
+        private final float[] input, gradOutput, gradInput, weights;
+        private final boolean hasBias;
         private final int batch, inputChannels, inputHeight, inputWidth;
         private final int outputChannels, outputHeight, outputWidth;
         private final int kernelSize, stride, padding;
         private final int startBatch, endBatch;
-        
+
+        /** Populated after {@link #compute()} — contains this subtree's accumulated gradients. */
+        float[] localWeightGrads;
+        float[] localBiasGrads;
+
         BackwardTask(float[] input, float[] gradOutput, float[] gradInput,
-                    float[] weights, float[] weightGrads, float[] biasGrads,
-                    int batch, int inputChannels, int inputHeight, int inputWidth,
-                    int outputChannels, int outputHeight, int outputWidth,
-                    int kernelSize, int stride, int padding,
-                    int startBatch, int endBatch) {
+                     float[] weights, boolean hasBias,
+                     int batch, int inputChannels, int inputHeight, int inputWidth,
+                     int outputChannels, int outputHeight, int outputWidth,
+                     int kernelSize, int stride, int padding,
+                     int startBatch, int endBatch) {
             this.input = input;
             this.gradOutput = gradOutput;
             this.gradInput = gradInput;
             this.weights = weights;
-            this.weightGrads = weightGrads;
-            this.biasGrads = biasGrads;
+            this.hasBias = hasBias;
             this.batch = batch;
             this.inputChannels = inputChannels;
             this.inputHeight = inputHeight;
@@ -262,65 +273,69 @@ public class ConvolutionalLayer implements Layer, Serializable {
             this.startBatch = startBatch;
             this.endBatch = endBatch;
         }
-        
+
         @Override
         protected void compute() {
             if (endBatch - startBatch <= THRESHOLD) {
                 computeDirectly();
             } else {
                 int mid = (startBatch + endBatch) / 2;
-                invokeAll(
-                    new BackwardTask(input, gradOutput, gradInput, weights, weightGrads, biasGrads,
-                                   batch, inputChannels, inputHeight, inputWidth,
-                                   outputChannels, outputHeight, outputWidth,
-                                   kernelSize, stride, padding, startBatch, mid),
-                    new BackwardTask(input, gradOutput, gradInput, weights, weightGrads, biasGrads,
-                                   batch, inputChannels, inputHeight, inputWidth,
-                                   outputChannels, outputHeight, outputWidth,
-                                   kernelSize, stride, padding, mid, endBatch)
-                );
+                var left = new BackwardTask(input, gradOutput, gradInput, weights, hasBias,
+                        batch, inputChannels, inputHeight, inputWidth,
+                        outputChannels, outputHeight, outputWidth,
+                        kernelSize, stride, padding, startBatch, mid);
+                var right = new BackwardTask(input, gradOutput, gradInput, weights, hasBias,
+                        batch, inputChannels, inputHeight, inputWidth,
+                        outputChannels, outputHeight, outputWidth,
+                        kernelSize, stride, padding, mid, endBatch);
+                invokeAll(left, right);
+
+                // Merge: reuse left's array, add right's into it
+                localWeightGrads = left.localWeightGrads;
+                addInto(localWeightGrads, right.localWeightGrads);
+
+                if (hasBias) {
+                    localBiasGrads = left.localBiasGrads;
+                    addInto(localBiasGrads, right.localBiasGrads);
+                }
             }
         }
-        
+
         private void computeDirectly() {
+            localWeightGrads = new float[weights.length];
+            if (hasBias) {
+                localBiasGrads = new float[outputChannels];
+            }
+
             int inputBatchStride = inputChannels * inputHeight * inputWidth;
             int outputBatchStride = outputChannels * outputHeight * outputWidth;
             int weightFilterStride = inputChannels * kernelSize * kernelSize;
-            
+
             for (int b = startBatch; b < endBatch; b++) {
                 int inputBatchOffset = b * inputBatchStride;
                 int outputBatchOffset = b * outputBatchStride;
-                
+
                 for (int oc = 0; oc < outputChannels; oc++) {
                     for (int oh = 0; oh < outputHeight; oh++) {
                         for (int ow = 0; ow < outputWidth; ow++) {
                             int gradOutputIdx = outputBatchOffset + oc * outputHeight * outputWidth + oh * outputWidth + ow;
                             float gradOut = gradOutput[gradOutputIdx];
-                            
-                            // Compute bias gradients (synchronized)
-                            if (biasGrads != null) {
-                                synchronized (biasGrads) {
-                                    biasGrads[oc] += gradOut;
-                                }
+
+                            if (localBiasGrads != null) {
+                                localBiasGrads[oc] += gradOut;
                             }
-                            
-                            // Compute weight gradients and input gradients
+
                             for (int ic = 0; ic < inputChannels; ic++) {
                                 for (int kh = 0; kh < kernelSize; kh++) {
                                     for (int kw = 0; kw < kernelSize; kw++) {
                                         int ih = oh * stride - padding + kh;
                                         int iw = ow * stride - padding + kw;
-                                        
+
                                         if (ih >= 0 && ih < inputHeight && iw >= 0 && iw < inputWidth) {
                                             int inputIdx = inputBatchOffset + ic * inputHeight * inputWidth + ih * inputWidth + iw;
                                             int weightIdx = oc * weightFilterStride + ic * kernelSize * kernelSize + kh * kernelSize + kw;
-                                            
-                                            // Weight gradient: input * gradOutput (synchronized)
-                                            synchronized (weightGrads) {
-                                                weightGrads[weightIdx] += input[inputIdx] * gradOut;
-                                            }
-                                            
-                                            // Input gradient: weight * gradOutput
+
+                                            localWeightGrads[weightIdx] += input[inputIdx] * gradOut;
                                             gradInput[inputIdx] += weights[weightIdx] * gradOut;
                                         }
                                     }
@@ -329,6 +344,12 @@ public class ConvolutionalLayer implements Layer, Serializable {
                         }
                     }
                 }
+            }
+        }
+
+        private static void addInto(float[] target, float[] source) {
+            for (int i = 0; i < target.length; i++) {
+                target[i] += source[i];
             }
         }
     }

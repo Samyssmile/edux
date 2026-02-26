@@ -98,6 +98,7 @@ public class NeuralNetwork implements Serializable {
       LinkedList<Future<Matrix>> batches, boolean traingMode) {
     int numberBatches = batches.size();
     int index = 0;
+    int printDot = Math.max(1, numberBatches / 50);
 
     for (var batch : batches) {
       try {
@@ -107,7 +108,6 @@ public class NeuralNetwork implements Serializable {
         e.printStackTrace();
       }
 
-      int printDot = (numberBatches / 25) + 1;
       if (traingMode && index++ % printDot == 0) {
         System.out.print(".");
       }

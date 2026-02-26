@@ -68,7 +68,7 @@ public class FractalityLoader implements Loader {
     metaData.setNumberItems(csvContent.size());
     metaData.setInputSize(imageWidth * imageHeight);
     metaData.setNumberOfClasses(6);
-    metaData.setNumberBatches((int) Math.ceil(metaData.getNumberItems() / batchLength));
+    metaData.setNumberBatches((int) Math.ceil((double) metaData.getNumberItems() / batchLength));
     metaData.setBatchLength(batchLength);
 
     return metaData;
