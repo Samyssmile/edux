@@ -42,6 +42,10 @@ public class NeuralNetwork implements Serializable {
             if (fc.getBiases() != null) {
                 parameterManager.registerParameter(layerName, "biases", fc.getBiases());
             }
+        } else if (layer instanceof BatchNormalizationLayer) {
+            BatchNormalizationLayer batchNorm = (BatchNormalizationLayer) layer;
+            parameterManager.registerParameter(layerName, "gamma", batchNorm.getGamma());
+            parameterManager.registerParameter(layerName, "beta", batchNorm.getBeta());
         }
     }
     
@@ -87,11 +91,7 @@ public class NeuralNetwork implements Serializable {
         
         // Also zero layer gradients
         for (Layer layer : layers) {
-            if (layer instanceof ConvolutionalLayer) {
-                ((ConvolutionalLayer) layer).zeroGradients();
-            } else if (layer instanceof FullyConnectedLayer) {
-                ((FullyConnectedLayer) layer).zeroGradients();
-            }
+            layer.zeroGradients();
         }
         
         Tensor currentGrad = gradOutput;
@@ -122,6 +122,14 @@ public class NeuralNetwork implements Serializable {
             }
             if (fc.getBiasGradients() != null) {
                 parameterManager.accumulateGradient(layerName, "biases", fc.getBiasGradients());
+            }
+        } else if (layer instanceof BatchNormalizationLayer) {
+            BatchNormalizationLayer batchNorm = (BatchNormalizationLayer) layer;
+            if (batchNorm.getGammaGradients() != null) {
+                parameterManager.accumulateGradient(layerName, "gamma", batchNorm.getGammaGradients());
+            }
+            if (batchNorm.getBetaGradients() != null) {
+                parameterManager.accumulateGradient(layerName, "beta", batchNorm.getBetaGradients());
             }
         }
     }

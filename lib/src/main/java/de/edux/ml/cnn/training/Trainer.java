@@ -6,6 +6,7 @@ import de.edux.ml.cnn.loss.LossFunction;
 import de.edux.ml.cnn.loss.LossOutput;
 import de.edux.ml.cnn.network.NeuralNetwork;
 import de.edux.ml.cnn.optimizer.Optimizer;
+import de.edux.ml.cnn.optimizer.ParameterManager;
 import de.edux.ml.cnn.tensor.Tensor;
 import de.edux.ml.cnn.tensor.TensorPool;
 import de.edux.ml.cnn.tensor.FloatTensor;
@@ -40,18 +41,6 @@ public class Trainer {
     
     public Optimizer getOptimizer() {
         return optimizer;
-    }
-    
-    // Helper method for direct parameter updates
-    private void updateTensor(FloatTensor params, FloatTensor grads, double learningRate) {
-        float[] paramData = params.getPrimitiveData();
-        float[] gradData = grads.getPrimitiveData();
-        
-        for (int i = 0; i < paramData.length; i++) {
-            paramData[i] -= (float) (learningRate * gradData[i]);
-        }
-        
-        params.syncFromPrimitive();
     }
     
     public void train(DataLoader trainLoader, int epochs) {
@@ -90,32 +79,9 @@ public class Trainer {
                 
                 // Backward pass
                 network.backward(lossOutput.getGradient());
-                
-                
-                // TEMP FIX: Update parameters directly on layers
-                // optimizer.update(network.getParameterManager().getParameters(), 
-                //                network.getParameterManager().getGradients());
-                
-                // Direct layer parameter updates
-                for (de.edux.ml.cnn.layer.Layer layer : network.getLayers()) {
-                    if (layer instanceof de.edux.ml.cnn.layer.ConvolutionalLayer) {
-                        de.edux.ml.cnn.layer.ConvolutionalLayer conv = (de.edux.ml.cnn.layer.ConvolutionalLayer) layer;
-                        if (conv.getWeightGradients() != null) {
-                            updateTensor(conv.getWeights(), conv.getWeightGradients(), optimizer.getLearningRate());
-                        }
-                        if (conv.getBiasGradients() != null) {
-                            updateTensor(conv.getBiases(), conv.getBiasGradients(), optimizer.getLearningRate());
-                        }
-                    } else if (layer instanceof de.edux.ml.cnn.layer.FullyConnectedLayer) {
-                        de.edux.ml.cnn.layer.FullyConnectedLayer fc = (de.edux.ml.cnn.layer.FullyConnectedLayer) layer;
-                        if (fc.getWeightGradients() != null) {
-                            updateTensor(fc.getWeights(), fc.getWeightGradients(), optimizer.getLearningRate());
-                        }
-                        if (fc.getBiasGradients() != null) {
-                            updateTensor(fc.getBiases(), fc.getBiasGradients(), optimizer.getLearningRate());
-                        }
-                    }
-                }
+
+                ParameterManager parameterManager = network.getParameterManager();
+                optimizer.update(parameterManager.getParameters(), parameterManager.getGradients());
                 
                 float batchLoss = lossOutput.getLoss();
                 epochLoss += batchLoss;
